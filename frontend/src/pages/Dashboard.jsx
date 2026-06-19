@@ -1,9 +1,11 @@
-function Dashboard() {
+import MainLayout from "../layout/MainLayout";
+
+const Dashboard = () => {
   return (
-    <div>
+    <MainLayout>
       <h1>Dashboard DokyPets</h1>
-    </div>
+    </MainLayout>
   );
-}
+};
 
 export default Dashboard;
