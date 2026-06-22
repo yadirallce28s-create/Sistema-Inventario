@@ -1,27 +1,20 @@
 import "../css/login.css";
-import logo from "../assets/hero.png";
-import perrito from "../assets/perrito.png";
-const Login = () => {
+import { useNavigate } from "react-router-dom";
+
+function Login() {
+
+  const navigate = useNavigate();
+
+  const ingresar = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="login-container">
 
       <div className="left-panel">
-
-        <img
-          src={logo}
-          alt="DokyPets"
-          className="logo"
-        />
-        <img
-          src={perrito}
-          alt="DokyPets"
-          className="logo"
-        />
-
         <h1>DokyPets</h1>
-
         <p>Sistema de Gestión Veterinaria</p>
-
       </div>
 
       <div className="right-panel">
@@ -42,7 +35,7 @@ const Login = () => {
             placeholder="Contraseña"
           />
 
-          <button>
+          <button onClick={ingresar}>
             Ingresar
           </button>
 
@@ -52,6 +45,6 @@ const Login = () => {
 
     </div>
   );
-};
+}
 
 export default Login;

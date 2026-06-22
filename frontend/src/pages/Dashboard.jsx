@@ -1,7 +1,6 @@
-import MainLayout from "../layout/MainLayout";
 import "../css/dashboard.css";
-export default Dashboard;
-const Dashboard = () => {
+
+function Dashboard() {
   return (
     <div>
       <h1>Dashboard DokyPets</h1>
@@ -32,5 +31,6 @@ const Dashboard = () => {
 
     </div>
   );
-};
+}
 
+export default Dashboard;
