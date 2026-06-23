@@ -1,5 +1,16 @@
 import { Link } from "react-router-dom";
 
+import {
+  FaHome,
+  FaBox,
+  FaBullhorn,
+  FaUserFriends,
+  FaCalendarAlt,
+  FaCog
+} from "react-icons/fa";
+
+import { GiDogBowl } from "react-icons/gi";
+
 function Sidebar() {
   return (
     <aside className="sidebar">
@@ -10,25 +21,25 @@ function Sidebar() {
 
         <li>
           <Link to="/dashboard">
-            🏠 Panel de control
+            <FaHome /> Panel de control
           </Link>
         </li>
 
         <li>
           <Link to="/inventario">
-            📦 Inventario
+            <FaBox /> Inventario
           </Link>
         </li>
 
         <li>
           <Link to="/servicios">
-            🩺 Servicios
+            <GiDogBowl /> Servicios
           </Link>
         </li>
 
         <li>
           <Link to="/publicidad">
-            📢 Publicidad
+            <FaBullhorn /> Publicidad
           </Link>
         </li>
 
@@ -37,9 +48,19 @@ function Sidebar() {
       <h3>GESTIÓN</h3>
 
       <ul>
-        <li>👥 Clientes</li>
-        <li>📅 Citas</li>
-        <li>⚙️ Configuración</li>
+
+        <li>
+          <FaUserFriends /> Clientes
+        </li>
+
+        <li>
+          <FaCalendarAlt /> Citas
+        </li>
+
+        <li>
+          <FaCog /> Configuración
+        </li>
+
       </ul>
 
     </aside>
