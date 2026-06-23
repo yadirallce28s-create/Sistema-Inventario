@@ -1,9 +1,9 @@
 function Inventario() {
   return (
     <div>
-      <h1>Inventario DokyPets</h1>
+      <h1>📦 Inventario</h1>
 
-      <table border="1">
+      <table className="tabla">
         <thead>
           <tr>
             <th>Producto</th>
@@ -17,6 +17,12 @@ function Inventario() {
             <td>Vacuna Antirrábica</td>
             <td>50</td>
             <td>S/ 35</td>
+          </tr>
+
+          <tr>
+            <td>Alimento Premium</td>
+            <td>20</td>
+            <td>S/ 80</td>
           </tr>
         </tbody>
       </table>
