@@ -1,21 +1,21 @@
-const Navbar = () => {
+function Navbar() {
   return (
-    <nav
-      style={{
-        height: "60px",
-        background: "#0099cc",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 20px",
-      }}
-    >
-      <h2>DokyPets</h2>
+    <nav className="navbar">
+      <div className="navbar-left">
+        <h2>🐾 Doky Pets</h2>
+        <span>Sistema Veterinario</span>
+      </div>
 
-      <span>Administrador</span>
+      <div className="navbar-right">
+        <span className="notification">🔔</span>
+
+        <div className="user-info">
+          <strong>Administrador</strong>
+          <small>Juan Pérez</small>
+        </div>
+      </div>
     </nav>
   );
-};
+}
 
 export default Navbar;

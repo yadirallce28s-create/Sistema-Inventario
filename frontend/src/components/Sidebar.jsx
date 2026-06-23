@@ -1,25 +1,26 @@
-const Sidebar = () => {
+function Sidebar() {
   return (
-    <aside
-      style={{
-        width: "250px",
-        background: "#fff",
-        minHeight: "100vh",
-        padding: "20px",
-        borderRight: "1px solid #ddd",
-      }}
-    >
-      <h3>Menú</h3>
+    <aside className="sidebar">
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        <li>Dashboard</li>
-        <li>Inventario</li>
-        <li>Servicios</li>
-        <li>Publicidad</li>
-        <li>Clientes</li>
+      <h3>PRINCIPAL</h3>
+
+      <ul>
+        <li className="active">🏠 Panel de control</li>
+        <li>📦 Inventario</li>
+        <li>🩺 Servicios</li>
+        <li>📢 Publicidad</li>
       </ul>
+
+      <h3>GESTIÓN</h3>
+
+      <ul>
+        <li>👥 Clientes</li>
+        <li>📅 Citas</li>
+        <li>⚙️ Configuración</li>
+      </ul>
+
     </aside>
   );
-};
+}
 
 export default Sidebar;
