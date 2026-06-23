@@ -1,10 +1,10 @@
 import "../css/dashboard.css";
-import MainLayout from "../layout/MainLayout";
+
 
 function Dashboard() {
   return (
-    <MainLayout>
 
+    <>
       <h1>Panel de control</h1>
       <div className="resumen">
         <span>
@@ -74,10 +74,40 @@ function Dashboard() {
             <li>Nueva campaña programada</li>
           </ul>
         </div>
+        <div className="panel">
+          <h3>🐶 Mascotas recientes</h3>
+
+          <ul>
+            <li>Max - Labrador</li>
+            <li>Luna - Poodle</li>
+            <li>Rocky - Pastor Alemán</li>
+          </ul>
+        </div>
+
+        <div className="panel">
+          <h3>📦 Pedidos pendientes</h3>
+
+          <ul>
+            <li>Vacunas x 20</li>
+            <li>Alimento Premium x 10</li>
+            <li>Medicamentos x 5</li>
+          </ul>
+        </div>
+
+        <div className="panel mascota-panel">
+          <h3>DokyPets</h3>
+
+          <p>
+            Gestión inteligente para clínicas veterinarias
+          </p>
+
+          <button>
+            Ver más
+          </button>
+        </div>
 
       </div>
-
-    </MainLayout>
+    </>
   );
 }
 
