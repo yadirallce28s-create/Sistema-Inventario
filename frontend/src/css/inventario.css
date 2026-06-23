@@ -1,0 +1,71 @@
+/* INVENTARIO */
+
+.inventario-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.btn-nuevo{
+    background:#22b8a6;
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.buscador{
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:20px;
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+}
+
+.tabla{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.tabla th{
+    background:#22b8a6;
+    color:white;
+    padding:12px;
+}
+
+.tabla td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+}
+
+.tabla tr:hover{
+    background:#f9f9f9;
+}
+
+.btn-editar{
+    background:#ffd43b;
+    border:none;
+    padding:8px 12px;
+    border-radius:6px;
+    margin-right:5px;
+    cursor:pointer;
+}
+
+.btn-eliminar{
+    background:#ff6b6b;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:6px;
+    cursor:pointer;
+}
