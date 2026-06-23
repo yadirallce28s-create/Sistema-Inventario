@@ -1,7 +1,9 @@
 import "../css/dashboard.css";
 import "../css/inventario.css";
+import { useState } from "react";
 
 function Inventario() {
+  const [mostrarModal, setMostrarModal] = useState(false);
   return (
     <div>
 
@@ -9,7 +11,9 @@ function Inventario() {
 
         <h1>📦 Inventario</h1>
 
-        <button className="btn-nuevo">
+        <button className="btn-nuevo"
+          onClick={() => setMostrarModal(true)}
+        >
           + Nuevo Producto
         </button>
 
@@ -71,6 +75,49 @@ function Inventario() {
           </tbody>
 
         </table>
+        {mostrarModal && (
+          <div className="modal-overlay">
+
+            <div className="modal">
+
+              <h2>Nuevo Producto</h2>
+
+              <input
+                type="text"
+                placeholder="Nombre del producto"
+              />
+
+              <input
+                type="number"
+                placeholder="Stock"
+              />
+
+              <input
+                type="number"
+                placeholder="Precio"
+              />
+
+              <div className="modal-buttons">
+
+                <button
+                  className="btn-guardar"
+                >
+                  Guardar
+                </button>
+
+                <button
+                  className="btn-cancelar"
+                  onClick={() => setMostrarModal(false)}
+                >
+                  Cancelar
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        )}
 
       </div>
 
