@@ -195,6 +195,177 @@ app.get('/mascotas', async (req, res) => {
     }
 });
 
+// SERVICIOS Y CITAS
+
+// 1. REGISTRAR UN NUEVO SERVICIO
+app.post('/servicios', async (req, res) => {
+    const { nombre, descripcion, precio } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO servicios (nombre, descripcion, precio)
+            VALUES ($1, $2, $3)
+            RETURNING *;
+        `;
+        const nuevoServicio = await pool.query(query, [nombre, descripcion, precio]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Servicio registrado exitosamente en Doky Pets!",
+            servicio: nuevoServicio.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar el servicio" });
+    }
+});
+
+// 2. OBTENER TODOS LOS SERVICIOS
+app.get('/servicios', async (req, res) => {
+    try {
+        const resultado = await pool.query('SELECT * FROM servicios ORDER BY id DESC');
+        return res.json({
+            status: "success",
+            count: resultado.rows.length,
+            servicios: resultado.rows
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al obtener los servicios" });
+    }
+});
+
+// 3. AGENDAR UNA NUEVA CITA
+app.post('/citas', async (req, res) => {
+    const { fecha, hora, motivo, estado, id_mascota, id_usuario, id_servicio } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO citas (fecha, hora, motivo, estado, id_mascota, id_usuario, id_servicio)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING *;
+        `;
+        const nuevaCita = await pool.query(query, [
+            fecha, 
+            hora, 
+            motivo, 
+            estado || 'pendiente', // Por defecto queda pendiente hasta que asistan
+            id_mascota, 
+            id_usuario, 
+            id_servicio
+        ]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Cita agendada exitosamente en Doky Pets!",
+            cita: nuevaCita.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al agendar la cita" });
+    }
+});
+
+// 4. OBTENER TODAS LAS CITAS
+app.get('/citas', async (req, res) => {
+    try {
+        const resultado = await pool.query('SELECT * FROM citas ORDER BY fecha ASC, hora ASC');
+        return res.json({
+            status: "success",
+            count: resultado.rows.length,
+            citas: resultado.rows
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al obtener las citas" });
+    }
+});
+
+// MÓDULO 4: INVENTARIO Y PROVEEDORES
+
+// 1. REGISTRAR UN NUEVO PROVEEDOR
+app.post('/proveedores', async (req, res) => {
+    const { nombre, contacto, telefono, email, direccion } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO proveedores (nombre, contacto, telefono, email, direccion)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *;
+        `;
+        const nuevoProveedor = await pool.query(query, [nombre, contacto, telefono, email, direccion]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Proveedor registrado exitosamente en Doky Pets!",
+            proveedor: nuevoProveedor.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar el proveedor" });
+    }
+});
+
+// 2. OBTENER TODOS LOS PROVEEDORES
+app.get('/proveedores', async (req, res) => {
+    try {
+        const resultado = await pool.query('SELECT * FROM proveedores ORDER BY id DESC');
+        return res.json({
+            status: "success",
+            count: resultado.rows.length,
+            proveedores: resultado.rows
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al obtener los proveedores" });
+    }
+});
+
+// 3. REGISTRAR UN NUEVO PRODUCTO EN INVENTARIO
+app.post('/productos', async (req, res) => {
+    const { nombre, descripcion, precio, stock, stock_minimo, id_proveedor } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO productos (nombre, descripcion, precio, stock, stock_minimo, id_proveedor)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *;
+        `;
+        const nuevoProducto = await pool.query(query, [
+            nombre, 
+            descripcion, 
+            precio, 
+            stock, 
+            stock_minimo || 0, 
+            id_proveedor
+        ]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Producto añadido al inventario exitosamente!",
+            producto: nuevoProducto.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar el producto" });
+    }
+});
+
+// 4. OBTENER TODO EL INVENTARIO DE PRODUCTOS
+app.get('/productos', async (req, res) => {
+    try {
+        const resultado = await pool.query('SELECT * FROM productos ORDER BY id DESC');
+        return res.json({
+            status: "success",
+            count: resultado.rows.length,
+            productos: resultado.rows
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al obtener los productos" });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor Backend corriendo en http://localhost:${PORT}`);
 });
