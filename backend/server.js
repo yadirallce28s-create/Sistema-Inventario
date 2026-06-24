@@ -59,6 +59,49 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// REGISTRO - PARA CREAR USUARIOS EN DOKY PETS
+app.post('/register', async (req, res) => {
+    const { nombre, email, password, rol } = req.body;
+
+    try {
+        // 1. Validar si el email ya existe para que no se duplique
+        const existeUsuario = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+        if (existeUsuario.rows.length > 0) {
+            return res.status(400).json({ status: "error", message: "El correo electrónico ya está registrado." });
+        }
+
+        // 2. Encriptar la contraseña
+        const saltos = 10;
+        const contrasenaEncriptada = await bcrypt.hash(password, saltos);
+
+        // 3. Insertar el nuevo usuario en la base de datos
+        const queryInsertar = `
+            INSERT INTO usuarios (nombre, email, contrasena, rol) 
+            VALUES ($1, $2, $3, $4) 
+            RETURNING id, nombre, email, rol;
+        `;
+        
+        // Si no mandan rol, por defecto el script de la BD le pondrá 'recepcionista'
+        const nuevoUsuario = await pool.query(queryInsertar, [
+            nombre, 
+            email, 
+            contrasenaEncriptada, 
+            rol || 'recepcionista'
+        ]);
+
+        // 4. Responder que el usuario se creo con exito o no
+        return res.status(201).json({
+            status: "success",
+            message: "¡Usuario registrado exitosamente en Doky Pets!",
+            user: nuevoUsuario.rows[0]
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar usuario" });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor Backend corriendo en http://localhost:${PORT}`);
 });
