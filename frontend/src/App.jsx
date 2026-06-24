@@ -6,6 +6,7 @@ import Inventario from "./pages/Inventario";
 import Servicios from "./pages/Servicios";
 import Publicidad from "./pages/Publicidad";
 import MainLayout from "./layout/MainLayout";
+import Clientes from "./pages/Clientes";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Login />} />
-
+        <Route path="/clientes" element={<Clientes />} />
         <Route
           path="/dashboard"
           element={

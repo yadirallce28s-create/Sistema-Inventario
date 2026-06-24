@@ -60,6 +60,9 @@ function Sidebar() {
         <li>
           <FaCog /> Configuración
         </li>
+        <li onClick={() => navigate("/clientes")}>
+          👥 Clientes
+        </li>
 
       </ul>
 
