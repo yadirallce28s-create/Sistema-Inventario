@@ -3,7 +3,7 @@ import "../css/clientes.css";
 function Clientes() {
 return ( <div className="clientes-container">
 
-```
+
   <div className="clientes-header">
     <h1>👥 Clientes</h1>
 
@@ -78,7 +78,7 @@ return ( <div className="clientes-container">
   </div>
 
 </div>
-```
+
 
 );
 }
