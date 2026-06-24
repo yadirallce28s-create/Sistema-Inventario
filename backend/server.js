@@ -366,6 +366,69 @@ app.get('/productos', async (req, res) => {
     }
 });
 
+// MÓDULO 5: VENTAS Y DETALLES DE VENTA
+
+// 1. REGISTRAR UNA NUEVA VENTA
+app.post('/ventas', async (req, res) => {
+    const { total, tipo_comprobante, id_cliente, id_usuario } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO ventas (total, tipo_comprobante, id_cliente, id_usuario)
+            VALUES ($1, $2, $3, $4)
+            RETURNING *;
+        `;
+        const nuevaVenta = await pool.query(query, [total, tipo_comprobante, id_cliente, id_usuario]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Venta registrada con éxito en la caja de Doky Pets!",
+            venta: nuevaVenta.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar la venta" });
+    }
+});
+
+// 2. AGREGAR LOS DETALLES DE UNA VENTA
+app.post('/detalles-venta', async (req, res) => {
+    const { cantidad, precio_unitario, id_venta, id_producto } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO detalles_venta (cantidad, precio_unitario, id_venta, id_producto)
+            VALUES ($1, $2, $3, $4)
+            RETURNING *;
+        `;
+        const nuevoDetalle = await pool.query(query, [cantidad, precio_unitario, id_venta, id_producto]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Producto enlazado al detalle de la venta correctamente!",
+            detalle: nuevoDetalle.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar el detalle de venta" });
+    }
+});
+
+// 3. OBTENER EL HISTORIAL GENERAL DE VENTAS
+app.get('/ventas', async (req, res) => {
+    try {
+        const resultado = await pool.query('SELECT * FROM ventas ORDER BY id DESC');
+        return res.json({
+            status: "success",
+            count: resultado.rows.length,
+            ventas: resultado.rows
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al obtener el historial de ventas" });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor Backend corriendo en http://localhost:${PORT}`);
 });
