@@ -14,7 +14,7 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Login />} />
-        <Route path="/clientes" element={<Clientes />} />
+  
         <Route
           path="/dashboard"
           element={
@@ -46,6 +46,14 @@ function App() {
           element={
             <MainLayout>
               <Publicidad />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/clientes"
+          element={
+            <MainLayout>
+              <Clientes />
             </MainLayout>
           }
         />

@@ -43,6 +43,7 @@ function Sidebar() {
           </Link>
         </li>
 
+
       </ul>
 
       <h3>GESTIÓN</h3>
@@ -50,7 +51,9 @@ function Sidebar() {
       <ul>
 
         <li>
-          <FaUserFriends /> Clientes
+          <Link to="/clientes">
+            <FaUserFriends /> Clientes
+          </Link>
         </li>
 
         <li>
@@ -59,9 +62,6 @@ function Sidebar() {
 
         <li>
           <FaCog /> Configuración
-        </li>
-        <li onClick={() => navigate("/clientes")}>
-          👥 Clientes
         </li>
 
       </ul>
