@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { FaPaw } from "react-icons/fa";
 import {
   FaHome,
   FaBox,
@@ -32,6 +32,18 @@ function Sidebar() {
         </li>
 
         <li>
+          <Link to="/alertas-stock">
+            📋 Alertas de Stock
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/proveedores">
+            🏢 Directorio de Proveedores
+          </Link>
+        </li>
+
+        <li>
           <Link to="/servicios">
             <GiDogBowl /> Servicios
           </Link>
@@ -40,6 +52,11 @@ function Sidebar() {
         <li>
           <Link to="/publicidad">
             <FaBullhorn /> Publicidad
+          </Link>
+        </li>
+        <li>
+          <Link to="/mascotas">
+            <FaPaw /> Mascotas
           </Link>
         </li>
 
@@ -57,7 +74,7 @@ function Sidebar() {
         </li>
 
         <li>
-          <FaCalendarAlt /> Citas
+          <Link to="/citas">📅 Citas</Link>
         </li>
 
         <li>

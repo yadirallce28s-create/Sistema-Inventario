@@ -1,4 +1,4 @@
-import "../css/clientes.css";
+import "../../css/clientes.css";
 
 function Clientes() {
 return ( <div className="clientes-container">

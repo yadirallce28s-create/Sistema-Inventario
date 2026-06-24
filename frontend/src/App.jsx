@@ -5,9 +5,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Inventario from "./pages/inventario/Inventario";
 import Proveedores from "./pages/inventario/Proveedores";
 import AlertasStock from "./pages/inventario/AlertasStock";
-import Servicios from "./pages/Servicio/Servicios";
-/*import Publicidad from "./pages/publicidad/Publicidad"*/;
-/*import Clientes from "./pages/cliente/Clientes";*/
+import Servicios from "./pages/servicio/Servicios";
+import Publicidad from "./pages/publicidad/Publicidad";
+import Clientes from "./pages/cliente/Clientes";
 /*import Mascotas from "./pages/mascota/Mascotas";*/
 import Citas from "./pages/cita/Citas";
 import MainLayout from "./layout/MainLayout";
@@ -79,14 +79,14 @@ function App() {
             </MainLayout>
           }
         />
-        <Route
+        {/*<Route
           path="/mascotas"
           element={
             <MainLayout>
               <Mascotas />
             </MainLayout>
           }
-        />
+        />*/}
         <Route
           path="/citas"
           element={
