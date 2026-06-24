@@ -225,3 +225,27 @@ tbody tr:hover{
     background:#22b8a6 !important;
     color:white;
 }
+.estado.agotado{
+    background:#ffe5e5;
+    color:#d63031;
+}
+.table-footer{
+    margin-top:15px;
+    color:#666;
+    font-size:14px;
+}
+.table-footer{
+    margin-top:15px;
+    color:#666;
+    font-size:14px;
+}
+
+.tabla td,
+.tabla th{
+    text-align:center;
+}
+
+.tabla td:first-child,
+.tabla th:first-child{
+    text-align:left;
+}

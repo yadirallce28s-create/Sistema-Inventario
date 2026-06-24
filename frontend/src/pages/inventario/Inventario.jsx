@@ -1,5 +1,5 @@
-import "../css/dashboard.css";
-import "../css/inventario.css";
+import "../../css/dashboard.css";
+import "../../css/inventario.css";
 import { useState } from "react";
 
 function Inventario() {
@@ -56,7 +56,8 @@ function Inventario() {
             <tr>
               <th>Producto</th>
               <th>Existencias</th>
-              <th>Stock</th>
+              <th>Estado</th>
+              <th>Categoría</th>
               <th>Precio</th>
               <th>Acciones</th>
             </tr>
@@ -74,6 +75,8 @@ function Inventario() {
                 </span>
               </td>
 
+              <td>Medicamentos</td>
+
               <td>S/ 35</td>
 
               <td>
@@ -85,6 +88,7 @@ function Inventario() {
 
             <tr>
               <td>Champú Canino</td>
+              <td>PetClean SAC</td>
               <td>5</td>
 
               <td>
@@ -92,8 +96,30 @@ function Inventario() {
                   Bajo Stock
                 </span>
               </td>
+              <td>Higiene</td>
 
               <td>S/ 25</td>
+
+              <td>
+                <button className="btn-ver">Ver</button>
+                <button className="btn-editar">Editar</button>
+                <button className="btn-eliminar">Eliminar</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Collar Antipulgas</td>
+              <td>VetMarket SAC</td>
+              <td>0</td>
+
+              <td>
+                <span className="estado agotado">
+                  Agotado
+                </span>
+              </td>
+
+              <td>Accesorios</td>
+
+              <td>S/ 45</td>
 
               <td>
                 <button className="btn-ver">Ver</button>
@@ -105,6 +131,9 @@ function Inventario() {
           </tbody>
 
         </table>
+        <div className="table-footer">
+          Mostrando 1 - 10 de 56 productos
+        </div>
         <div className="pagination">
           <button>{"<"}</button>
 
@@ -128,10 +157,20 @@ function Inventario() {
                 type="text"
                 placeholder="Nombre del producto"
               />
+              <select>
+                <option>Medicamentos</option>
+                <option>Vacunas</option>
+                <option>Higiene</option>
+                <option>Accesorios</option>
+              </select>
 
               <input
                 type="number"
                 placeholder="Stock"
+              />
+              <input
+                type="text"
+                placeholder="Proveedor"
               />
 
               <input
@@ -155,6 +194,7 @@ function Inventario() {
                 </button>
 
               </div>
+
 
             </div>
 
