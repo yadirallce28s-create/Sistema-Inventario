@@ -102,6 +102,99 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// CLIENTES Y MASCOTAS
+
+// 1. REGISTRAR UN NUEVO CLIENTE
+app.post('/clientes', async (req, res) => {
+    const { nombre, apellido, telefono, email, direccion } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO clientes (nombre, apellido, telefono, email, direccion)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *;
+        `;
+        
+        const nuevoCliente = await pool.query(query, [nombre, apellido, telefono, email, direccion]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Cliente registrado exitosamente en Doky Pets!",
+            cliente: nuevoCliente.rows[0]
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar el cliente" });
+    }
+});
+
+// 2. OBTENER TODOS LOS CLIENTES
+app.get('/clientes', async (req, res) => {
+    try {
+        const resultado = await pool.query('SELECT * FROM clientes ORDER BY id DESC');
+        
+        return res.json({
+            status: "success",
+            count: resultado.rows.length,
+            clientes: resultado.rows
+        });
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al obtener los clientes" });
+    }
+});
+// 3. REGISTRAR UNA NUEVA MASCOTA
+app.post('/mascotas', async (req, res) => {
+    const { nombre, especie, raza, fecha_nacimiento, sexo, peso, id_cliente } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO mascotas (nombre, especie, raza, fecha_nacimiento, sexo, peso, id_cliente)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING *;
+        `;
+        
+        const nuevaMascota = await pool.query(query, [
+            nombre, 
+            especie, 
+            raza, 
+            fecha_nacimiento, 
+            sexo, 
+            peso, 
+            id_cliente // Llave foránea que conecta con el dueño
+        ]);
+
+        return res.status(201).json({
+            status: "success",
+            message: "¡Mascota registrada exitosamente en Doky Pets!",
+            mascota: nuevaMascota.rows[0]
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al registrar la mascota" });
+    }
+});
+
+// 4. OBTENER TODAS LAS MASCOTAS
+app.get('/mascotas', async (req, res) => {
+    try {
+        const resultado = await pool.query('SELECT * FROM mascotas ORDER BY id DESC'); // Traemos todas las mascotas ordenadas por su ID
+        
+        return res.json({
+            status: "success",
+            count: resultado.rows.length,
+            mascotas: resultado.rows
+        });
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "error", message: "Error interno al obtener las mascotas" });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor Backend corriendo en http://localhost:${PORT}`);
 });
