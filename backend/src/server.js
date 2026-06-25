@@ -5,6 +5,7 @@ const pool = require("./config/db");
 const authRoutes = require("./routes/auth.routes");
 const clientesRoutes = require("./routes/clientes.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
+const mascotasRoutes = require("./routes/mascotas.routes");
 
 const app = express();
 const PORT = 5000;
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/clientes", clientesRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/mascotas", mascotasRoutes);
 
 // ruta de prueba
 app.get("/", (req, res) => {
