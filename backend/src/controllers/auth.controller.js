@@ -48,51 +48,54 @@ const register = async (req, res) => {
 
 // LOGIN
 const login = async (req, res) => {
+
   const { email, password } = req.body;
 
+  console.log("Email recibido:", email);
+  console.log("Password recibida:", password);
+
   try {
-    if (!email || !password) {
-      return res.status(400).json({
-        status: "error",
-        message: "Email y password son obligatorios",
-      });
-    }
 
     const usuario = await Usuario.findByEmail(email);
 
+    console.log("Usuario encontrado:", usuario);
+
     if (!usuario) {
+
       return res.status(401).json({
         status: "error",
-        message: "Credenciales incorrectas",
+        message: "Credenciales incorrectas"
       });
+
     }
 
-    const valid = await bcrypt.compare(password, usuario.contrasena);
+    const valid = await bcrypt.compare(
+      password,
+      usuario.contrasena
+    );
+
+    console.log("Resultado bcrypt:", valid);
 
     if (!valid) {
+
       return res.status(401).json({
         status: "error",
-        message: "Credenciales incorrectas",
+        message: "Credenciales incorrectas"
       });
+
     }
 
     res.json({
       status: "success",
-      message: "Login exitoso",
-      user: {
-        id: usuario.id,
-        nombre: usuario.nombre,
-        email: usuario.email,
-        rol: usuario.rol,
-      },
+      user: usuario
     });
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      status: "error",
-      message: "Error interno en login",
-    });
+
+    console.log(error);
+
   }
+
 };
 
 module.exports = {

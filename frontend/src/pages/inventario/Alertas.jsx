@@ -140,4 +140,4 @@ function Alertas() {
 
 }
 
-export default AlertasStock;
+export default Alertas;

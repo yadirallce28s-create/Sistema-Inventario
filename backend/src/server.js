@@ -14,6 +14,7 @@ const categoriasRoutes = require("./routes/categorias.routes");
 const proveedoresRoutes = require("./routes/proveedores.routes");
 const alertasRoutes = require("./routes/alertas.routes");
 const ventasRoutes = require("./routes/ventas.routes");
+const publicidadRoutes = require("./routes/publicidad.routes");
 
 const app = express();
 const PORT = 5000;
@@ -34,6 +35,9 @@ app.use("/api/categorias", categoriasRoutes);
 app.use("/api/proveedores", proveedoresRoutes);
 app.use("/api/alertas", alertasRoutes);
 app.use("/api/ventas", ventasRoutes);
+app.use("/api/publicidad", publicidadRoutes);
+
+
 
 // ruta de prueba
 app.get("/", (req, res) => {

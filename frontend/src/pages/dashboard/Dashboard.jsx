@@ -1,203 +1,163 @@
 import "../../css/dashboard.css";
-import {
-  FaUsers,
-  FaPaw,
-  FaCalendarAlt,
-  FaBoxOpen,
-  FaUserPlus,
-  FaPlusCircle,
-  FaBullhorn,
-  FaMoneyBillWave,
-  FaBell,
-  FaClipboardList,
-  FaArrowUp,
-} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import VentasChart from "../../components/charts/VentasChart";
+import ProductosChart from "../../components/charts/ProductosChart";
+import IngresosChart from "../../components/charts/IngresosChart";
+import TopProductosChart from "../../components/charts/TopProductosChart";
 
 function Dashboard() {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  const [dashboard, setDashboard] = useState({
+    clientes: 0,
+    mascotas: 0,
+    productos: 0,
+    ventas: 0,
+    stockBajo: 0,
+    ingresos: 0,
+    productosStock: [],
+    ultimosClientes: [],
+    graficoVentas: [],
+    graficoCategorias: [],
+    graficoIngresos: [],
+    topProductos: [],
+  });
+
+  useEffect(() => {
+    obtenerDashboard();
+  }, []);
+
+  const obtenerDashboard = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/dashboard");
+      const data = await response.json();
+      setDashboard(data.dashboard);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <div className="dashboard-container">
+    <div>
+
       {/* HEADER */}
-      <div className="dashboard-top">
-        <div>
-          <h1 className="dashboard-title">Panel de control</h1>
-          <p className="dashboard-subtitle">
-            Bienvenido{usuario?.nombre ? `, ${usuario.nombre}` : ""} a DokyPets
-          </p>
-        </div>
-
-        <button className="btn-inventario">
-          Ver inventario
-        </button>
+      <div className="dashboard-header">
+        <h1>📊 Panel de Control</h1>
+        <p>Bienvenido al sistema veterinario DokyPets</p>
       </div>
 
-      {/* RESUMEN */}
-      <div className="dashboard-resumen">
-        <span>Resumen del día</span>
-        <small>Miércoles 28 de mayo</small>
-      </div>
-
-      {/* CARDS PRINCIPALES */}
+      {/* CARDS */}
       <div className="dashboard-cards">
-        <div className="dashboard-card">
-          <div className="card-icon blue">
-            <FaPaw />
-          </div>
-          <div className="card-info">
-            <h3>Mascotas</h3>
-            <p>120</p>
-            <span>Registradas en el sistema</span>
-          </div>
+
+        <div className="card-dashboard">
+          <h3>👥 Clientes</h3>
+          <h1>{dashboard.clientes}</h1>
         </div>
 
-        <div className="dashboard-card">
-          <div className="card-icon green">
-            <FaUsers />
-          </div>
-          <div className="card-info">
-            <h3>Clientes</h3>
-            <p>85</p>
-            <span>Clientes activos</span>
-          </div>
+        <div className="card-dashboard">
+          <h3>🐾 Mascotas</h3>
+          <h1>{dashboard.mascotas}</h1>
         </div>
 
-        <div className="dashboard-card">
-          <div className="card-icon orange">
-            <FaCalendarAlt />
-          </div>
-          <div className="card-info">
-            <h3>Citas</h3>
-            <p>34</p>
-            <span>Programadas hoy</span>
-          </div>
+        <div className="card-dashboard">
+          <h3>📦 Productos</h3>
+          <h1>{dashboard.productos}</h1>
         </div>
 
-        <div className="dashboard-card">
-          <div className="card-icon purple">
-            <FaBoxOpen />
-          </div>
-          <div className="card-info">
-            <h3>Productos</h3>
-            <p>56</p>
-            <span>Disponibles en stock</span>
-          </div>
+        <div className="card-dashboard">
+          <h3>💰 Ventas</h3>
+          <h1>{dashboard.ventas}</h1>
         </div>
+
+        <div className="card-dashboard">
+          <h3>🚨 Stock Bajo</h3>
+          <h1>{dashboard.stockBajo}</h1>
+        </div>
+
+        <div className="card-dashboard">
+          <h3>💵 Ingresos</h3>
+          <h1>S/. {Number(dashboard.ingresos).toFixed(2)}</h1>
+        </div>
+
       </div>
 
-      {/* GRID INFERIOR */}
+      {/* GRID PRODUCTOS STOCK + CLIENTES */}
       <div className="dashboard-grid">
-        {/* ACCIONES RÁPIDAS */}
+
+        {/* PRODUCTOS STOCK BAJO */}
         <div className="dashboard-panel">
-          <h3>Acciones rápidas</h3>
+          <h2>📦 Productos con bajo stock</h2>
 
-          <div className="acciones-lista">
-            <button className="accion-btn cliente">
-              <FaUserPlus />
-              <span>Registrar cliente</span>
-            </button>
+          <table className="dashboard-table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
 
-            <button className="accion-btn producto">
-              <FaPlusCircle />
-              <span>Registrar producto</span>
-            </button>
-
-            <button className="accion-btn campania">
-              <FaBullhorn />
-              <span>Crear campaña</span>
-            </button>
-          </div>
+            <tbody>
+              {dashboard.productosStock.map((producto) => (
+                <tr key={producto.id}>
+                  <td>{producto.nombre}</td>
+                  <td>
+                    <span className="stock-bajo">{producto.stock}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* VENTAS DEL DÍA */}
+        {/* ÚLTIMOS CLIENTES */}
         <div className="dashboard-panel">
-          <h3>Ventas del día</h3>
+          <h2>👥 Últimos clientes</h2>
 
-          <div className="ventas-box">
-            <div className="ventas-icon">
-              <FaMoneyBillWave />
-            </div>
+          <table className="dashboard-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+              </tr>
+            </thead>
 
-            <div>
-              <h2>S/. 450.00</h2>
-              <p>
-                <FaArrowUp className="arrow-up" /> 5% vs ayer
-              </p>
-            </div>
-          </div>
+            <tbody>
+              {dashboard.ultimosClientes.map((cliente) => (
+                <tr key={cliente.id}>
+                  <td>{cliente.nombre} {cliente.apellido}</td>
+                  <td>{cliente.telefono}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* NOTIFICACIONES */}
-        <div className="dashboard-panel">
-          <h3>Notificaciones</h3>
-
-          <ul className="panel-list">
-            <li>
-              <FaBell className="list-icon red" />
-              Vacuna antirrábica agotándose
-            </li>
-            <li>
-              <FaBell className="list-icon orange-text" />
-              3 citas pendientes para hoy
-            </li>
-            <li>
-              <FaBell className="list-icon blue-text" />
-              Nueva campaña programada
-            </li>
-          </ul>
-        </div>
-
-        {/* MASCOTAS RECIENTES */}
-        <div className="dashboard-panel">
-          <h3>Mascotas recientes</h3>
-
-          <ul className="panel-list">
-            <li>
-              <FaPaw className="list-icon blue-text" />
-              Max - Labrador
-            </li>
-            <li>
-              <FaPaw className="list-icon blue-text" />
-              Luna - Poodle
-            </li>
-            <li>
-              <FaPaw className="list-icon blue-text" />
-              Rocky - Pastor Alemán
-            </li>
-          </ul>
-        </div>
-
-        {/* PEDIDOS PENDIENTES */}
-        <div className="dashboard-panel">
-          <h3>Pedidos pendientes</h3>
-
-          <ul className="panel-list">
-            <li>
-              <FaClipboardList className="list-icon purple-text" />
-              Vacunas x 20
-            </li>
-            <li>
-              <FaClipboardList className="list-icon purple-text" />
-              Alimento Premium x 10
-            </li>
-            <li>
-              <FaClipboardList className="list-icon purple-text" />
-              Medicamentos x 5
-            </li>
-          </ul>
-        </div>
-
-        {/* PANEL MARCA */}
-        <div className="dashboard-panel dashboard-brand">
-          <div className="brand-badge">DokyPets</div>
-          <h3>Gestión inteligente para clínicas veterinarias</h3>
-          <p>
-            Administra clientes, mascotas, citas, inventario y campañas desde un
-            solo lugar.
-          </p>
-          <button className="btn-brand">Ver más</button>
-        </div>
       </div>
+
+      {/* GRÁFICOS */}
+      <div className="dashboard-charts">
+
+        <div className="chart-card">
+          <h2>📈 Ventas Mensuales</h2>
+          <VentasChart datos={dashboard.graficoVentas || []} />
+        </div>
+
+        <div className="chart-card">
+          <h2>📦 Productos por Categoría</h2>
+          <ProductosChart datos={dashboard.graficoCategorias || []} />
+        </div>
+
+        <div className="chart-card">
+          <h2>💰 Ingresos Mensuales</h2>
+          <IngresosChart datos={dashboard.graficoIngresos || []} />
+        </div>
+
+        <div className="chart-card">
+          <h2>🏆 Productos Más Vendidos</h2>
+          <TopProductosChart datos={dashboard.topProductos || []} />
+        </div>
+
+      </div>
+
     </div>
   );
 }

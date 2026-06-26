@@ -1,26 +1,208 @@
+/*=========================================
+        HEADER
+=========================================*/
+
 .publicidad-header{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
-    margin-bottom:20px;
+
+    margin-bottom:25px;
+
 }
 
-.btn-nueva-campania{
-    background:#22b8a6;
+.publicidad-header h1{
+
+    color:#0f172a;
+
+    font-size:32px;
+
+}
+
+.publicidad-header p{
+
+    color:#64748b;
+
+}
+
+/*=========================================
+        BOTÓN
+=========================================*/
+
+.btn-nuevo{
+
+    background:#14b8a6;
+
     color:white;
+
     border:none;
-    padding:10px 18px;
-    border-radius:8px;
+
+    padding:12px 24px;
+
+    border-radius:10px;
+
     cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    transition:.3s;
+
 }
 
-.publicidad-stats{
-    display:flex;
-    gap:20px;
+.btn-nuevo:hover{
+
+    background:#0f766e;
+
+}
+
+/*=========================================
+        BUSCADOR
+=========================================*/
+
+.buscador{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    margin-bottom:25px;
+
+    font-size:15px;
+
+}
+
+/*=========================================
+        PANEL
+=========================================*/
+
+.panel{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+
+}
+
+/*=========================================
+        TABLA
+=========================================*/
+
+.tabla{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.tabla th{
+
+    background:#14b8a6;
+
+    color:white;
+
+    padding:14px;
+
+    text-align:left;
+
+}
+
+.tabla td{
+
+    padding:14px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.tabla tr:hover{
+
+    background:#f8fafc;
+
+}
+
+/*=========================================
+        BOTÓN EDITAR
+=========================================*/
+
+.btn-editar{
+
+    background:#0ea5e9;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.btn-editar:hover{
+
+    background:#0369a1;
+
+}
+.btn-eliminar{
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 14px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin-left:10px;
+
+    transition:.3s;
+
+}
+
+.btn-eliminar:hover{
+
+    background:#dc2626;
+
+}
+/* =========================
+   ESTADO VACÍO
+========================= */
+
+.empty-state{
+    background:white;
+    padding:50px;
+    text-align:center;
+    border-radius:18px;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+    margin-top:20px;
+}
+
+.empty-state h2{
+    color:#14b8a6;
+    margin-bottom:10px;
+}
+
+.empty-state p{
+    color:#64748b;
     margin-bottom:20px;
-}
-
-.activa{
-    background:#d4f8df;
-    color:#2e7d32;
 }
