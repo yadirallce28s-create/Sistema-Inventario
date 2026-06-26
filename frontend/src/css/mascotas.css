@@ -1,0 +1,143 @@
+.mascotas-container {
+  padding: 20px;
+}
+
+.mascotas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.mascotas-header h1 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.btn-nueva {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-nueva:hover {
+  background: #1d4ed8;
+}
+
+.mascotas-table {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.mascotas-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mascotas-table th {
+  background: #f8fafc;
+  color: #334155;
+  text-align: left;
+  padding: 14px;
+}
+
+.mascotas-table td {
+  padding: 14px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.mascotas-table tr:hover {
+  background: #f8fafc;
+}
+.form-mascota{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+
+.form-mascota input,
+.form-mascota select{
+  padding:10px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+}
+
+.form-mascota button{
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:10px 18px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.45);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+.modal-mascota {
+  background: white;
+  width: 500px;
+  max-width: 95%;
+  padding: 25px;
+  border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+}
+
+.modal-mascota h2 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.modal-mascota input,
+.modal-mascota select {
+  padding: 12px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-guardar {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}

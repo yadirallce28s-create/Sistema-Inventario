@@ -6,6 +6,8 @@ const authRoutes = require("./routes/auth.routes");
 const clientesRoutes = require("./routes/clientes.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
 const mascotasRoutes = require("./routes/mascotas.routes");
+const citasRoutes = require("./routes/citas.routes");
+const serviciosRoutes = require("./routes/servicios.routes");
 
 const app = express();
 const PORT = 5000;
@@ -18,6 +20,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/clientes", clientesRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mascotas", mascotasRoutes);
+app.use("/api/citas", citasRoutes);
+app.use("/api/servicios", serviciosRoutes);
 
 // ruta de prueba
 app.get("/", (req, res) => {

@@ -1,27 +1,21 @@
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import "../css/layout.css";
 
-const MainLayout = ({ children }) => {
+function MainLayout({ children }) {
   return (
-    <div>
-      <Navbar />
+    <div className="app-layout">
+      <Sidebar />
 
-      <div style={{ display: "flex" }}>
-        <Sidebar />
+      <div className="main-content">
+        <Navbar />
 
-        <main
-          style={{
-            flex: 1,
-            padding: "20px",
-            background: "#f4f6f9",
-            minHeight: "100vh",
-          }}
-        >
+        <div className="page-content">
           {children}
-        </main>
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default MainLayout;

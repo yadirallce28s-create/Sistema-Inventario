@@ -1,88 +1,94 @@
-import { Link } from "react-router-dom";
-import { FaPaw } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 import {
-  FaHome,
-  FaBox,
-  FaBullhorn,
-  FaUserFriends,
+  FaTachometerAlt,
+  FaUsers,
   FaCalendarAlt,
-  FaCog
+  FaBoxOpen,
+  FaExclamationTriangle,
+  FaTruck,
+  FaStethoscope,
+  FaBullhorn,
+  FaPaw,
+  FaCog,
 } from "react-icons/fa";
 
-import { GiDogBowl } from "react-icons/gi";
-
 function Sidebar() {
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
   return (
     <aside className="sidebar">
+      <div className="sidebar-logo">
+        <h1>DokyPets</h1>
+        <p>Sistema Veterinario</p>
+      </div>
 
-      <h3>PRINCIPAL</h3>
+      <div className="sidebar-user">
+        <div className="sidebar-user-avatar">
+          {usuario?.nombre ? usuario.nombre.charAt(0).toUpperCase() : "U"}
+        </div>
+        <div>
+          <strong>{usuario?.nombre || "Usuario"}</strong>
+          <span>{usuario?.rol || "Administrador"}</span>
+        </div>
+      </div>
 
-      <ul>
+      <div className="sidebar-section">
+        <span className="sidebar-title">PRINCIPAL</span>
 
-        <li>
-          <Link to="/dashboard">
-            <FaHome /> Panel de control
-          </Link>
-        </li>
+        <NavLink to="/dashboard" className="sidebar-link">
+          <FaTachometerAlt />
+          <span>Panel de control</span>
+        </NavLink>
 
-        <li>
-          <Link to="/inventario">
-            <FaBox /> Inventario
-          </Link>
-        </li>
+        <NavLink to="/inventario" className="sidebar-link">
+          <FaBoxOpen />
+          <span>Inventario</span>
+        </NavLink>
 
-        <li>
-          <Link to="/alertas-stock">
-            📋 Alertas de Stock
-          </Link>
-        </li>
+        <NavLink to="/alertas-stock" className="sidebar-link">
+          <FaExclamationTriangle />
+          <span>Alertas de stock</span>
+        </NavLink>
 
-        <li>
-          <Link to="/proveedores">
-            🏢 Directorio de Proveedores
-          </Link>
-        </li>
+        <NavLink to="/proveedores" className="sidebar-link">
+          <FaTruck />
+          <span>Proveedores</span>
+        </NavLink>
 
-        <li>
-          <Link to="/servicios">
-            <GiDogBowl /> Servicios
-          </Link>
-        </li>
+        <NavLink to="/servicios" className="sidebar-link">
+          <FaStethoscope />
+          <span>Servicios</span>
+        </NavLink>
 
-        <li>
-          <Link to="/publicidad">
-            <FaBullhorn /> Publicidad
-          </Link>
-        </li>
-        <li>
-          <Link to="/mascotas">
-            <FaPaw /> Mascotas
-          </Link>
-        </li>
+        <NavLink to="/publicidad" className="sidebar-link">
+          <FaBullhorn />
+          <span>Publicidad</span>
+        </NavLink>
 
+        <NavLink to="/mascotas" className="sidebar-link">
+          <FaPaw />
+          <span>Mascotas</span>
+        </NavLink>
+      </div>
 
-      </ul>
+      <div className="sidebar-section">
+        <span className="sidebar-title">GESTIÓN</span>
 
-      <h3>GESTIÓN</h3>
+        <NavLink to="/clientes" className="sidebar-link">
+          <FaUsers />
+          <span>Clientes</span>
+        </NavLink>
 
-      <ul>
+        <NavLink to="/citas" className="sidebar-link">
+          <FaCalendarAlt />
+          <span>Citas</span>
+        </NavLink>
 
-        <li>
-          <Link to="/clientes">
-            <FaUserFriends /> Clientes
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/citas">📅 Citas</Link>
-        </li>
-
-        <li>
-          <FaCog /> Configuración
-        </li>
-
-      </ul>
-
+        <NavLink to="/configuracion" className="sidebar-link">
+          <FaCog />
+          <span>Configuración</span>
+        </NavLink>
+      </div>
     </aside>
   );
 }

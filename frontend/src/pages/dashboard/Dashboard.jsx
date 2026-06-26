@@ -1,113 +1,204 @@
 import "../../css/dashboard.css";
-
+import {
+  FaUsers,
+  FaPaw,
+  FaCalendarAlt,
+  FaBoxOpen,
+  FaUserPlus,
+  FaPlusCircle,
+  FaBullhorn,
+  FaMoneyBillWave,
+  FaBell,
+  FaClipboardList,
+  FaArrowUp,
+} from "react-icons/fa";
 
 function Dashboard() {
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
   return (
+    <div className="dashboard-container">
+      {/* HEADER */}
+      <div className="dashboard-top">
+        <div>
+          <h1 className="dashboard-title">Panel de control</h1>
+          <p className="dashboard-subtitle">
+            Bienvenido{usuario?.nombre ? `, ${usuario.nombre}` : ""} a DokyPets
+          </p>
+        </div>
 
-    <>
-      <h1>Panel de control</h1>
-      <div className="resumen">
-        <span>
-          resumen del dia - miercoles 28 de mayo
-        </span>
-        <button>
-          ver inventrario
+        <button className="btn-inventario">
+          Ver inventario
         </button>
-
       </div>
 
-      <div className="cards">
-
-        <div className="card">
-          <h3>🐾 Mascotas</h3>
-          <p>120</p>
-        </div>
-
-        <div className="card">
-          <h3>👥 Clientes</h3>
-          <p>85</p>
-        </div>
-
-        <div className="card">
-          <h3>📅 Citas</h3>
-          <p>34</p>
-        </div>
-
-        <div className="card">
-          <h3>📦 Productos</h3>
-          <p>56</p>
-        </div>
-
+      {/* RESUMEN */}
+      <div className="dashboard-resumen">
+        <span>Resumen del día</span>
+        <small>Miércoles 28 de mayo</small>
       </div>
+
+      {/* CARDS PRINCIPALES */}
+      <div className="dashboard-cards">
+        <div className="dashboard-card">
+          <div className="card-icon blue">
+            <FaPaw />
+          </div>
+          <div className="card-info">
+            <h3>Mascotas</h3>
+            <p>120</p>
+            <span>Registradas en el sistema</span>
+          </div>
+        </div>
+
+        <div className="dashboard-card">
+          <div className="card-icon green">
+            <FaUsers />
+          </div>
+          <div className="card-info">
+            <h3>Clientes</h3>
+            <p>85</p>
+            <span>Clientes activos</span>
+          </div>
+        </div>
+
+        <div className="dashboard-card">
+          <div className="card-icon orange">
+            <FaCalendarAlt />
+          </div>
+          <div className="card-info">
+            <h3>Citas</h3>
+            <p>34</p>
+            <span>Programadas hoy</span>
+          </div>
+        </div>
+
+        <div className="dashboard-card">
+          <div className="card-icon purple">
+            <FaBoxOpen />
+          </div>
+          <div className="card-info">
+            <h3>Productos</h3>
+            <p>56</p>
+            <span>Disponibles en stock</span>
+          </div>
+        </div>
+      </div>
+
+      {/* GRID INFERIOR */}
       <div className="dashboard-grid">
-
-        <div className="panel">
+        {/* ACCIONES RÁPIDAS */}
+        <div className="dashboard-panel">
           <h3>Acciones rápidas</h3>
 
-          <button className="btn-cliente">
-            Registrar cliente
-          </button>
+          <div className="acciones-lista">
+            <button className="accion-btn cliente">
+              <FaUserPlus />
+              <span>Registrar cliente</span>
+            </button>
 
-          <button className="btn-producto">
-            Registrar producto
-          </button>
+            <button className="accion-btn producto">
+              <FaPlusCircle />
+              <span>Registrar producto</span>
+            </button>
 
-          <button className="btn-campania">
-            Crear campaña
-          </button>
+            <button className="accion-btn campania">
+              <FaBullhorn />
+              <span>Crear campaña</span>
+            </button>
+          </div>
         </div>
 
-        <div className="panel">
+        {/* VENTAS DEL DÍA */}
+        <div className="dashboard-panel">
           <h3>Ventas del día</h3>
 
-          <h2>S/. 450.00</h2>
+          <div className="ventas-box">
+            <div className="ventas-icon">
+              <FaMoneyBillWave />
+            </div>
 
-          <span>↑ 5% vs ayer</span>
+            <div>
+              <h2>S/. 450.00</h2>
+              <p>
+                <FaArrowUp className="arrow-up" /> 5% vs ayer
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="panel">
+        {/* NOTIFICACIONES */}
+        <div className="dashboard-panel">
           <h3>Notificaciones</h3>
 
-          <ul>
-            <li>Vacuna antirrábica agotándose</li>
-            <li>3 citas pendientes para hoy</li>
-            <li>Nueva campaña programada</li>
-          </ul>
-        </div>
-        <div className="panel">
-          <h3>🐶 Mascotas recientes</h3>
-
-          <ul>
-            <li>Max - Labrador</li>
-            <li>Luna - Poodle</li>
-            <li>Rocky - Pastor Alemán</li>
-          </ul>
-        </div>
-
-        <div className="panel">
-          <h3>📦 Pedidos pendientes</h3>
-
-          <ul>
-            <li>Vacunas x 20</li>
-            <li>Alimento Premium x 10</li>
-            <li>Medicamentos x 5</li>
+          <ul className="panel-list">
+            <li>
+              <FaBell className="list-icon red" />
+              Vacuna antirrábica agotándose
+            </li>
+            <li>
+              <FaBell className="list-icon orange-text" />
+              3 citas pendientes para hoy
+            </li>
+            <li>
+              <FaBell className="list-icon blue-text" />
+              Nueva campaña programada
+            </li>
           </ul>
         </div>
 
-        <div className="panel mascota-panel">
-          <h3>DokyPets</h3>
+        {/* MASCOTAS RECIENTES */}
+        <div className="dashboard-panel">
+          <h3>Mascotas recientes</h3>
 
+          <ul className="panel-list">
+            <li>
+              <FaPaw className="list-icon blue-text" />
+              Max - Labrador
+            </li>
+            <li>
+              <FaPaw className="list-icon blue-text" />
+              Luna - Poodle
+            </li>
+            <li>
+              <FaPaw className="list-icon blue-text" />
+              Rocky - Pastor Alemán
+            </li>
+          </ul>
+        </div>
+
+        {/* PEDIDOS PENDIENTES */}
+        <div className="dashboard-panel">
+          <h3>Pedidos pendientes</h3>
+
+          <ul className="panel-list">
+            <li>
+              <FaClipboardList className="list-icon purple-text" />
+              Vacunas x 20
+            </li>
+            <li>
+              <FaClipboardList className="list-icon purple-text" />
+              Alimento Premium x 10
+            </li>
+            <li>
+              <FaClipboardList className="list-icon purple-text" />
+              Medicamentos x 5
+            </li>
+          </ul>
+        </div>
+
+        {/* PANEL MARCA */}
+        <div className="dashboard-panel dashboard-brand">
+          <div className="brand-badge">DokyPets</div>
+          <h3>Gestión inteligente para clínicas veterinarias</h3>
           <p>
-            Gestión inteligente para clínicas veterinarias
+            Administra clientes, mascotas, citas, inventario y campañas desde un
+            solo lugar.
           </p>
-
-          <button>
-            Ver más
-          </button>
+          <button className="btn-brand">Ver más</button>
         </div>
-
       </div>
-    </>
+    </div>
   );
 }
 
