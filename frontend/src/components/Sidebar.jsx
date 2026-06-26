@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import { FaCashRegister } from "react-icons/fa";
 
 import {
   FaTachometerAlt,
@@ -130,6 +131,10 @@ function Sidebar() {
         <NavLink to="/citas" className="sidebar-link">
           <FaCalendarAlt />
           <span>Citas</span>
+        </NavLink>
+        <NavLink to="/ventas" className="sidebar-link">
+          <FaCashRegister />
+          <span>Ventas</span>
         </NavLink>
 
         <NavLink to="/configuracion" className="sidebar-link">

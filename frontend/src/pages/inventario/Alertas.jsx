@@ -1,24 +1,74 @@
 import "../../css/inventario.css";
+import { useEffect, useState } from "react";
 
-function AlertasStock() {
+function Alertas() {
+
+    const [alertas, setAlertas] = useState([]);
+    const [resumen, setResumen] = useState({});
+
+    useEffect(() => {
+        obtenerAlertas();
+    }, []);
+
+    const obtenerAlertas = async () => {
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/api/alertas"
+            );
+
+            const data = await response.json();
+
+            setAlertas(data.alertas);
+            setResumen(data.resumen);
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    };
+
     return (
+
         <div>
+
             <h1>🚨 Alertas de Stock</h1>
+
             <div className="inventory-stats">
 
                 <div className="stat-card">
+
+                    <h4>📦 Productos</h4>
+
+                    <p>{resumen.total_productos || 0}</p>
+
+                </div>
+
+                <div className="stat-card">
+
                     <h4>🚨 Alertas</h4>
-                    <p>3</p>
+
+                    <p>{resumen.total_alertas || 0}</p>
+
                 </div>
 
                 <div className="stat-card">
+
                     <h4>🟡 Bajo Stock</h4>
-                    <p>2</p>
+
+                    <p>{resumen.bajo_stock || 0}</p>
+
                 </div>
 
                 <div className="stat-card">
+
                     <h4>🔴 Agotados</h4>
-                    <p>1</p>
+
+                    <p>{resumen.agotados || 0}</p>
+
                 </div>
 
             </div>
@@ -28,56 +78,66 @@ function AlertasStock() {
                 <table className="tabla">
 
                     <thead>
+
                         <tr>
+
+                            <th>Código</th>
                             <th>Producto</th>
                             <th>Categoría</th>
-                            <th>Stock Actual</th>
+                            <th>Stock</th>
+                            <th>Stock mínimo</th>
                             <th>Estado</th>
+
                         </tr>
+
                     </thead>
 
                     <tbody>
 
-                        <tr>
-                            <td>Champú Canino</td>
-                            <td>Higiene</td>
-                            <td>5</td>
-                            <td>
-                                <span className="estado bajo">
-                                    Bajo Stock
-                                </span>
-                            </td>
-                        </tr>
+                        {alertas.map((producto) => (
 
-                        <tr>
-                            <td>Vacuna Triple</td>
-                            <td>Vacunas</td>
-                            <td>2</td>
-                            <td>
-                                <span className="estado bajo">
-                                    Bajo Stock
-                                </span>
-                            </td>
-                        </tr>
+                            <tr key={producto.id}>
 
-                        <tr>
-                            <td>Antipulgas Premium</td>
-                            <td>Medicamentos</td>
-                            <td>0</td>
-                            <td>
-                                <span className="estado agotado">
-                                    Agotado
-                                </span>
-                            </td>
-                        </tr>
+                                <td>{producto.codigo}</td>
+
+                                <td>{producto.nombre}</td>
+
+                                <td>{producto.categoria}</td>
+
+                                <td>{producto.stock}</td>
+
+                                <td>{producto.stock_minimo}</td>
+
+                                <td>
+
+                                    <span
+                                        className={`estado ${
+                                            producto.estado === "Agotado"
+                                                ? "agotado"
+                                                : "bajo"
+                                        }`}
+                                    >
+
+                                        {producto.estado}
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        ))}
 
                     </tbody>
 
                 </table>
 
             </div>
+
         </div>
+
     );
+
 }
 
 export default AlertasStock;

@@ -8,6 +8,7 @@ import Publicidad from "./pages/publicidad/Publicidad";
 import Clientes from "./pages/cliente/Clientes";
 import Mascotas from "./pages/mascota/Mascotas";
 import Citas from "./pages/cita/Citas";
+import Ventas from "./pages/ventas/Ventas";
 
 import MainLayout from "./layout/MainLayout";
 import InventarioLayout from "./layout/InventarioLayout";
@@ -79,6 +80,14 @@ function App() {
           element={
             <MainLayout>
               <Citas />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/ventas"
+          element={
+            <MainLayout>
+              <Ventas />
             </MainLayout>
           }
         />

@@ -11,6 +11,9 @@ const serviciosRoutes = require("./routes/servicios.routes");
 const registrosRoutes = require("./routes/registros.routes");
 const productosRoutes = require("./routes/productos.routes");
 const categoriasRoutes = require("./routes/categorias.routes");
+const proveedoresRoutes = require("./routes/proveedores.routes");
+const alertasRoutes = require("./routes/alertas.routes");
+const ventasRoutes = require("./routes/ventas.routes");
 
 const app = express();
 const PORT = 5000;
@@ -28,6 +31,9 @@ app.use("/api/servicios", serviciosRoutes);
 app.use("/api/registros", registrosRoutes);
 app.use("/api/productos", productosRoutes);
 app.use("/api/categorias", categoriasRoutes);
+app.use("/api/proveedores", proveedoresRoutes);
+app.use("/api/alertas", alertasRoutes);
+app.use("/api/ventas", ventasRoutes);
 
 // ruta de prueba
 app.get("/", (req, res) => {
