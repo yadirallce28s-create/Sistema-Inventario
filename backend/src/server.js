@@ -8,6 +8,9 @@ const dashboardRoutes = require("./routes/dashboard.routes");
 const mascotasRoutes = require("./routes/mascotas.routes");
 const citasRoutes = require("./routes/citas.routes");
 const serviciosRoutes = require("./routes/servicios.routes");
+const registrosRoutes = require("./routes/registros.routes");
+const productosRoutes = require("./routes/productos.routes");
+const categoriasRoutes = require("./routes/categorias.routes");
 
 const app = express();
 const PORT = 5000;
@@ -22,6 +25,9 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mascotas", mascotasRoutes);
 app.use("/api/citas", citasRoutes);
 app.use("/api/servicios", serviciosRoutes);
+app.use("/api/registros", registrosRoutes);
+app.use("/api/productos", productosRoutes);
+app.use("/api/categorias", categoriasRoutes);
 
 // ruta de prueba
 app.get("/", (req, res) => {

@@ -247,3 +247,91 @@ a {
     flex-wrap: wrap;
   }
 }
+/*=========================
+    SIDEBAR DROPDOWN
+=========================*/
+
+.sidebar-dropdown{
+
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:14px 16px;
+
+    background:none;
+    border:none;
+
+    color:white;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    transition:.3s;
+
+    font-size:15px;
+}
+
+.sidebar-dropdown:hover{
+
+    background:#2b6cf6;
+
+}
+
+.sidebar-dropdown-title{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+}
+
+.sidebar-submenu{
+
+    margin-left:28px;
+
+    display:flex;
+    flex-direction:column;
+
+    margin-top:5px;
+    margin-bottom:8px;
+
+}
+
+.sidebar-sublink{
+
+    color:#cbd5e1;
+
+    text-decoration:none;
+
+    padding:10px 12px;
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+    border-radius:8px;
+
+    transition:.25s;
+
+}
+
+.sidebar-sublink:hover{
+
+    background:#263143;
+
+    color:white;
+
+}
+
+.sidebar-sublink.active{
+
+    background:#2563eb;
+
+    color:white;
+
+}

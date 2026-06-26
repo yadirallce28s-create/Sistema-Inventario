@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
+
 import {
   FaTachometerAlt,
   FaUsers,
@@ -10,11 +12,14 @@ import {
   FaBullhorn,
   FaPaw,
   FaCog,
+  FaChevronDown,
+  FaChevronRight,
+  FaCube,
 } from "react-icons/fa";
 
 function Sidebar() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-
+  const [inventarioOpen, setInventarioOpen] = useState(false);
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
@@ -40,21 +45,64 @@ function Sidebar() {
           <span>Panel de control</span>
         </NavLink>
 
-        <NavLink to="/inventario" className="sidebar-link">
-          <FaBoxOpen />
-          <span>Inventario</span>
-        </NavLink>
+        <div className="sidebar-menu">
 
-        <NavLink to="/alertas-stock" className="sidebar-link">
-          <FaExclamationTriangle />
-          <span>Alertas de stock</span>
-        </NavLink>
+          <button
+            className="sidebar-dropdown"
+            onClick={() => setInventarioOpen(!inventarioOpen)}
+          >
 
-        <NavLink to="/proveedores" className="sidebar-link">
-          <FaTruck />
-          <span>Proveedores</span>
-        </NavLink>
+            <div className="sidebar-dropdown-title">
 
+              <FaBoxOpen />
+
+              <span>Inventario</span>
+
+            </div>
+
+            {
+              inventarioOpen
+                ? <FaChevronDown />
+                : <FaChevronRight />
+            }
+
+          </button>
+
+          {
+            inventarioOpen && (
+
+              <div className="sidebar-submenu">
+
+                <NavLink
+                  to="/inventario/productos"
+                  className="sidebar-sublink"
+                >
+                  <FaCube />
+                  Productos
+                </NavLink>
+
+                <NavLink
+                  to="/inventario/alertas"
+                  className="sidebar-sublink"
+                >
+                  <FaExclamationTriangle />
+                  Alertas
+                </NavLink>
+
+                <NavLink
+                  to="/inventario/proveedores"
+                  className="sidebar-sublink"
+                >
+                  <FaTruck />
+                  Proveedores
+                </NavLink>
+
+              </div>
+
+            )
+          }
+
+        </div>
         <NavLink to="/servicios" className="sidebar-link">
           <FaStethoscope />
           <span>Servicios</span>

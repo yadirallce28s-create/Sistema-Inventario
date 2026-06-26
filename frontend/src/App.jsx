@@ -1,21 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
+
 import Dashboard from "./pages/dashboard/Dashboard";
-import Inventario from "./pages/inventario/Inventario";
-import Proveedores from "./pages/inventario/Proveedores";
-import AlertasStock from "./pages/inventario/AlertasStock";
 import Servicios from "./pages/servicio/Servicios";
 import Publicidad from "./pages/publicidad/Publicidad";
 import Clientes from "./pages/cliente/Clientes";
 import Mascotas from "./pages/mascota/Mascotas";
 import Citas from "./pages/cita/Citas";
-import MainLayout from "./layout/MainLayout";
 
+import MainLayout from "./layout/MainLayout";
+import InventarioLayout from "./layout/InventarioLayout";
 
 function App() {
   return (
     <BrowserRouter>
+
       <Routes>
 
         <Route path="/" element={<Login />} />
@@ -28,11 +28,12 @@ function App() {
             </MainLayout>
           }
         />
+
         <Route
-          path="/inventario"
+          path="/inventario/*"
           element={
             <MainLayout>
-              <Inventario />
+              <InventarioLayout />
             </MainLayout>
           }
         />
@@ -54,6 +55,7 @@ function App() {
             </MainLayout>
           }
         />
+
         <Route
           path="/clientes"
           element={
@@ -62,23 +64,7 @@ function App() {
             </MainLayout>
           }
         />
-        <Route
-          path="/alertas-stock"
-          element={
-            <MainLayout>
-              <AlertasStock />
-            </MainLayout>
-          }
-        />
 
-        <Route
-          path="/proveedores"
-          element={
-            <MainLayout>
-              <Proveedores />
-            </MainLayout>
-          }
-        />
         <Route
           path="/mascotas"
           element={
@@ -87,6 +73,7 @@ function App() {
             </MainLayout>
           }
         />
+
         <Route
           path="/citas"
           element={
@@ -97,6 +84,7 @@ function App() {
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }
