@@ -1,5 +1,7 @@
 import "../../css/inventario.css";
 import { useEffect, useState } from "react";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faCube } from "@fortawesome/free-solid-svg-icons";
 
 function Productos() {
 
@@ -102,7 +104,7 @@ function Productos() {
 
                 <div>
 
-                    <h1>📦 Inventario de Productos</h1>
+                    <h1><FontAwesomeIcon icon={faCube} color="#429a85"/> Inventario de Productos</h1>
 
                     <p className="subtitulo">
                         Gestión del inventario veterinario

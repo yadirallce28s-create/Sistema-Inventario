@@ -5,7 +5,6 @@ const listarCategorias = async (req, res) => {
     try {
 
         const categorias = await Categoria.obtenerCategorias();
-
         res.json({
             status: "success",
             categorias

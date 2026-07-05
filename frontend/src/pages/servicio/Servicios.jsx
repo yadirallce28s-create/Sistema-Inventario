@@ -1,6 +1,7 @@
 import "../../css/servicio.css";
 import { useState, useEffect } from "react";
-
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faConciergeBell } from "@fortawesome/free-solid-svg-icons";
 
 function Servicios() {
 
@@ -51,7 +52,7 @@ function Servicios() {
     <div>
 
       <div className="servicios-header">
-        <h1>Gestión de servicios</h1>
+        <h1> <FontAwesomeIcon icon={faConciergeBell} color="#429a85"/> Gestión de servicios</h1>
 
         <button
           className="btn-nuevo"

@@ -1,120 +1,84 @@
 import "../../css/citas.css";
-import { useEffect, useState } from "react";
+
+import useCitas from "./useCitas";
+
+import ModalCliente from "./ModalCliente";
+import ModalMascota from "./ModalMascota";
+import ModalCita from "./ModalCita";
+
+import TablaPendientes from "./TablaPendientes";
+import TablaHistorial from "./TablaHistorial";
+import ModalEliminar from "./ModalEliminar";
 
 function Citas() {
 
-  const [tabActiva, setTabActiva] = useState("pendientes");
+  const {
 
-  const [citas, setCitas] = useState([]);
-  const [mascotas, setMascotas] = useState([]);
+    // Listas
+    clientes,
+    mascotasCliente,
 
-  const [mostrarModal, setMostrarModal] = useState(false);
+    // Tabs
+    tabActiva,
+    setTabActiva,
 
-  const [fecha, setFecha] = useState("");
-  const [motivo, setMotivo] = useState("");
-  const [idMascota, setIdMascota] = useState("");
+    // Modales
+    mostrarModal,
+    setMostrarModal,
 
-  useEffect(() => {
-    obtenerCitas();
-    obtenerMascotas();
-  }, []);
+    mostrarModalCliente,
+    setMostrarModalCliente,
 
-  const obtenerCitas = async () => {
-    try {
+    mostrarModalMascota,
+    setMostrarModalMascota,
 
-      const response = await fetch(
-        "http://localhost:5000/api/citas"
-      );
+    mostrarModalEliminar,
+    setMostrarModalEliminar,
 
-      const data = await response.json();
+    // Selección
+    idCliente,
 
-      setCitas(data.citas);
+    idMascota,
+    setIdMascota,
 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    // Formulario
+    fecha,
+    setFecha,
 
-  const obtenerMascotas = async () => {
-    try {
+    motivo,
+    setMotivo,
 
-      const response = await fetch(
-        "http://localhost:5000/api/mascotas"
-      );
+    nuevoCliente,
+    setNuevoCliente,
 
-      const data = await response.json();
+    nuevaMascota,
+    setNuevaMascota,
 
-      setMascotas(data.mascotas);
+    // Funciones
+    guardarCita,
+    guardarCliente,
+    guardarMascota,
 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    cargarMascotasCliente,
 
-  const guardarCita = async () => {
+    // Tablas
+    citasPendientes,
+    historial,
 
-    try {
-
-      await fetch(
-        "http://localhost:5000/api/citas",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fecha,
-            motivo,
-            id_mascota: idMascota,
-          }),
-        }
-      );
-
-      setFecha("");
-      setMotivo("");
-      setIdMascota("");
-
-      setMostrarModal(false);
-
-      obtenerCitas();
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const citasPendientes = citas.filter(
-    (cita) => cita.estado === "pendiente"
-  );
-
-  const historial = citas.filter(
-    (cita) => cita.estado !== "pendiente"
-  );
-  const atenderCita = async (id) => {
-
-    await fetch(
-        `http://localhost:5000/api/citas/${id}`,
-        {
-            method: "PUT",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify({
-                estado:"atendida"
-            })
-        }
-    );
-
-    obtenerCitas();
-
-  };
+    cambiarEstado,
+    editar,
+    abrirEliminar,
+    eliminar
+  } = useCitas();
 
   return (
+
     <div>
 
       <div className="citas-header">
 
         <h1>Citas</h1>
+
         <p className="subtitulo">
           Gestión y programación de citas veterinarias
         </p>
@@ -131,199 +95,124 @@ function Citas() {
       <div className="tabs">
 
         <button
-          className={`tab ${
-            tabActiva === "pendientes"
-              ? "active"
-              : ""
-          }`}
-          onClick={() =>
-            setTabActiva("pendientes")
-          }
+          className={`tab ${tabActiva === "pendientes" ? "active" : ""}`}
+          onClick={() => setTabActiva("pendientes")}
         >
           Citas Pendientes
         </button>
 
         <button
-          className={`tab ${
-            tabActiva === "historial"
-              ? "active"
-              : ""
-          }`}
-          onClick={() =>
-            setTabActiva("historial")
-          }
+          className={`tab ${tabActiva === "historial" ? "active" : ""}`}
+          onClick={() => setTabActiva("historial")}
         >
           Historial
         </button>
 
       </div>
 
-      {tabActiva === "pendientes" && (
+      {
 
-        <table className="tabla">
+        tabActiva === "pendientes" && (
 
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Mascota</th>
-              <th>Motivo</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
+          <TablaPendientes
 
-          <tbody>
+            citasPendientes={citasPendientes}
 
-            {citasPendientes.map((cita) => (
+            atenderCita={cambiarEstado}
+            
+            editar={editar}
 
-              <tr key={cita.id}>
-                <td>{cita.fecha}</td>
-                <td>{cita.mascota}</td>
-                <td>{cita.motivo}</td>
-                <td>{cita.estado}</td>
-                <td>
-                  <div className="acciones">
+            abrirEliminar={abrirEliminar}
+            
 
-                    <button
-                      className="btn-icono btn-atender"
-                      onClick={() => atenderCita(cita.id)}
-                      title="Atender cita"
-                    >
-                      🩺
-                    </button>
+          />
 
-                    <button
-                      className="btn-icono btn-editar"
-                      title="Editar cita"
-                    >
-                      ✏️
-                    </button>
+        )
 
-                    <button
-                      className="btn-icono btn-eliminar"
-                      title="Eliminar cita"
-                    >
-                      🗑️
-                    </button>
+      }
 
-                  </div>
-                </td>
-              </tr>
+      {
 
-            ))}
+        tabActiva === "historial" && (
 
-          </tbody>
+          <TablaHistorial
 
-        </table>
+            historial={historial}
 
-      )}
+          />
 
-      {tabActiva === "historial" && (
+        )
 
-        <table className="tabla">
+      }
 
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Mascota</th>
-              <th>Motivo</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
+      <ModalCita
 
-          <tbody>
+        mostrarModal={mostrarModal}
+        setMostrarModal={setMostrarModal}
 
-            {historial.map((cita) => (
+        fecha={fecha}
+        setFecha={setFecha}
 
-              <tr key={cita.id}>
-                <td>{cita.fecha}</td>
-                <td>{cita.mascota}</td>
-                <td>{cita.motivo}</td>
-                <td>{cita.estado}</td>
-              </tr>
+        motivo={motivo}
+        setMotivo={setMotivo}
 
-            ))}
+        clientes={clientes}
 
-          </tbody>
+        idCliente={idCliente}
 
-        </table>
+        idMascota={idMascota}
+        setIdMascota={setIdMascota}
 
-      )}
+        mascotasCliente={mascotasCliente}
 
-      {mostrarModal && (
+        cargarMascotasCliente={cargarMascotasCliente}
 
-        <div className="modal-overlay">
+        guardarCita={guardarCita}
 
-          <div className="modal">
+        setMostrarModalCliente={setMostrarModalCliente}
+        setMostrarModalMascota={setMostrarModalMascota}
 
-            <h2>Agendar Cita</h2>
+      />
 
-            <input
-              type="datetime-local"
-              value={fecha}
-              onChange={(e) =>
-                setFecha(e.target.value)
-              }
-            />
+      <ModalCliente
 
-            <select
-              value={idMascota}
-              onChange={(e) =>
-                setIdMascota(e.target.value)
-              }
-            >
+        mostrar={mostrarModalCliente}
 
-              <option value="">
-                Seleccione Mascota
-              </option>
+        cerrar={() => setMostrarModalCliente(false)}
 
-              {mascotas.map((mascota) => (
+        nuevoCliente={nuevoCliente}
+        setNuevoCliente={setNuevoCliente}
 
-                <option
-                  key={mascota.id}
-                  value={mascota.id}
-                >
-                  {mascota.nombre}
-                </option>
+        guardarCliente={guardarCliente}
 
-              ))}
+      />
 
-            </select>
+      <ModalMascota
 
-            <textarea
-              placeholder="Motivo"
-              value={motivo}
-              onChange={(e) =>
-                setMotivo(e.target.value)
-              }
-            />
+        mostrar={mostrarModalMascota}
 
-            <div className="modal-buttons">
+        cerrar={() => setMostrarModalMascota(false)}
 
-              <button
-                onClick={guardarCita}
-              >
-                Guardar
-              </button>
+        nuevaMascota={nuevaMascota}
+        setNuevaMascota={setNuevaMascota}
 
-              <button
-                onClick={() =>
-                  setMostrarModal(false)
-                }
-              >
-                Cancelar
-              </button>
+        guardarMascota={guardarMascota}
 
-            </div>
+      />
+      <ModalEliminar
 
-          </div>
+        mostrar={mostrarModalEliminar}
 
-        </div>
+        cerrar={() => setMostrarModalEliminar(false)}
 
-      )}
+        eliminar={eliminar}
+
+      />
 
     </div>
+
   );
+
 }
 
 export default Citas;

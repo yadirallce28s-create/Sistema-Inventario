@@ -1,22 +1,24 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { FaCashRegister } from "react-icons/fa";
-
 import {
-  FaTachometerAlt,
-  FaUsers,
-  FaCalendarAlt,
-  FaBoxOpen,
-  FaExclamationTriangle,
-  FaTruck,
-  FaStethoscope,
-  FaBullhorn,
-  FaPaw,
-  FaCog,
   FaChevronDown,
   FaChevronRight,
-  FaCube,
 } from "react-icons/fa";
+import perrito from "../assets/perrito.png"
+import {
+  MdDashboard,
+  MdGroups,
+  MdPets,
+  MdInventory2,
+  MdWarningAmber,
+  MdLocalShipping,
+  MdMedicalServices,
+  MdCampaign,
+  MdSettings,
+  MdPointOfSale,
+  MdEventAvailable,
+  MdCategory
+} from "react-icons/md";
 
 function Sidebar() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -24,6 +26,9 @@ function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
+        <div className="logo">
+          <img src={perrito} alt="imagen de buena calidad" />
+        </div>
         <h1>DokyPets</h1>
         <p>Sistema Veterinario</p>
       </div>
@@ -42,7 +47,7 @@ function Sidebar() {
         <span className="sidebar-title">PRINCIPAL</span>
 
         <NavLink to="/dashboard" className="sidebar-link">
-          <FaTachometerAlt />
+        <MdDashboard className="menu-icon" />
           <span>Panel de control</span>
         </NavLink>
 
@@ -55,7 +60,7 @@ function Sidebar() {
 
             <div className="sidebar-dropdown-title">
 
-              <FaBoxOpen />
+             <MdInventory2 className="menu-icon" />
 
               <span>Inventario</span>
 
@@ -78,7 +83,7 @@ function Sidebar() {
                   to="/inventario/productos"
                   className="sidebar-sublink"
                 >
-                  <FaCube />
+                  <MdCategory className="menu-icon" />
                   Productos
                 </NavLink>
 
@@ -86,7 +91,7 @@ function Sidebar() {
                   to="/inventario/alertas"
                   className="sidebar-sublink"
                 >
-                  <FaExclamationTriangle />
+                  <MdWarningAmber className="menu-icon" />
                   Alertas
                 </NavLink>
 
@@ -94,7 +99,7 @@ function Sidebar() {
                   to="/inventario/proveedores"
                   className="sidebar-sublink"
                 >
-                  <FaTruck />
+                  <MdLocalShipping className="menu-icon" />
                   Proveedores
                 </NavLink>
 
@@ -105,17 +110,17 @@ function Sidebar() {
 
         </div>
         <NavLink to="/servicios" className="sidebar-link">
-          <FaStethoscope />
+         <MdMedicalServices className="menu-icon" />
           <span>Servicios</span>
         </NavLink>
 
         <NavLink to="/publicidad" className="sidebar-link">
-          <FaBullhorn />
+         <MdCampaign className="menu-icon" />
           <span>Publicidad</span>
         </NavLink>
 
         <NavLink to="/mascotas" className="sidebar-link">
-          <FaPaw />
+         <MdPets className="menu-icon" />
           <span>Mascotas</span>
         </NavLink>
       </div>
@@ -124,21 +129,21 @@ function Sidebar() {
         <span className="sidebar-title">GESTIÓN</span>
 
         <NavLink to="/clientes" className="sidebar-link">
-          <FaUsers />
+         <MdGroups className="menu-icon" />
           <span>Clientes</span>
         </NavLink>
 
         <NavLink to="/citas" className="sidebar-link">
-          <FaCalendarAlt />
+         <MdEventAvailable className="menu-icon" />
           <span>Citas</span>
         </NavLink>
         <NavLink to="/ventas" className="sidebar-link">
-          <FaCashRegister />
+         <MdPointOfSale className="menu-icon" />
           <span>Ventas</span>
         </NavLink>
 
         <NavLink to="/configuracion" className="sidebar-link">
-          <FaCog />
+         <MdSettings className="menu-icon" />
           <span>Configuración</span>
         </NavLink>
       </div>

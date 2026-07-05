@@ -5,6 +5,15 @@ import ProductosChart from "../../components/charts/ProductosChart";
 import IngresosChart from "../../components/charts/IngresosChart";
 import TopProductosChart from "../../components/charts/TopProductosChart";
 
+import {
+  MdGroups,
+  MdPets,
+  MdInventory2,
+  MdPointOfSale,
+  MdWarningAmber,
+  MdAttachMoney
+} from "react-icons/md";
+
 function Dashboard() {
 
   const [dashboard, setDashboard] = useState({
@@ -48,32 +57,32 @@ function Dashboard() {
       {/* CARDS */}
       <div className="dashboard-cards">
 
-        <div className="card-dashboard">
+        <div className="card-dashboard card-clientes">
           <h3>👥 Clientes</h3>
           <h1>{dashboard.clientes}</h1>
         </div>
 
-        <div className="card-dashboard">
+        <div className="card-dashboard card-mascotas">
           <h3>🐾 Mascotas</h3>
           <h1>{dashboard.mascotas}</h1>
         </div>
 
-        <div className="card-dashboard">
+        <div className="card-dashboard card-productos">
           <h3>📦 Productos</h3>
           <h1>{dashboard.productos}</h1>
         </div>
 
-        <div className="card-dashboard">
+        <div className="card-dashboard card-ventas">
           <h3>💰 Ventas</h3>
           <h1>{dashboard.ventas}</h1>
         </div>
 
-        <div className="card-dashboard">
+        <div className="card-dashboard card-stock">
           <h3>🚨 Stock Bajo</h3>
           <h1>{dashboard.stockBajo}</h1>
         </div>
 
-        <div className="card-dashboard">
+        <div className="card-dashboard card-ingresos">
           <h3>💵 Ingresos</h3>
           <h1>S/. {Number(dashboard.ingresos).toFixed(2)}</h1>
         </div>

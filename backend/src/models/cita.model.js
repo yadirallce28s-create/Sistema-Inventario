@@ -61,9 +61,55 @@ const actualizarEstado = async (id, estado) => {
 
   return resultado.rows[0];
 };
+const eliminarCita = async (id) => {
+
+  const resultado = await pool.query(
+    `
+    DELETE FROM citas
+    WHERE id=$1
+    RETURNING *
+    `,
+    [id]
+  );
+
+  return resultado.rows[0];
+
+};
+const actualizarCita = async (id, datos) => {
+
+  const {
+    fecha,
+    motivo,
+    id_mascota
+  } = datos;
+
+  const resultado = await pool.query(
+    `
+    UPDATE citas
+    SET
+      fecha = $1,
+      motivo = $2,
+      id_mascota = $3
+    WHERE id = $4
+    RETURNING *
+    `,
+    [
+      fecha,
+      motivo,
+      id_mascota,
+      id
+    ]
+  );
+
+  return resultado.rows[0];
+
+};
 
 module.exports = {
   obtenerCitas,
   crearCita,
   actualizarEstado,
+  actualizarCita,
+  eliminarCita,
+  
 };
