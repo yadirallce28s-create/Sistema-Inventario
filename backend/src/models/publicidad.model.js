@@ -141,29 +141,67 @@ const crearCampana = async (datos) => {
     return result.rows[0];
 };
 
-//=====================================
-// INCREMENTAR INTERESADOS (+1)
-//=====================================
-const incrementarInteresados = async (id) => {
-    const sql = `
-        UPDATE campanas_publicidad
-        SET personas_interesadas = personas_interesadas + 1
-        WHERE id = $1
-        RETURNING *
-    `;
-    const result = await pool.query(sql, [id]);
-    return result.rows[0];
+//===================================================================
+// NUEVO: REGISTRAR VENTA EN TABLA PROMOCIONES Y SUMAR INTERESADO (+1)
+//===================================================================
+const registrarInteresadoConTransaccion = async (datos) => {
+    const { 
+        id_campana, 
+        descuento_porcentaje, 
+        precio_original, 
+        precio_descuento, 
+        metodo_pago,
+        id_producto = null,  
+        id_servicio = null   
+    } = datos;
+
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // 1. Insertamos el registro de la venta en la tabla "promociones"
+        const queryRegistro = `
+            INSERT INTO promociones (id_campana, id_producto, id_servicio, descuento_porcentaje, precio_original, precio_descuento, metodo_pago)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING *
+        `;
+        const resRegistro = await client.query(queryRegistro, [
+            id_campana, 
+            id_producto, 
+            id_servicio, 
+            descuento_porcentaje, 
+            precio_original, 
+            precio_descuento, 
+            metodo_pago
+        ]);
+
+        // 2. Incrementamos el contador de interesados en la tabla "campanas_publicidad"
+        const queryIncrementar = `
+            UPDATE campanas_publicidad
+            SET personas_interesadas = personas_interesadas + 1
+            WHERE id = $1
+        `;
+        await client.query(queryIncrementar, [id_campana]);
+
+        await client.query('COMMIT');
+        return resRegistro.rows[0];
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+    } finally {
+        client.release();
+    }
 };
 
-//=====================================
-// NUEVOS CLIENTES POR MES PARA GRÁFICOS 
-//=====================================
+//=========================================================
+// NUEVO: OBTENER LOS INTERESADOS POR MES DESDE PROMOCIONES
+//=========================================================
 const obtenerClientesPorMes = async () => {
     const sql = `
         SELECT 
-            TO_CHAR(created_at, 'YYYY-MM') AS mes, 
+            TO_CHAR(creado_at, 'YYYY-MM') AS mes, 
             COUNT(id) AS cantidad
-        FROM clientes
+        FROM promociones
         GROUP BY mes
         ORDER BY mes ASC
     `;
@@ -177,6 +215,6 @@ module.exports = {
     crearCampana,
     actualizarCampana,
     eliminarCampana,
-    incrementarInteresados, // Exportada
-    obtenerClientesPorMes   // Exportada
+    registrarInteresadoConTransaccion, // Exportamos la nueva transacción de venta
+    obtenerClientesPorMes               // Mantenemos la misma exportación para el gráfico
 };

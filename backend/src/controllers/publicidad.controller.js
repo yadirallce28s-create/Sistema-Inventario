@@ -100,16 +100,34 @@ const eliminarCampana = async (req, res) => {
     }
 };
 
-//=========================================
-// NUEVO: REGISTRAR CLIC DE INTERESADO
-//=========================================
+//===================================================================
+// MODIFICADO: REGISTRAR INTERESADO CON DETALLES EN TABLA PROMOCIONES
+//===================================================================
 const registrarInteres = async (req, res) => {
     try {
-        const campana = await publicidadModel.incrementarInteresados(req.params.id);
-        res.json({
+        const { id_campana, descuento_porcentaje, precio_original, precio_descuento, metodo_pago } = req.body;
+
+        // Validamos que los datos obligatorios no vengan vacíos
+        if (!id_campana || descuento_porcentaje === undefined || !precio_original || !precio_descuento || !metodo_pago) {
+            return res.status(400).json({ 
+                status: "error", 
+                message: "Faltan datos financieros para registrar la promoción" 
+            });
+        }
+
+        // Ejecutamos la transacción en el modelo para insertar en promociones y sumar +1
+        const nuevaPromocion = await publicidadModel.registrarInteresadoConTransaccion({
+            id_campana,
+            descuento_porcentaje,
+            precio_original,
+            precio_descuento,
+            metodo_pago
+        });
+
+        res.status(201).json({
             status: "success",
-            message: "Interés registrado correctamente",
-            campana
+            message: "Interés registrado con éxito en promociones y acumulador actualizado",
+            data: nuevaPromocion
         });
     } catch (error) {
         console.error(error);
@@ -120,11 +138,12 @@ const registrarInteres = async (req, res) => {
     }
 };
 
-//=========================================
-// NUEVO: OBTENER CRECIMIENTO DE CLIENTES POR MES
-//=========================================
+//===================================================================
+// MODIFICADO: OBTENER CONVERSIÓN DE INTERESADOS DESDE PROMOCIONES
+//===================================================================
 const obtenerEstadisticasClientes = async (req, res) => {
     try {
+        // Ahora obtiene los datos agrupados por mes desde tu tabla 'promociones'
         const datosGrafico = await publicidadModel.obtenerClientesPorMes();
         res.json({
             status: "success",
@@ -145,6 +164,6 @@ module.exports = {
     crearCampana,
     actualizarCampana,
     eliminarCampana,
-    registrarInteres,             // Exportada
-    obtenerEstadisticasClientes    // Exportada
+    registrarInteres,             // Mantiene el mismo nombre de exportación
+    obtenerEstadisticasClientes    // Mantiene el mismo nombre de exportación
 };

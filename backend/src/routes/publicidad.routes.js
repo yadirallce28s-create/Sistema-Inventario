@@ -34,9 +34,10 @@ router.delete(
     publicidadController.eliminarCampana
 );
 
-// NUEVO: Ruta para aumentar en +1 el contador de personas interesadas
-router.put(
-    "/:id/interes",
+// MODIFICADO: Cambiado a POST porque ahora insertamos un registro en la tabla 'promociones'
+// El controlador leerá el "id_campana" directamente desde el req.body enviado por React
+router.post(
+    "/interesado",
     publicidadController.registrarInteres
 );
 
