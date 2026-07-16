@@ -8,7 +8,8 @@ import {
     crearProducto,
     buscarProductos,
     obtenerCategorias,
-    obtenerProveedores
+    obtenerProveedores,
+    editarProducto
 } from "../../services/inventarioService";
 
 function Productos() {
@@ -19,6 +20,7 @@ function Productos() {
     const [buscar, setBuscar] = useState("");
 
     const [mostrarModal, setMostrarModal] = useState(false);
+    const [idEditar, setIdEditar] = useState(null);
 
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
@@ -78,18 +80,37 @@ function Productos() {
 
 
     const guardarProducto = async () => {
+        if (
+            !nombre ||
+            !categoria ||
+            !proveedor ||
+            !precioCompra ||
+            !precioVenta ||
+            !stock
+        ) {
+
+            Swal.fire({
+                icon: "warning",
+                title: "Campos obligatorios",
+                text: "Complete todos los campos obligatorios."
+            });
+
+            return;
+        }
         try {
             await crearProducto({
-                codigo: "",
+            
                 nombre,
                 descripcion,
                 precio_compra: precioCompra,
                 precio_venta: precioVenta,
                 stock,
                 stock_minimo: stockMinimo,
+                registro_senasa: registroSenasa,
                 fecha_vencimiento: fechaVencimiento,
                 id_categoria: categoria,
                 id_proveedor: proveedor,
+                registro_senasa: registroSenasa,
 
             });
 
@@ -102,8 +123,10 @@ function Productos() {
             setCategoria("");
             setProveedor("");
             setFechaVencimiento("");
+            setRegistroSenasa("");
 
             setMostrarModal(false);
+            setIdEditar(null);
 
             await cargarProductos();
             Swal.fire({
@@ -121,6 +144,23 @@ function Productos() {
         }
 
     };
+    const editar = (producto) => {
+        setIdEditar(producto.id);
+        setNombre(producto.nombre);
+        setDescripcion(producto.descripcion);
+        setPrecioCompra(producto.precio_compra);
+        setPrecioVenta(producto.precio_venta);
+        setStock(producto.stock);
+        setStockMinimo(producto.stock_minimo);
+        setCategoria(producto.id_categoria);
+        setProveedor(producto.id_proveedor);
+        setFechaVencimiento(producto.fecha_vencimiento?.substring(0, 10) || "");
+        setRegistroSenasa(producto.registro_senasa || "");
+
+        setMostrarModal(true);
+
+    };
+
     return (
         <div>
             <div className="inventario-header">
@@ -132,11 +172,26 @@ function Productos() {
                 </div>
                 <button
                     className="btn-nuevo"
-                    onClick={() => setMostrarModal(true)}
+                    onClick={() => {
+
+                        setIdEditar(null);
+
+                        setNombre("");
+                        setDescripcion("");
+                        setPrecioCompra("");
+                        setPrecioVenta("");
+                        setStock("");
+                        setStockMinimo("");
+                        setCategoria("");
+                        setProveedor("");
+                        setFechaVencimiento("");
+                        setRegistroSenasa("");
+
+                        setMostrarModal(true);
+                    }}
                 >
                     + Nuevo Producto
                 </button>
-
             </div>
 
             <input
@@ -194,6 +249,7 @@ function Productos() {
                             <th>Stock Mínimo</th>
                             <th>Vencimiento</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
 
                         </tr>
 
@@ -227,22 +283,32 @@ function Productos() {
                                         {
                                             producto.stock === 0 ?
 
-                                                <span className="estado agotado">
+                                            <span className="estado agotado">
                                                     Agotado
-                                                </span>
+                                            </span>
 
-                                                :
+                                             :
 
-                                                producto.stock <= producto.stock_minimo ?
+                                            producto.stock <= producto.stock_minimo ?
 
-                                                    <span className="estado bajo">
-                                                        Bajo Stock
-                                                    </span>
-                                                    :
-                                                    <span className="estado disponible">
-                                                        Disponible
-                                                    </span>
+                                            <span className="estado bajo">
+                                                Bajo Stock
+                                            </span>
+                                                 :
+                                            <span className="estado disponible">
+                                                Disponible
+                                            </span>
                                         }
+                                    </td>
+                                    <td>
+
+                                        <button
+                                            className="btn-editar"
+                                            onClick={() => editar(producto)}
+                                        >
+                                            Editar
+                                        </button>
+
                                     </td>
                                 </tr>
                             ))
@@ -260,7 +326,9 @@ function Productos() {
                 <div className="modal-overlay">
 
                     <div className="modal">
-                        <h2>Nuevo Producto</h2>
+                            <h2>
+                                {idEditar ? "Editar Producto" : "Nuevo Producto"}
+                            </h2>
 
                         <div className="form-grid">
 
@@ -379,18 +447,30 @@ function Productos() {
                                     value={stock}
                                     onChange={(e) => setStock(e.target.value)}
                                 />
-                            </div>
+                                </div>
 
-                            <div className="form-group">
+                                <div className="form-group">
 
-                                <label>Alerta de Stock</label>
+                                    <label>Alerta de Stock</label>
 
-                                <input
-                                    type="number"
-                                    value={stockMinimo}
-                                    onChange={(e) => setStockMinimo(e.target.value)}
-                                />
-                            </div>
+                                    <input
+                                        type="number"
+                                       value={stockMinimo}
+                                      onChange={(e) => setStockMinimo(e.target.value)}
+                                    />
+                                </div>
+                                <div className="form-group">
+
+                                    <label>Registro SENASA</label>
+
+                                    <input
+                                        type="text"
+                                        placeholder="Ej. SEN-2026-000123"
+                                        value={registroSenasa}
+                                        onChange={(e) => setRegistroSenasa(e.target.value)}
+                                    />
+
+                                </div>
                                 <div className="form-group">
 
                                     <label>Fecha de Vencimiento</label>
@@ -415,21 +495,25 @@ function Productos() {
                                 </div>
 
                             </div>
+
                         <div className="modal-buttons">
 
                             <button
                                 className="btn-cancelar"
-                                onClick={() => setMostrarModal(false)}
-                            >
-                                Cancelar
-                            </button>
+                                    onClick={() => {
+                                        setMostrarModal(false);
+                                        setIdEditar(null);
+                                    }}
+                                >
+                              Cancelar
+                         </button>
 
-                            <button
-                                className="btn-guardar"
-                                onClick={guardarProducto}
-                            >
-                                Guardar
-                            </button>
+                           <button
+                                    className="btn-guardar"
+                                    onClick={guardarProducto}
+                                >
+                                    {idEditar ? "Actualizar" : "Guardar"}
+                             </button>
 
                         </div>
 

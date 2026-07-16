@@ -1,6 +1,6 @@
 import "../../css/inventario.css";
 import { useEffect, useState } from "react";
-
+import Swal from "sweetalert2";
 function Proveedores() {
 
   const [proveedores, setProveedores] = useState([]);
@@ -14,7 +14,17 @@ function Proveedores() {
   const [direccion, setDireccion] = useState("");
 
   useEffect(() => {
+    setMostrarModal(false);
+
     obtenerProveedores();
+
+    Swal.fire({
+      icon: "success",
+      title: "Proveedor registrado",
+      text: "El proveedor se registró correctamente.",
+      timer: 1800,
+      showConfirmButton: false
+    });
   }, []);
 
   const obtenerProveedores = async () => {
@@ -36,6 +46,20 @@ function Proveedores() {
   };
 
   const guardarProveedor = async () => {
+    if (
+      !nombre ||
+      !contacto ||
+      !telefono
+    ) {
+
+      Swal.fire({
+        icon: "warning",
+        title: "Campos obligatorios",
+        text: "Complete todos los campos obligatorios."
+      });
+
+      return;
+    }
 
     try {
 
@@ -69,6 +93,25 @@ function Proveedores() {
     } catch (error) {
       console.error(error);
     }
+
+  };
+  const contactar = (proveedor) => {
+
+    Swal.fire({
+
+      title: proveedor.nombre,
+
+      html: `
+            <b>Contacto:</b> ${proveedor.contacto}<br>
+            <b>Teléfono:</b> ${proveedor.telefono}<br>
+            <b>Correo:</b> ${proveedor.email}<br>
+            <b>Dirección:</b> ${proveedor.direccion}
+        `,
+
+      icon: "info",
+      confirmButtonText: "Cerrar"
+
+    });
 
   };
 
@@ -110,6 +153,7 @@ function Proveedores() {
               <th>Teléfono</th>
               <th>Correo</th>
               <th>Dirección</th>
+              <th>Acciones</th>
 
             </tr>
 
@@ -126,6 +170,16 @@ function Proveedores() {
                 <td>{proveedor.telefono}</td>
                 <td>{proveedor.email}</td>
                 <td>{proveedor.direccion}</td>
+                <td>
+
+                  <button
+                    className="btn-editar"
+                    onClick={() => contactar(proveedor)}
+                  >
+                    Contactar
+                  </button>
+
+                </td>
 
               </tr>
 

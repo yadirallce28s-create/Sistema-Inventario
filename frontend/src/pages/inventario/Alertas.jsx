@@ -7,35 +7,51 @@ function Alertas() {
     const [resumen, setResumen] = useState({});
 
     useEffect(() => {
+
         obtenerAlertas();
+
+        const intervalo = setInterval(() => {
+
+            obtenerAlertas();
+
+        }, 5000);
+
+        return () => clearInterval(intervalo);
+
     }, []);
 
     const obtenerAlertas = async () => {
-
         try {
-
             const response = await fetch(
                 "http://localhost:5000/api/alertas"
             );
-
             const data = await response.json();
-
             setAlertas(data.alertas);
             setResumen(data.resumen);
 
         } catch (error) {
-
             console.error(error);
-
         }
-
     };
 
     return (
-
         <div>
-
             <h1>🚨 Alertas de Stock</h1>
+            {
+                resumen.total_alertas > 0 && (
+                    <div className="mensaje-alerta">
+                        ⚠ Hay {resumen.total_alertas} productos que requieren atención.
+                    </div>
+                )
+            }
+
+            <div className="mensaje-ok">
+
+                ✅ No existen productos con bajo stock.
+
+            </div>
+
+            
 
             <div className="inventory-stats">
 
@@ -87,6 +103,7 @@ function Alertas() {
                             <th>Stock</th>
                             <th>Stock mínimo</th>
                             <th>Estado</th>
+                            <th>Vencimiento</th>
 
                         </tr>
 
@@ -111,16 +128,38 @@ function Alertas() {
                                 <td>
 
                                     <span
-                                        className={`estado ${
-                                            producto.estado === "Agotado"
+                                        className={`estado ${producto.estado_stock === "Agotado"
                                                 ? "agotado"
                                                 : "bajo"
-                                        }`}
+                                            }`}
                                     >
-
-                                        {producto.estado}
-
+                                        {producto.estado_stock}
                                     </span>
+
+                                </td>
+
+                                <td>
+
+                                    {
+                                        producto.estado_vencimiento === "Vencido" ?
+
+                                            <span className="estado agotado">
+                                                Vencido
+                                            </span>
+
+                                            :
+
+                                            producto.estado_vencimiento === "Próximo a vencer" ?
+
+                                                <span className="estado bajo">
+                                                    Próximo a vencer
+                                                </span>
+
+                                                :
+
+                                                <span>-</span>
+
+                                    }
 
                                 </td>
 

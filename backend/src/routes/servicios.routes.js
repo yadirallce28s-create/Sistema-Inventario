@@ -11,4 +11,5 @@ router.get("/", listarServicios);
 
 router.post("/", registrarServicio);
 
+router.put("/:id", editarServicio);
 module.exports = router;

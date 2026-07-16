@@ -13,14 +13,16 @@ const obtenerProductos = async () => {
             p.stock_minimo,
             p.fecha_vencimiento,
             c.nombre AS categoria,
-            pr.nombre AS proveedor,
+            pr.nombre AS proveedor,s
             p.estado
         FROM productos p
         LEFT JOIN categorias_producto c
             ON p.id_categoria = c.id
         LEFT JOIN proveedores pr
             ON p.id_proveedor = pr.id
+            
         ORDER BY p.id DESC
+
     `);
 
     return resultado.rows;
@@ -40,19 +42,37 @@ const obtenerProducto = async (id) => {
     return resultado.rows[0];
 };
 const crearProducto = async (datos) => {
-
+     console.log(datos);
     const {
-        codigo,
         nombre,
         descripcion,
         precio_compra,
         precio_venta,
         stock,
         stock_minimo,
+        registro_senasa,
         fecha_vencimiento,
         id_categoria,
         id_proveedor
     } = datos;
+    console.log(registro_senasa);
+    const ultimoCodigo = await pool.query(`
+        SELECT codigo
+        FROM productos
+        ORDER BY id DESC
+        LIMIT 1
+    `);
+
+    let codigo = "PRO001";
+
+    if (ultimoCodigo.rows.length > 0 && ultimoCodigo.rows[0].codigo) {
+
+        const numero = parseInt(
+            ultimoCodigo.rows[0].codigo.substring(3)
+        ) + 1;
+
+        codigo = "PRO" + numero.toString().padStart(3, "0");
+    }
 
     const resultado = await pool.query(
 
@@ -66,12 +86,13 @@ const crearProducto = async (datos) => {
             precio_venta,
             stock,
             stock_minimo,
+            registro_senasa,
             fecha_vencimiento,
             id_categoria,
             id_proveedor
         )
         VALUES
-        ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+        ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
         RETURNING *
         `,
         [
@@ -82,6 +103,7 @@ const crearProducto = async (datos) => {
             precio_venta,
             stock,
             stock_minimo,
+            registro_senasa,
             fecha_vencimiento,
             id_categoria,
             id_proveedor
@@ -101,6 +123,7 @@ const actualizarProducto = async (id, datos) => {
         precio_venta,
         stock,
         stock_minimo,
+        registro_senasa,
         fecha_vencimiento,
         id_categoria,
         id_proveedor,
@@ -120,12 +143,13 @@ const actualizarProducto = async (id, datos) => {
         precio_venta=$5,
         stock=$6,
         stock_minimo=$7,
-        fecha_vencimiento=$8,
-        id_categoria=$9,
-        id_proveedor=$10,
-        estado=$11
+        registro_senasa=$8,
+        fecha_vencimiento=$9,
+        id_categoria=$10,
+        id_proveedor=$11,
+        estado=$12
 
-        WHERE id=$12
+        WHERE id=$13
 
         RETURNING *
         `,
@@ -137,6 +161,7 @@ const actualizarProducto = async (id, datos) => {
             precio_venta,
             stock,
             stock_minimo,
+            registro_senasa,
             fecha_vencimiento,
             id_categoria,
             id_proveedor,
@@ -148,18 +173,7 @@ const actualizarProducto = async (id, datos) => {
     return resultado.rows[0];
 };
 
-const eliminarProducto = async (id) => {
 
-    await pool.query(
-        `
-        DELETE FROM productos
-        WHERE id=$1
-        `,
-        [id]
-    );
-
-    return true;
-};
 const buscarProducto = async (texto) => {
 
     const resultado = await pool.query(
@@ -202,7 +216,7 @@ module.exports = {
     obtenerProducto,
     crearProducto,
     actualizarProducto,
-    eliminarProducto,
+   
     buscarProducto
 
 };

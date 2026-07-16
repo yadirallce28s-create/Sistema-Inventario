@@ -14,6 +14,10 @@ function Servicios() {
   const [precio, setPrecio] = useState("");
   const [duracion, setDuracion] = useState("");
 
+  useEffect(() => {
+    obtenerServicios();
+  }, []);
+
   const guardarServicio = async () => {
     try {
 
@@ -45,6 +49,25 @@ function Servicios() {
     } catch (error) {
       console.error(error);
     }
+  };
+  const obtenerServicios = async () => {
+
+    try {
+
+      const response = await fetch(
+        "http://localhost:5000/api/servicios"
+      );
+
+      const data = await response.json();
+
+      setServicios(data.servicios);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
   };
   
 
@@ -131,44 +154,39 @@ function Servicios() {
         <>
           <div className="servicios-grid">
 
-            <div className="servicio-card">
-              <h3>Baño y corte</h3>
-              <h4>S/ 45.00</h4>
+            {servicios.map((servicio) => (
 
-              <p>
-                Incluye baño, secado y corte según raza.
-              </p>
+              <div
+                className="servicio-card"
+                key={servicio.id}
+              >
 
-              <span className="activo">
-                Activo
-              </span>
-            </div>
+                <h3>{servicio.nombre}</h3>
 
-            <div className="servicio-card">
-              <h3>Vacunación</h3>
-              <h4>S/ 80.00</h4>
+                <h4>
+                  S/. {servicio.precio}
+                </h4>
 
-              <p>
-                Vacunas antirrábica, moquillo y parvovirus.
-              </p>
+                <p>
+                  {servicio.descripcion}
+                </p>
 
-              <span className="activo">
-                Activo
-              </span>
-            </div>
+                <small>
+                  Duración:
+                  {" "}
+                  {servicio.duracion_minutos}
+                  {" "}minutos
+                </small>
 
-            <div className="servicio-card">
-              <h3>Consulta médica</h3>
-              <h4>S/ 60.00</h4>
+                <br />
 
-              <p>
-                Revisión general con veterinario certificado.
-              </p>
+                <span className="activo">
+                  Activo
+                </span>
 
-              <span className="activo">
-                Activo
-              </span>
-            </div>
+              </div>
+
+            ))}
 
           </div>
 
