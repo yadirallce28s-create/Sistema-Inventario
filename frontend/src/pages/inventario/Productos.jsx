@@ -1,11 +1,21 @@
 import "../../css/inventario.css";
 import { useEffect, useState } from "react";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCube } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import {
+    obtenerProductos,
+    crearProducto,
+    buscarProductos,
+    obtenerCategorias,
+    obtenerProveedores
+} from "../../services/inventarioService";
 
 function Productos() {
 
     const [productos, setProductos] = useState([]);
+    const [categorias, setCategorias] = useState([]);
+    const [proveedores, setProveedores] = useState([]);
     const [buscar, setBuscar] = useState("");
 
     const [mostrarModal, setMostrarModal] = useState(false);
@@ -18,58 +28,70 @@ function Productos() {
     const [stockMinimo, setStockMinimo] = useState("");
     const [categoria, setCategoria] = useState("");
     const [proveedor, setProveedor] = useState("");
+    const [fechaVencimiento, setFechaVencimiento] = useState("");
+    const [registroSenasa, setRegistroSenasa] = useState("");
 
     useEffect(() => {
-        obtenerProductos();
+        cargarProductos();
+        cargarCategorias();
+        cargarProveedores();
     }, []);
-
-    const obtenerProductos = async () => {
-
+    
+    const cargarProductos = async () => {
         try {
-
-            const response = await fetch(
-                "http://localhost:5000/api/productos"
-            );
-
-            const data = await response.json();
-
-            setProductos(data.productos);
-
+            const data = await obtenerProductos();
+            setProductos(data);
         } catch (error) {
-
             console.log(error);
-
         }
-
+    };
+    const cargarCategorias = async () => {
+        try {
+            const data = await obtenerCategorias();
+            setCategorias(data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    const guardarProducto = async () => {
-
+    const cargarProveedores = async () => {
         try {
+            const data = await obtenerProveedores();
+            setProveedores(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const buscarProducto = async (texto) => {
+        try {
+            if (texto.trim() === "") {
+                cargarProductos();
+                return;
+            }
+            const data = await buscarProductos(texto);
+            setProductos(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-            await fetch(
-                "http://localhost:5000/api/productos",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
 
-                        codigo: "",
-                        nombre,
-                        descripcion,
-                        precio_compra: precioCompra,
-                        precio_venta: precioVenta,
-                        stock,
-                        stock_minimo: stockMinimo,
-                        id_categoria: categoria,
-                        id_proveedor: proveedor
 
-                    })
+    const guardarProducto = async () => {
+        try {
+            await crearProducto({
+                codigo: "",
+                nombre,
+                descripcion,
+                precio_compra: precioCompra,
+                precio_venta: precioVenta,
+                stock,
+                stock_minimo: stockMinimo,
+                fecha_vencimiento: fechaVencimiento,
+                id_categoria: categoria,
+                id_proveedor: proveedor,
 
-                }
-            );
+            });
 
             setNombre("");
             setDescripcion("");
@@ -79,10 +101,18 @@ function Productos() {
             setStockMinimo("");
             setCategoria("");
             setProveedor("");
+            setFechaVencimiento("");
 
             setMostrarModal(false);
 
-            obtenerProductos();
+            await cargarProductos();
+            Swal.fire({
+                icon: "success",
+                title: "Producto registrado",
+                text: "El producto se registró correctamente.",
+                timer: 2000,
+                showConfirmButton: false
+            });
 
         } catch (error) {
 
@@ -91,27 +121,15 @@ function Productos() {
         }
 
     };
-
-    const productosFiltrados = productos.filter((producto) =>
-        producto.nombre.toLowerCase().includes(buscar.toLowerCase())
-    );
-
     return (
-
         <div>
-
             <div className="inventario-header">
-
                 <div>
-
-                    <h1><FontAwesomeIcon icon={faCube} color="#429a85"/> Inventario de Productos</h1>
-
+                    <h1><FontAwesomeIcon icon={faCube} color="#429a85" /> Inventario de Productos</h1>
                     <p className="subtitulo">
                         Gestión del inventario veterinario
                     </p>
-
                 </div>
-
                 <button
                     className="btn-nuevo"
                     onClick={() => setMostrarModal(true)}
@@ -125,7 +143,10 @@ function Productos() {
                 className="buscador"
                 placeholder="Buscar producto..."
                 value={buscar}
-                onChange={(e)=>setBuscar(e.target.value)}
+                onChange={(e) => {
+                    setBuscar(e.target.value);
+                    buscarProducto(e.target.value);
+                }}
             />
 
             <div className="inventory-stats">
@@ -140,7 +161,7 @@ function Productos() {
                     <p>
                         {
                             productos.filter(
-                                p=>p.stock<=p.stock_minimo
+                                p => p.stock <= p.stock_minimo
                             ).length
                         }
                     </p>
@@ -151,7 +172,7 @@ function Productos() {
                     <p>
                         {
                             productos.filter(
-                                p=>p.stock===0
+                                p => p.stock === 0
                             ).length
                         }
                     </p>
@@ -171,6 +192,7 @@ function Productos() {
                             <th>Precio Venta</th>
                             <th>Stock</th>
                             <th>Stock Mínimo</th>
+                            <th>Vencimiento</th>
                             <th>Estado</th>
 
                         </tr>
@@ -181,7 +203,7 @@ function Productos() {
 
                         {
 
-                            productosFiltrados.map((producto)=>(
+                            productos.map((producto) => (
 
                                 <tr key={producto.id}>
 
@@ -194,44 +216,41 @@ function Productos() {
                                     <td>{producto.stock}</td>
 
                                     <td>{producto.stock_minimo}</td>
+                                    <td>
+                                        {producto.fecha_vencimiento
+                                            ? producto.fecha_vencimiento.substring(0, 10)
+                                            : "-"}
+                                    </td>
 
                                     <td>
 
                                         {
-                                            producto.stock===0 ?
+                                            producto.stock === 0 ?
 
-                                            <span className="estado agotado">
-                                                Agotado
-                                            </span>
+                                                <span className="estado agotado">
+                                                    Agotado
+                                                </span>
 
-                                            :
+                                                :
 
-                                            producto.stock<=producto.stock_minimo ?
+                                                producto.stock <= producto.stock_minimo ?
 
-                                            <span className="estado bajo">
-                                                Bajo Stock
-                                            </span>
-
-                                            :
-
-                                            <span className="estado disponible">
-                                                Disponible
-                                            </span>
-
+                                                    <span className="estado bajo">
+                                                        Bajo Stock
+                                                    </span>
+                                                    :
+                                                    <span className="estado disponible">
+                                                        Disponible
+                                                    </span>
                                         }
-
                                     </td>
-
                                 </tr>
-
                             ))
 
                         }
-
                     </tbody>
 
                 </table>
-
             </div>
 
             {
@@ -241,66 +260,166 @@ function Productos() {
                 <div className="modal-overlay">
 
                     <div className="modal">
-
                         <h2>Nuevo Producto</h2>
 
-                        <input
-                            placeholder="Nombre"
-                            value={nombre}
-                            onChange={(e)=>setNombre(e.target.value)}
-                        />
+                        <div className="form-grid">
 
-                        <textarea
-                            placeholder="Descripción"
-                            value={descripcion}
-                            onChange={(e)=>setDescripcion(e.target.value)}
-                        />
+                            <div className="form-group">
 
-                        <input
-                            type="number"
-                            placeholder="Precio Compra"
-                            value={precioCompra}
-                            onChange={(e)=>setPrecioCompra(e.target.value)}
-                        />
+                                <label>Nombre del Producto</label>
 
-                        <input
-                            type="number"
-                            placeholder="Precio Venta"
-                            value={precioVenta}
-                            onChange={(e)=>setPrecioVenta(e.target.value)}
-                        />
+                                <input
+                                    value={nombre}
+                                    onChange={(e) => setNombre(e.target.value)}
+                                />
 
-                        <input
-                            type="number"
-                            placeholder="Stock"
-                            value={stock}
-                            onChange={(e)=>setStock(e.target.value)}
-                        />
+                            </div>
 
-                        <input
-                            type="number"
-                            placeholder="Stock mínimo"
-                            value={stockMinimo}
-                            onChange={(e)=>setStockMinimo(e.target.value)}
-                        />
+                            <div className="form-group">
 
-                        <input
-                            placeholder="ID Categoría"
-                            value={categoria}
-                            onChange={(e)=>setCategoria(e.target.value)}
-                        />
+                                <label>Categoría</label>
 
-                        <input
-                            placeholder="ID Proveedor"
-                            value={proveedor}
-                            onChange={(e)=>setProveedor(e.target.value)}
-                        />
+                                <select
+                                    value={categoria}
+                                    onChange={(e) => setCategoria(e.target.value)}
+                                >
 
+                                    <option value="">
+                                        Seleccione una categoría
+                                    </option>
+
+                                    {
+                                        categorias.map(cat => (
+
+                                            <option
+                                                key={cat.id}
+                                                value={cat.id}
+                                            >
+                                                {cat.nombre}
+                                            </option>
+
+                                        ))
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div className="form-group">
+
+                                <label>Proveedor</label>
+
+                                <select
+                                    value={proveedor}
+                                    onChange={(e) => setProveedor(e.target.value)}
+                                >
+
+                                    <option value="">
+                                        Seleccione un proveedor
+                                    </option>
+
+                                    {
+                                        proveedores.map(proveedor => (
+
+                                            <option
+                                                key={proveedor.id}
+                                                value={proveedor.id}
+                                            >
+                                                {proveedor.nombre}
+                                            </option>
+
+                                        ))
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div className="form-group">
+
+                                <label>Código</label>
+
+                                <input
+                                    placeholder="Se genera automáticamente"
+                                    disabled
+                                />
+
+                            </div>
+
+                            <div className="form-group">
+
+                                <label>Precio Compra</label>
+
+                                <input
+                                    type="number"
+                                    value={precioCompra}
+                                    onChange={(e) => setPrecioCompra(e.target.value)}
+                                />
+
+                            </div>
+
+                            <div className="form-group">
+
+                                <label>Precio Venta</label>
+
+                                <input
+                                    type="number"
+                                    value={precioVenta}
+                                    onChange={(e) => setPrecioVenta(e.target.value)}
+                                />
+
+                            </div>
+
+
+                            <div className="form-group">
+                                <label>Stock</label>
+
+                                <input
+                                    type="number"
+                                    value={stock}
+                                    onChange={(e) => setStock(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+
+                                <label>Alerta de Stock</label>
+
+                                <input
+                                    type="number"
+                                    value={stockMinimo}
+                                    onChange={(e) => setStockMinimo(e.target.value)}
+                                />
+                            </div>
+                                <div className="form-group">
+
+                                    <label>Fecha de Vencimiento</label>
+
+                                    <input
+                                        type="date"
+                                        value={fechaVencimiento}
+                                        onChange={(e) => setFechaVencimiento(e.target.value)}
+                                    />
+
+                                </div>
+
+                                <div className="form-group">
+
+                                    <label>Descripción</label>
+
+                                    <textarea
+                                        value={descripcion}
+                                        onChange={(e) => setDescripcion(e.target.value)}
+                                    />
+
+                                </div>
+
+                            </div>
                         <div className="modal-buttons">
 
                             <button
                                 className="btn-cancelar"
-                                onClick={()=>setMostrarModal(false)}
+                                onClick={() => setMostrarModal(false)}
                             >
                                 Cancelar
                             </button>
@@ -320,7 +439,7 @@ function Productos() {
 
             }
 
-        </div>
+        </div >
 
     );
 

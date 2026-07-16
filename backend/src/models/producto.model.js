@@ -1,8 +1,4 @@
 const pool = require("../config/db");
-
-// ================================
-// LISTAR PRODUCTOS
-// ================================
 const obtenerProductos = async () => {
 
     const resultado = await pool.query(`
@@ -15,6 +11,7 @@ const obtenerProductos = async () => {
             p.precio_venta,
             p.stock,
             p.stock_minimo,
+            p.fecha_vencimiento,
             c.nombre AS categoria,
             pr.nombre AS proveedor,
             p.estado
@@ -29,9 +26,6 @@ const obtenerProductos = async () => {
     return resultado.rows;
 };
 
-// ================================
-// OBTENER PRODUCTO POR ID
-// ================================
 const obtenerProducto = async (id) => {
 
     const resultado = await pool.query(
@@ -45,10 +39,6 @@ const obtenerProducto = async (id) => {
 
     return resultado.rows[0];
 };
-
-// ================================
-// REGISTRAR PRODUCTO
-// ================================
 const crearProducto = async (datos) => {
 
     const {
@@ -59,6 +49,7 @@ const crearProducto = async (datos) => {
         precio_venta,
         stock,
         stock_minimo,
+        fecha_vencimiento,
         id_categoria,
         id_proveedor
     } = datos;
@@ -75,11 +66,12 @@ const crearProducto = async (datos) => {
             precio_venta,
             stock,
             stock_minimo,
+            fecha_vencimiento,
             id_categoria,
             id_proveedor
         )
         VALUES
-        ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
         RETURNING *
         `,
         [
@@ -90,6 +82,7 @@ const crearProducto = async (datos) => {
             precio_venta,
             stock,
             stock_minimo,
+            fecha_vencimiento,
             id_categoria,
             id_proveedor
         ]
@@ -98,9 +91,6 @@ const crearProducto = async (datos) => {
     return resultado.rows[0];
 };
 
-// ================================
-// ACTUALIZAR PRODUCTO
-// ================================
 const actualizarProducto = async (id, datos) => {
 
     const {
@@ -111,6 +101,7 @@ const actualizarProducto = async (id, datos) => {
         precio_venta,
         stock,
         stock_minimo,
+        fecha_vencimiento,
         id_categoria,
         id_proveedor,
         estado
@@ -129,11 +120,12 @@ const actualizarProducto = async (id, datos) => {
         precio_venta=$5,
         stock=$6,
         stock_minimo=$7,
-        id_categoria=$8,
-        id_proveedor=$9,
-        estado=$10
+        fecha_vencimiento=$8,
+        id_categoria=$9,
+        id_proveedor=$10,
+        estado=$11
 
-        WHERE id=$11
+        WHERE id=$12
 
         RETURNING *
         `,
@@ -145,6 +137,7 @@ const actualizarProducto = async (id, datos) => {
             precio_venta,
             stock,
             stock_minimo,
+            fecha_vencimiento,
             id_categoria,
             id_proveedor,
             estado,
@@ -155,9 +148,6 @@ const actualizarProducto = async (id, datos) => {
     return resultado.rows[0];
 };
 
-// ================================
-// ELIMINAR PRODUCTO
-// ================================
 const eliminarProducto = async (id) => {
 
     await pool.query(
@@ -170,10 +160,6 @@ const eliminarProducto = async (id) => {
 
     return true;
 };
-
-// ================================
-// BUSCAR PRODUCTO
-// ================================
 const buscarProducto = async (texto) => {
 
     const resultado = await pool.query(
@@ -185,6 +171,7 @@ const buscarProducto = async (texto) => {
             p.nombre,
             p.stock,
             p.precio_venta,
+            p.fecha_vencimiento,
             c.nombre AS categoria
         FROM productos p
 
