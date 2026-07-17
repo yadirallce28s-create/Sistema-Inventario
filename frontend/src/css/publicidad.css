@@ -13,6 +13,24 @@
   gap: 12px !important;
 }
 
+.btn-nuevo {
+  background-color: #10b981;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-nuevo:hover { background-color: #059669; transform: translateY(-1px); }
+
+.btn-nuevo-video {
+  background-color: #3b82f6;
+}
+.btn-nuevo-video:hover { background-color: #2563eb; }
+
 /* ==========================================================================
    GRID DE TARJETAS (SEGÚN TU BOCETO)
    ========================================================================== */
@@ -164,15 +182,18 @@
   cursor: pointer;
   font-size: 12px;
   color: #9ca3af;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
 }
 
-.btn-card-edit:hover { color: #3b82f6; }
-.btn-card-delete:hover { color: #ef4444; }
+.btn-card-edit:hover { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+.btn-card-delete:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
 
 /* ==========================================================================
    DISEÑO OSCURO PARA MODALES
    ========================================================================== */
-.modal-overlay {
+.publicidad-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -187,7 +208,7 @@
   padding: 20px;
 }
 
-.modal {
+.publicidad-modal {
   background: #1e1e1e !important;
   width: 100%;
   max-width: 480px;
@@ -220,30 +241,49 @@
   color: #a0a0a0;
   font-size: 20px;
   cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
 }
 
-.btn-cerrar-modal:hover { color: #fff; }
+.btn-cerrar-modal:hover { color: #fff; background: #2a2a2a; }
 
-.modal-body {
+/* ==========================================================================
+   CUERPO DEL MODAL (clase real usada en el JSX: .publicidad-modal-body)
+   ========================================================================== */
+.publicidad-modal-body {
   padding: 10px 24px 24px 24px;
   overflow-y: auto;
   flex: 1;
 }
 
-.modal-body label {
+/* Scrollbar oscuro y discreto */
+.publicidad-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.publicidad-modal-body::-webkit-scrollbar-thumb {
+  background: #3e3e42;
+  border-radius: 10px;
+}
+
+.publicidad-modal-body label {
   display: block;
   font-size: 13px;
+  font-weight: 500;
   color: #9ca3af !important;
-  margin-top: 14px;
+  margin-top: 16px;
   margin-bottom: 6px;
   text-align: left;
 }
 
-.modal-body label:first-of-type { margin-top: 0; }
+.publicidad-modal-body label:first-of-type { margin-top: 0; }
 
-.modal-body input,
-.modal-body select,
-.modal-body textarea {
+.publicidad-modal-body input,
+.publicidad-modal-body select,
+.publicidad-modal-body textarea {
+  display: block;
+  box-sizing: border-box;
   width: 100%;
   background-color: #2a2a2a !important;
   border: 1px solid #3e3e42 !important;
@@ -251,16 +291,62 @@
   padding: 10px 12px;
   border-radius: 8px;
   font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.modal-body input:focus,
-.modal-body select:focus,
-.modal-body textarea:focus {
+.publicidad-modal-body input::placeholder,
+.publicidad-modal-body textarea::placeholder {
+  color: #6b7280;
+}
+
+.publicidad-modal-body input:focus,
+.publicidad-modal-body select:focus,
+.publicidad-modal-body textarea:focus {
   outline: none;
   border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
-.modal-buttons {
+/* Inputs de fecha con iconos legibles en tema oscuro */
+.publicidad-modal-body input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Input de archivo con apariencia de botón, acorde al resto */
+.publicidad-modal-body input[type="file"] {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.publicidad-modal-body input[type="file"]::file-selector-button {
+  background-color: #3a3a3c;
+  color: #e5e7eb;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: background 0.15s;
+}
+.publicidad-modal-body input[type="file"]::file-selector-button:hover {
+  background-color: #4b5563;
+}
+
+.publicidad-modal-body textarea {
+  resize: none;
+  line-height: 1.5;
+}
+
+/* Vista previa de imagen/video dentro del modal de subida */
+.modal-preview-container img,
+.modal-preview-container video {
+  border-radius: 8px;
+  border: 1px solid #3e3e42;
+}
+
+.publicidad-modal-buttons {
   padding: 16px 24px;
   background-color: #151515;
   border-top: 1px solid #2d2d2d;
@@ -269,7 +355,7 @@
   gap: 12px;
 }
 
-.btn-cancelar {
+.btn-publicidad-cancelar {
   background-color: #3a3a3c !important;
   color: #e5e7eb !important;
   border: none;
@@ -277,9 +363,11 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  transition: background 0.15s;
 }
+.btn-publicidad-cancelar:hover { background-color: #4b5563 !important; }
 
-.btn-guardar {
+.btn-publicidad-guardar {
   background-color: #3b82f6 !important;
   color: white !important;
   border: none;
@@ -287,7 +375,9 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  transition: background 0.15s;
 }
+.btn-publicidad-guardar:hover { background-color: #2563eb !important; }
 
 /* Contenedor del Estado Activo en Consultas */
 .consultar-estado-box {

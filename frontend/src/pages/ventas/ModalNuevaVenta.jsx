@@ -38,14 +38,14 @@ function ModalNuevaVenta({
     const agregarProducto = () => {
 
         if (!productoSeleccionado) {
-    Swal.fire({
-        icon: "warning",
-        title: "Seleccione un producto",
-        text: "Debe elegir un producto antes de agregarlo.",
-        confirmButtonColor: "#429a85"
-    });
-    return;
-}
+            Swal.fire({
+                icon: "warning",
+                title: "Seleccione un producto",
+                text: "Debe elegir un producto antes de agregarlo.",
+                confirmButtonColor: "#429a85"
+            });
+            return;
+        }
         const producto = productos.find(
             (p) => p.id === Number(productoSeleccionado)
         );
@@ -81,15 +81,15 @@ function ModalNuevaVenta({
 
 
     const agregarServicio = () => {
-        if (!productoSeleccionado) {
-    Swal.fire({
-        icon: "warning",
-        title: "Seleccione un producto",
-        text: "Debe elegir un producto antes de agregarlo.",
-        confirmButtonColor: "#429a85"
-    });
-    return;
-}
+        if (!servicioSeleccionado) {
+            Swal.fire({
+                icon: "warning",
+                title: "Seleccione un servicio",
+                text: "Debe elegir un servicio antes de agregarlo.",
+                confirmButtonColor: "#429a85"
+            });
+            return;
+        }
         const servicio = servicios.find(
             (s) => s.id === Number(servicioSeleccionado)
         );
@@ -100,18 +100,18 @@ function ModalNuevaVenta({
         );
 
         if (existe) {
-    Swal.fire({
-        icon: "info",
-        title: "Servicio ya agregado",
-        text: "Este servicio ya se encuentra en la venta.",
-        confirmButtonColor: "#429a85"
-    });
-    return;
-}
+            Swal.fire({
+                icon: "info",
+                title: "Servicio ya agregado",
+                text: "Este servicio ya se encuentra en la venta.",
+                confirmButtonColor: "#429a85"
+            });
+            return;
+        }
         setListaServicios([
             ...listaServicios,
 
-           servicio
+            servicio
         ]);
         setServicioSeleccionado("");
     };
@@ -179,90 +179,90 @@ function ModalNuevaVenta({
 
     const registrarVenta = async () => {
         if (!cliente) {
-           Swal.fire({
-           icon: "warning",
-           title: "Cliente requerido",
-           text: "Seleccione un cliente para continuar.",
-           confirmButtonColor: "#429a85"
-        });
-        return;
+            Swal.fire({
+                icon: "warning",
+                title: "Cliente requerido",
+                text: "Seleccione un cliente para continuar.",
+                confirmButtonColor: "#429a85"
+            });
+            return;
         }
         if (
             listaProductos.length === 0 &&
             listaServicios.length === 0
         ) {
-          Swal.fire({
-        icon: "warning",
-        title: "Venta vacía",
-        text: "Debe agregar al menos un producto o un servicio.",
-        confirmButtonColor: "#429a85"
-        });
+            Swal.fire({
+                icon: "warning",
+                title: "Venta vacía",
+                text: "Debe agregar al menos un producto o un servicio.",
+                confirmButtonColor: "#429a85"
+            });
             return;
         }
 
         try {
-           const response = await fetch(
-    "http://localhost:5000/api/ventas",
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            id_cliente: cliente,
-            metodo_pago: metodoPago,
-            productos: listaProductos.map((producto) => ({
-                id_producto: producto.id,
-                cantidad: producto.cantidad
-            })),
-            servicios: listaServicios.map((servicio) => ({
-                id_servicio: servicio.id
-            }))
-        })
-    }
-);
+            const response = await fetch(
+                "http://localhost:5000/api/ventas",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id_cliente: cliente,
+                        metodo_pago: metodoPago,
+                        productos: listaProductos.map((producto) => ({
+                            id_producto: producto.id,
+                            cantidad: producto.cantidad
+                        })),
+                        servicios: listaServicios.map((servicio) => ({
+                            id_servicio: servicio.id
+                        }))
+                    })
+                }
+            );
 
-console.log("Status:", response.status);
+            console.log("Status:", response.status);
 
-const data = await response.json();
+            const data = await response.json();
 
-console.log("Respuesta:", data);
+            console.log("Respuesta:", data);
 
-if (data.status === "success") {
+            if (data.status === "success") {
 
-    Swal.fire({
-        icon: "success",
-        title: "¡Venta registrada!",
-        text: "La venta se registró correctamente.",
-        timer: 1800,
-        showConfirmButton: false
-    });
+                Swal.fire({
+                    icon: "success",
+                    title: "¡Venta registrada!",
+                    text: "La venta se registró correctamente.",
+                    timer: 1800,
+                    showConfirmButton: false
+                });
 
-    onVentaRegistrada();
-    limpiarFormulario();
-    onCerrar();
+                onVentaRegistrada();
+                limpiarFormulario();
+                onCerrar();
 
-} else {
+            } else {
 
-    Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: data.message,
-        confirmButtonColor: "#d33"
-    });
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: data.message,
+                    confirmButtonColor: "#d33"
+                });
 
-}
+            }
 
-    
 
-           
+
+
             if (data.status === "success") {
                 Swal.fire({
-                   icon: "success",
-                   title: "¡Venta registrada!",
-                   text: "La venta se registró correctamente.",
-                   timer: 1800,
-                   showConfirmButton: false
+                    icon: "success",
+                    title: "¡Venta registrada!",
+                    text: "La venta se registró correctamente.",
+                    timer: 1800,
+                    showConfirmButton: false
                 });
                 onVentaRegistrada();
                 limpiarFormulario();
@@ -279,19 +279,19 @@ if (data.status === "success") {
             }
         }
         catch (error) {
-    console.error(error);
+            console.error(error);
 
-    Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Ocurrió un problema al registrar la venta.",
-        confirmButtonColor: "#d33"
-    });
-}
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Ocurrió un problema al registrar la venta.",
+                confirmButtonColor: "#d33"
+            });
+        }
     };
     console.log("Lista productos:", listaProductos);
-console.log("Lista servicios:", listaServicios);
-console.log("Total:", total);
+    console.log("Lista servicios:", listaServicios);
+    console.log("Total:", total);
 
     return (
 
@@ -377,8 +377,8 @@ console.log("Total:", total);
                             productos.map((producto) => (
 
                                 <option
-                                  key={producto.id}
-                                  value={producto.id}
+                                    key={producto.id}
+                                    value={producto.id}
                                 >
 
                                     {producto.nombre}
@@ -389,7 +389,7 @@ console.log("Total:", total);
 
                                 </option>
                             ))
-                        }ya me aprecion eltottal ahora solo 
+                        }ya me aprecion eltottal ahora solo
 
                     </select>
 

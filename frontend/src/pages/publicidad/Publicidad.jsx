@@ -326,13 +326,13 @@ function Publicidad() {
           MODAL 1: ME INTERESA / APLICAR PROMOCIÓN (BOCETO IZQUIERDO)
          ========================================================================== */}
       {modalAbierto === "aplicar" && campanaSeleccionada && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className="publicidad-modal-overlay">
+          <div className="publicidad-modal">
             <div className="modal-header-dark">
               <h2>Me interesa (Formulario)</h2>
               <button className="btn-cerrar-modal" onClick={() => setModalAbierto(null)}>✕</button>
             </div>
-            <div className="modal-body">
+            <div className="publicidad-modal-body">
               <p style={{ color: '#aaa', fontSize: '13px', marginBottom: '15px' }}>
                 Aplicar promoción para: <strong>{campanaSeleccionada.titulo}</strong>
               </p>
@@ -368,9 +368,9 @@ function Publicidad() {
                 <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
               </select>
             </div>
-            <div className="modal-buttons">
-              <button className="btn-cancelar" onClick={() => setModalAbierto(null)}>Cancelar</button>
-              <button className="btn-guardar" onClick={enviarAplicarPromocion}>Guardar</button>
+            <div className="publicidad-modal-buttons">
+              <button className="btn-publicidad-cancelar" onClick={() => setModalAbierto(null)}>Cancelar</button>
+              <button className="btn-publicidad-guardar" onClick={enviarAplicarPromocion}>Guardar</button>
             </div>
           </div>
         </div>
@@ -380,13 +380,13 @@ function Publicidad() {
           MODAL 2: CONSULTA (BOCETO CENTRAL)
          ========================================================================== */}
       {modalAbierto === "consultar" && campanaSeleccionada && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className="publicidad-modal-overlay">
+          <div className="publicidad-modal">
             <div className="modal-header-dark">
               <h2>Consulta (Formulario)</h2>
               <button className="btn-cerrar-modal" onClick={() => setModalAbierto(null)}>✕</button>
             </div>
-            <div className="modal-body">
+            <div className="publicidad-modal-body">
               <p style={{ fontSize: '15px', color: '#3b82f6', fontWeight: 'bold' }}>Detalles de la promoción</p>
               
               <label>Descripción:</label>
@@ -401,8 +401,8 @@ function Publicidad() {
                 ESTADO: <strong>{campanaSeleccionada.estado?.toUpperCase() || "ACTIVO"}</strong>
               </div>
             </div>
-            <div className="modal-buttons">
-              <button className="btn-cancelar" onClick={() => setModalAbierto(null)}>Cerrar</button>
+            <div className="publicidad-modal-buttons">
+              <button className="btn-publicidad-cancelar" onClick={() => setModalAbierto(null)}>Cerrar</button>
             </div>
           </div>
         </div>
@@ -412,13 +412,13 @@ function Publicidad() {
           MODAL 3: SUBIR AFICHE / VIDEO (BOCETO DERECHO)
          ========================================================================== */}
       {modalAbierto === "subir" && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className="publicidad-modal-overlay">
+          <div className="publicidad-modal">
             <div className="modal-header-dark">
               <h2>{idEditar ? "Editar Publicidad" : "Subir Afiche / Video"}</h2>
               <button className="btn-cerrar-modal" onClick={() => setModalAbierto(null)}>✕</button>
             </div>
-            <div className="modal-body">
+            <div className="publicidad-modal-body">
               <label>Seleccionar archivo:</label>
               <input 
                 type="file" 
@@ -482,9 +482,9 @@ function Publicidad() {
                 <option value="vencida">Vencida</option>
               </select>
             </div>
-            <div className="modal-buttons">
-              <button className="btn-cancelar" onClick={() => setModalAbierto(null)}>Cancelar</button>
-              <button className="btn-guardar" onClick={guardarCampana}>Guardar</button>
+            <div className="publicidad-modal-buttons">
+              <button className="btn-publicidad-cancelar" onClick={() => setModalAbierto(null)}>Cancelar</button>
+              <button className="btn-publicidad-guardar" onClick={guardarCampana}>Guardar</button>
             </div>
           </div>
         </div>

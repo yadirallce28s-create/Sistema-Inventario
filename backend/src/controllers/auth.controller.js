@@ -73,7 +73,14 @@ const login = async (req, res) => {
       password,
       usuario.contrasena
     );
-    const validForzado = true; 
+
+    if (!valid) {
+      return res.status(401).json({
+        status: "error",
+        message: "Correo o contraseña incorrectos"
+      });
+    }
+    
 
     console.log("Resultado bcrypt:", valid);
 

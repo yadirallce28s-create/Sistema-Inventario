@@ -7,7 +7,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Clientes from "./pages/cliente/Clientes";
 import Mascotas from "./pages/mascota/Mascotas";
 import Citas from "./pages/cita/Citas";
-import Ventas from "./pages/venta/Ventas";
+import Ventas from "./pages/ventas/ventas";
 import Servicios from "./pages/servicio/Servicios";
 import Publicidad from "./pages/publicidad/Publicidad";
 
@@ -17,6 +17,7 @@ import Proveedores from "./pages/inventario/Proveedores";
 
 import MainLayout from "./layout/MainLayout";
 import InventarioLayout from "./layout/InventarioLayout";
+import RutaProtegida from "./components/RutaProtegida";
 
 function App() {
 
@@ -34,9 +35,13 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <MainLayout>
-              <Dashboard />
-            </MainLayout>
+            <RutaProtegida
+              roles={["admin", "veterinario", "asistente"]}
+            >
+              <MainLayout>
+                <Dashboard />
+              </MainLayout>
+            </RutaProtegida>
           }
         />
 
@@ -70,27 +75,39 @@ function App() {
         <Route
           path="/ventas"
           element={
-            <MainLayout>
-              <Ventas />
-            </MainLayout>
+            <RutaProtegida
+              roles={["admin", "asistente"]}
+            >
+              <MainLayout>
+                <Ventas />
+              </MainLayout>
+            </RutaProtegida>
           }
         />
 
         <Route
           path="/servicios"
           element={
-            <MainLayout>
-              <Servicios />
-            </MainLayout>
+            <RutaProtegida
+              roles={["admin", "veterinario"]}
+            >
+              <MainLayout>
+                <Servicios />
+              </MainLayout>
+            </RutaProtegida>
           }
         />
 
         <Route
           path="/publicidad"
           element={
-            <MainLayout>
-              <Publicidad />
-            </MainLayout>
+            <RutaProtegida
+              roles={["admin"]}
+            >
+              <MainLayout>
+                <Publicidad />
+              </MainLayout>
+            </RutaProtegida>
           }
         />
 
@@ -99,9 +116,13 @@ function App() {
         <Route
           path="/inventario"
           element={
-            <MainLayout>
-              <InventarioLayout />
-            </MainLayout>
+            <RutaProtegida
+              roles={["admin", "asistente"]}
+            >
+              <MainLayout>
+                <InventarioLayout />
+              </MainLayout>
+            </RutaProtegida>
           }
         >
 
