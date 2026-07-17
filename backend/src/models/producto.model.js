@@ -13,7 +13,7 @@ const obtenerProductos = async () => {
             p.stock_minimo,
             p.fecha_vencimiento,
             c.nombre AS categoria,
-            pr.nombre AS proveedor,s
+            pr.nombre AS proveedor,
             p.estado
         FROM productos p
         LEFT JOIN categorias_producto c

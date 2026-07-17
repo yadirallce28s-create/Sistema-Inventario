@@ -5,6 +5,7 @@ const router = express.Router();
 const {
   listarServicios,
   registrarServicio,
+  editarServicio
 } = require("../controllers/servicios.controller");
 
 router.get("/", listarServicios);
