@@ -43,8 +43,37 @@ const registrarServicio = async (req, res) => {
     });
   }
 };
+const editarServicio = async (req, res) => {
+
+    console.log(req.params.id);
+    console.log(req.body);
+
+    try {
+
+        const servicio = await Servicio.actualizarServicio(
+            req.params.id,
+            req.body
+        );
+
+        res.json({
+            status: "success",
+            servicio
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            status: "error"
+        });
+
+    }
+
+};
 
 module.exports = {
   listarServicios,
   registrarServicio,
+  editarServicio
 };

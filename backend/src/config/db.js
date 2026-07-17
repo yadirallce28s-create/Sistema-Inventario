@@ -5,7 +5,7 @@ const pool = new Pool({
   host: "localhost",
   database: "doky_pets_db",
   password: "5432",
-  port: 5433,
+  port: 5432,
 });
 
 module.exports = pool;

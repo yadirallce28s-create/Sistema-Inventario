@@ -22,6 +22,9 @@ import {
 
 function Sidebar() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const esAdmin = usuario?.rol === "admin";
+  const esVeterinario = usuario?.rol === "veterinario";
+  const esAsistente = usuario?.rol === "asistente";
   const [inventarioOpen, setInventarioOpen] = useState(false);
   return (
     <aside className="sidebar">
@@ -47,36 +50,29 @@ function Sidebar() {
         <span className="sidebar-title">PRINCIPAL</span>
 
         <NavLink to="/dashboard" className="sidebar-link">
-        <MdDashboard className="menu-icon" />
+          <MdDashboard className="menu-icon" />
           <span>Panel de control</span>
         </NavLink>
+        {(esAdmin || esAsistente) && (
+          <div className="sidebar-menu">
 
-        <div className="sidebar-menu">
+            <button
+              className="sidebar-dropdown"
+              onClick={() => setInventarioOpen(!inventarioOpen)}
+            >
 
-          <button
-            className="sidebar-dropdown"
-            onClick={() => setInventarioOpen(!inventarioOpen)}
-          >
+              <div className="sidebar-dropdown-title">
 
-            <div className="sidebar-dropdown-title">
+                <MdInventory2 className="menu-icon" />
+                <span>Inventario</span>
 
-             <MdInventory2 className="menu-icon" />
+              </div>
 
-              <span>Inventario</span>
+              {inventarioOpen ? <FaChevronDown /> : <FaChevronRight />}
 
-            </div>
+            </button>
 
-            {
-              inventarioOpen
-                ? <FaChevronDown />
-                : <FaChevronRight />
-            }
-
-          </button>
-
-          {
-            inventarioOpen && (
-
+            {inventarioOpen && (
               <div className="sidebar-submenu">
 
                 <NavLink
@@ -95,32 +91,38 @@ function Sidebar() {
                   Alertas
                 </NavLink>
 
-                <NavLink
-                  to="/inventario/proveedores"
-                  className="sidebar-sublink"
-                >
-                  <MdLocalShipping className="menu-icon" />
-                  Proveedores
-                </NavLink>
+                {esAdmin && (
+                  <NavLink
+                    to="/inventario/proveedores"
+                    className="sidebar-sublink"
+                  >
+                    <MdLocalShipping className="menu-icon" />
+                    Proveedores
+                  </NavLink>
+                )}
 
               </div>
+            )}
 
-            )
-          }
+          </div>
+        )}
 
-        </div>
-        <NavLink to="/servicios" className="sidebar-link">
-         <MdMedicalServices className="menu-icon" />
-          <span>Servicios</span>
-        </NavLink>
+        {(esAdmin || esVeterinario) && (
+          <NavLink to="/servicios" className="sidebar-link">
+            <MdMedicalServices className="menu-icon" />
+            <span>Servicios</span>
+          </NavLink>
+        )}
 
-        <NavLink to="/publicidad" className="sidebar-link">
-         <MdCampaign className="menu-icon" />
-          <span>Publicidad</span>
-        </NavLink>
+        {esAdmin && (
+          <NavLink to="/publicidad" className="sidebar-link">
+            <MdCampaign className="menu-icon" />
+            <span>Publicidad</span>
+          </NavLink>
+        )}
 
         <NavLink to="/mascotas" className="sidebar-link">
-         <MdPets className="menu-icon" />
+          <MdPets className="menu-icon" />
           <span>Mascotas</span>
         </NavLink>
       </div>
@@ -129,23 +131,27 @@ function Sidebar() {
         <span className="sidebar-title">GESTIÓN</span>
 
         <NavLink to="/clientes" className="sidebar-link">
-         <MdGroups className="menu-icon" />
+          <MdGroups className="menu-icon" />
           <span>Clientes</span>
         </NavLink>
 
         <NavLink to="/citas" className="sidebar-link">
-         <MdEventAvailable className="menu-icon" />
+          <MdEventAvailable className="menu-icon" />
           <span>Citas</span>
         </NavLink>
-        <NavLink to="/ventas" className="sidebar-link">
-         <MdPointOfSale className="menu-icon" />
-          <span>Ventas</span>
-        </NavLink>
+        {(esAdmin || esAsistente) && (
+          <NavLink to="/ventas" className="sidebar-link">
+            <MdPointOfSale className="menu-icon" />
+            <span>Ventas</span>
+          </NavLink>
+        )}
 
-        <NavLink to="/configuracion" className="sidebar-link">
-         <MdSettings className="menu-icon" />
-          <span>Configuración</span>
-        </NavLink>
+        {esAdmin && (
+          <NavLink to="/configuracion" className="sidebar-link">
+            <MdSettings className="menu-icon" />
+            <span>Configuración</span>
+          </NavLink>
+        )}
       </div>
     </aside>
   );
