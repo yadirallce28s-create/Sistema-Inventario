@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 function Publicidad() {
   const [campanas, setCampanas] = useState([]);
   
-  // Control de Modales
+  // Control de Modales y Desplegables
   const [modalAbierto, setModalAbierto] = useState(null); // 'subir', 'aplicar', 'consultar'
   const [campanaSeleccionada, setCampanaSeleccionada] = useState(null);
+  const [mostrarGrafico, setMostrarGrafico] = useState(false); // Estado para el botón desplegable
 
   // Estados del formulario para Subir/Editar Afiche (Campaña)
   const [imagen, setImagen] = useState("");
@@ -20,7 +21,7 @@ function Publicidad() {
   const [descripcion, setDescripcion] = useState("");
   const [idEditar, setIdEditar] = useState(null);
 
-  // Estados del Formulario "Aplicar Promoción" (Boceto izquierdo)
+  // Estados del Formulario "Aplicar Promoción"
   const [precioOriginal, setPrecioOriginal] = useState("");
   const [descuentoPorcentaje, setDescuentoPorcentaje] = useState("");
   const [precioDescuento, setPrecioDescuento] = useState(0);
@@ -34,7 +35,7 @@ function Publicidad() {
     obtenerDatosGrafico();
   }, []);
 
-  // Calcular automáticamente el precio de descuento al cambiar precio o porcentaje
+  // Calcular automáticamente el precio de descuento
   useEffect(() => {
     const original = parseFloat(precioOriginal) || 0;
     const desc = parseFloat(descuentoPorcentaje) || 0;
@@ -113,8 +114,8 @@ function Publicidad() {
         method: metodo,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          titulo: titulo || `Campaña ${plataforma} (${tipoArchivo === "video" ? "Video" : "Afiche"})`, 
-          descripcion: descripcion || (tipoArchivo === "video" ? "Video publicitario" : "Afiche publicitario"), 
+          titulo: titulo || `Campaña ${plataforma}`, 
+          descripcion: descripcion || "Sin descripción", 
           imagen_url: imagen,
           fecha_inicio: fechaInicio || new Date().toISOString().substring(0, 10),
           fecha_fin: fechaFin || null,
@@ -161,7 +162,7 @@ function Publicidad() {
     obtenerCampanas();
   };
 
-  // Acción del Botón "APLICAR": Guarda el registro del interesado al enviar
+  // BOTÓN "APLICAR": Incrementa el contador de interesados al guardar
   const enviarAplicarPromocion = async () => {
     if (!precioOriginal) {
       alert("Por favor ingresa un precio original");
@@ -181,12 +182,19 @@ function Publicidad() {
       });
       
       alert("¡Promoción aplicada correctamente!");
-      obtenerCampanas();
+      
+      // Actualización visual reactiva e inmediata del contador de interesados
+      setCampanas(prevCampanas => 
+        prevCampanas.map(item => 
+          item.id === campanaSeleccionada.id 
+            ? { ...item, personas_interesadas: (item.personas_interesadas || 0) + 1 }
+            : item
+        )
+      );
+      obtenerDatosGrafico();
+
       setModalAbierto(null);
-      // Opcional: Si el boceto dice "redirige", abrimos el enlace de la red social
-      if (campanaSeleccionada.enlace_red_social) {
-        window.open(campanaSeleccionada.enlace_red_social, "_blank");
-      }
+      
     } catch (error) {
       console.error(error);
     }
@@ -211,9 +219,7 @@ function Publicidad() {
         </div>
       </div>
 
-      {/* ==========================================================================
-          GRID DE TARJETAS (REEMPLAZA LA TABLA)
-         ========================================================================== */}
+      {/* GRID DE TARJETAS */}
       {campanas.length === 0 ? (
         <div className="empty-state-container">
           <p style={{ color: '#9ca3af' }}>No hay afiches o campañas creadas en este momento.</p>
@@ -224,7 +230,6 @@ function Publicidad() {
             const esVideoArchivo = campana.imagen_url?.includes("data:video/");
             return (
               <div className="campana-card" key={campana.id}>
-                {/* Visualizador de Multimedia */}
                 <div className="card-media-wrapper">
                   {campana.imagen_url ? (
                     esVideoArchivo ? (
@@ -237,7 +242,6 @@ function Publicidad() {
                   )}
                 </div>
 
-                {/* Info de Tarjeta */}
                 <div className="card-info">
                   <div>
                     <h3>{campana.titulo || "Sin título"}</h3>
@@ -246,10 +250,11 @@ function Publicidad() {
 
                   <div className="card-meta-tags">
                     <span className="card-badge-plataforma">{campana.plataforma || "Redes"}</span>
-                    <span>🔥 {campana.personas_interesadas || 0} interesados</span>
+                    <span style={{ fontWeight: '600', color: '#f59e0b' }}>
+                      🔥 {campana.personas_interesadas || 0} interesados
+                    </span>
                   </div>
 
-                  {/* ACCIONES DEL BOCETO */}
                   <div className="card-btn-group">
                     <button 
                       className="btn-card-aplicar"
@@ -282,7 +287,6 @@ function Publicidad() {
                   </div>
                 </div>
 
-                {/* Acciones Administrativas */}
                 <div className="card-admin-actions">
                   <button className="btn-card-edit" onClick={() => iniciarEditar(campana)}>
                     ✏️ Editar
@@ -298,38 +302,45 @@ function Publicidad() {
       )}
 
       {/* ==========================================================================
-          SECCIÓN DE GRÁFICOS
+          BOTÓN DESPLEGABLE CON EL GRÁFICO (REPORTE LIMPIO DE SISTEMA)
          ========================================================================== */}
-      <div className="panel grafico-wrapper">
-        <h2>📈 Crecimiento Mensual de Clientes</h2>
-        <p className="grafico-subtitle">Evidencia de adquisición de nuevos clientes posterior a las campañas publicitarias</p>
-        <div className="grafico-ejes">
-          {datosGrafico.length === 0 ? (
-            <p className="grafico-sin-datos">Esperando datos de registro de clientes...</p>
-          ) : (
-            datosGrafico.map((item, index) => (
-              <div key={index} className="grafico-columna-container">
-                <div 
-                  className="grafico-barra"
-                  style={{ height: `${Math.max(item.cantidad * 20, 25)}px` }}
-                >
-                  {item.cantidad}
+      <button 
+        className="desplegable-grafico-btn" 
+        onClick={() => setMostrarGrafico(!mostrarGrafico)}
+      >
+        <span>📊 Crecimiento mensual de clientes</span>
+        <span className={`icono-flecha ${mostrarGrafico ? 'rotado' : ''}`}>▼</span>
+      </button>
+
+      <div className={`desplegable-grafico-contenido ${mostrarGrafico ? 'abierto' : ''}`}>
+        <div className="panel grafico-wrapper" style={{ margin: 0, background: 'transparent', border: 'none' }}>
+          
+          <div className="grafico-ejes">
+            {datosGrafico.length === 0 ? (
+              <p className="grafico-sin-datos">Esperando datos de registro de clientes...</p>
+            ) : (
+              datosGrafico.map((item, index) => (
+                <div key={index} className="grafico-columna-container">
+                  <div 
+                    className="grafico-barra"
+                    style={{ height: `${Math.max(item.cantidad * 20, 25)}px` }}
+                  >
+                    {item.cantidad}
+                  </div>
+                  <span className="grafico-etiqueta-mes">{item.mes}</span>
                 </div>
-                <span className="grafico-etiqueta-mes">{item.mes}</span>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
         </div>
       </div>
 
-      {/* ==========================================================================
-          MODAL 1: ME INTERESA / APLICAR PROMOCIÓN (BOCETO IZQUIERDO)
-         ========================================================================== */}
+      {/* MODAL 1: ME INTERESA / APLICAR PROMOCIÓN */}
       {modalAbierto === "aplicar" && campanaSeleccionada && (
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header-dark">
-              <h2>Me interesa (Formulario)</h2>
+              <h2>Aplicar Promoción</h2>
               <button className="btn-cerrar-modal" onClick={() => setModalAbierto(null)}>✕</button>
             </div>
             <div className="modal-body">
@@ -376,14 +387,12 @@ function Publicidad() {
         </div>
       )}
 
-      {/* ==========================================================================
-          MODAL 2: CONSULTA (BOCETO CENTRAL)
-         ========================================================================== */}
+      {/* MODAL 2: CONSULTA */}
       {modalAbierto === "consultar" && campanaSeleccionada && (
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header-dark">
-              <h2>Consulta (Formulario)</h2>
+              <h2>Consultas</h2>
               <button className="btn-cerrar-modal" onClick={() => setModalAbierto(null)}>✕</button>
             </div>
             <div className="modal-body">
@@ -408,9 +417,7 @@ function Publicidad() {
         </div>
       )}
 
-      {/* ==========================================================================
-          MODAL 3: SUBIR AFICHE / VIDEO (BOCETO DERECHO)
-         ========================================================================== */}
+      {/* MODAL 3: SUBIR AFICHE / VIDEO */}
       {modalAbierto === "subir" && (
         <div className="modal-overlay">
           <div className="modal">

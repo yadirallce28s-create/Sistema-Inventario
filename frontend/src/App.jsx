@@ -7,7 +7,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Clientes from "./pages/cliente/Clientes";
 import Mascotas from "./pages/mascota/Mascotas";
 import Citas from "./pages/cita/Citas";
-import Ventas from "./pages/venta/Ventas";
+import Ventas from "./pages/ventas/ventas";
 import Servicios from "./pages/servicio/Servicios";
 import Publicidad from "./pages/publicidad/Publicidad";
 

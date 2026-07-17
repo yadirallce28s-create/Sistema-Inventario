@@ -308,3 +308,147 @@
   padding: 40px;
   text-align: center;
 }
+
+/* ==========================================================================
+   ESTRUCTURA DE BOTÓN DESPLEGABLE ESTILO SISTEMA (BOOTSTRAP / CRM)
+   ========================================================================== */
+.desplegable-grafico-btn {
+  width: 100% !important;
+  background-color: #f8f9fa !important; /* Gris claro de sistema tradicional */
+  border: 1px solid #dee2e6 !important; /* Borde estándar de formulario */
+  color: #212529 !important; /* Texto negro administrativo */
+  padding: 12px 16px !important;
+  border-radius: 4px !important; /* Bordes cuadrados típicos de sistemas */
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  box-shadow: none !important; /* Cero efectos flotantes */
+}
+
+/* Efecto hover tradicional */
+.desplegable-grafico-btn:hover {
+  background-color: #e2e6ea !important;
+  border-color: #dae0e5 !important;
+}
+
+/* Flecha estándar negra */
+.icono-flecha {
+  font-size: 10px !important;
+  color: #495057 !important;
+  transition: transform 0.2s ease !important;
+}
+
+.icono-flecha.rotado {
+  transform: rotate(180deg) !important;
+}
+
+
+/* ==========================================================================
+   CONTENEDOR DEL ACORDEÓN DE SISTEMA
+   ========================================================================== */
+.desplegable-grafico-contenido {
+  max-height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0;
+  transition: max-height 0.3s ease-out, opacity 0.2s ease-out !important;
+  background-color: #ffffff !important; /* Fondo blanco de reporte impreso */
+  border-radius: 0 0 4px 4px !important;
+  border: 1px solid transparent;
+}
+
+/* Cuando el acordeón se abre */
+.desplegable-grafico-contenido.abierto {
+  max-height: 500px !important;
+  opacity: 1;
+  padding: 20px !important;
+  border: 1px solid #dee2e6 !important;
+  border-top: none !important;
+  margin-bottom: 25px;
+}
+
+
+/* ==========================================================================
+   PANEL DE GRÁFICO ESTILO REPORTE ADMINISTRATIVO
+   ========================================================================== */
+.panel.grafico-wrapper {
+  background: #ffffff !important;
+  border: 1px solid #e3e6f0 !important; /* Recuadro gris de control */
+  border-radius: 4px !important;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* Títulos serios de sistema */
+.desplegable-grafico-contenido h2 {
+  color: #4e73df !important; /* Azul corporativo estándar de sistemas */
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.grafico-subtitle {
+  color: #858796 !important; /* Gris de subtítulo técnico */
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+
+/* ==========================================================================
+   EJES Y BARRAS DEL GRÁFICO TIPO TABLERO MÉTRICO
+   ========================================================================== */
+.grafico-ejes {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 30px;
+  min-height: 180px;
+  padding: 10px;
+  background: none !important; /* Quitamos brillos */
+  border-bottom: 2px solid #b7b9cc !important; /* Línea de base gris cemento */
+  border-left: 2px solid #b7b9cc !important; /* Eje Y vertical de gráfico real */
+}
+
+.grafico-columna-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
+}
+
+/* Barra sólida de reporte (como las de Excel o Bootstrap) */
+.grafico-barra {
+  width: 100%;
+  background-color: #4e73df !important; /* Azul sólido plano */
+  color: #ffffff !important; /* Texto blanco legible dentro */
+  font-weight: 600;
+  font-size: 11px;
+  text-align: center;
+  border-radius: 0 !important; /* Planas completamente cuadradas */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  box-shadow: none !important; /* Sin brillos flotantes */
+  min-height: 30px;
+  transition: background-color 0.15s ease !important;
+}
+
+/* Simplemente cambia un poco el tono al pasar el cursor */
+.grafico-barra:hover {
+  background-color: #2e59d9 !important;
+  transform: none !important; /* Sin animaciones raras */
+}
+
+/* Etiquetas inferiores */
+.grafico-etiqueta-mes {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #5a5c69 !important; /* Gris oscuro técnico */
+  font-weight: 600;
+}
