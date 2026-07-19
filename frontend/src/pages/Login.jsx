@@ -33,7 +33,7 @@ function Login() {
   const ingresar = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/login",
+        "https://sistema-inventario-95aj.onrender.com/api/auth/login",
         {
           method: "POST",
           headers: {
@@ -96,7 +96,7 @@ function Login() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/register",
+        "https://sistema-inventario-95aj.onrender.com/api/auth/register",
         {
           method: "POST",
           headers: {

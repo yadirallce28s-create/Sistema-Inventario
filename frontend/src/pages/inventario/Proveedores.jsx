@@ -32,7 +32,7 @@ function Proveedores() {
     try {
 
       const response = await fetch(
-        "http://localhost:5000/api/proveedores"
+        "https://sistema-inventario-95aj.onrender.com/api/proveedores"
       );
 
       const data = await response.json();
@@ -64,7 +64,7 @@ function Proveedores() {
     try {
 
       await fetch(
-        "http://localhost:5000/api/proveedores",
+        "https://sistema-inventario-95aj.onrender.com/api/proveedores",
         {
           method: "POST",
           headers: {

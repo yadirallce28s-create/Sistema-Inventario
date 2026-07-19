@@ -202,7 +202,7 @@ function ModalNuevaVenta({
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/ventas",
+                "https://sistema-inventario-95aj.onrender.com/api/ventas",
                 {
                     method: "POST",
                     headers: {

@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api/productos";
+const API = "https://sistema-inventario-95aj.onrender.com/api/productos";
 
 export const obtenerProductos = async () => {
     const response = await fetch(API);
@@ -52,7 +52,7 @@ export const eliminarProducto = async(id)=>{
 
 export const obtenerCategorias = async () => {
     const response = await fetch(
-        "http://localhost:5000/api/categorias"
+        "https://sistema-inventario-95aj.onrender.com/api/categorias"
     );
     const data = await response.json();
     return data.categorias;
@@ -60,7 +60,7 @@ export const obtenerCategorias = async () => {
 
 export const obtenerProveedores = async () => {
     const response = await fetch(
-        "http://localhost:5000/api/proveedores"
+        "https://sistema-inventario-95aj.onrender.com/api/proveedores"
     );
     const data = await response.json();
     return data.proveedores;

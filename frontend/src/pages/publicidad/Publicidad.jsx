@@ -49,7 +49,7 @@ function Publicidad() {
 
   const obtenerCampanas = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/publicidad");
+      const response = await fetch("https://sistema-inventario-95aj.onrender.com/api/publicidad");
       const data = await response.json();
       setCampanas(data.campanas || []);
     } catch (error) {
@@ -59,7 +59,7 @@ function Publicidad() {
 
   const obtenerDatosGrafico = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/publicidad/clientes-mes");
+      const response = await fetch("https://sistema-inventario-95aj.onrender.com/api/publicidad/clientes-mes");
       const data = await response.json();
       if (data.status === "success") {
         setDatosGrafico(data.data || []);
@@ -105,8 +105,8 @@ function Publicidad() {
   const guardarCampana = async () => {
     try {
       const url = idEditar
-        ? `http://localhost:5000/api/publicidad/${idEditar}`
-        : "http://localhost:5000/api/publicidad";
+        ? `https://sistema-inventario-95aj.onrender.com/api/publicidad/${idEditar}`
+        : "https://sistema-inventario-95aj.onrender.com/api/publicidad";
 
       const metodo = idEditar ? "PUT" : "POST";
 
@@ -158,7 +158,7 @@ function Publicidad() {
 
   const eliminarCampana = async (id) => {
     if (!window.confirm("¿Desea eliminar esta campaña?")) return;
-    await fetch(`http://localhost:5000/api/publicidad/${id}`, { method: "DELETE" });
+    await fetch(`https://sistema-inventario-95aj.onrender.com/api/publicidad/${id}`, { method: "DELETE" });
     obtenerCampanas();
   };
 
@@ -169,7 +169,7 @@ function Publicidad() {
       return;
     }
     try {
-      await fetch("http://localhost:5000/api/publicidad/interesado", {
+      await fetch("https://sistema-inventario-95aj.onrender.com/api/publicidad/interesado", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 

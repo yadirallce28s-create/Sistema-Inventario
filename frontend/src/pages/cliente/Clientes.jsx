@@ -18,7 +18,7 @@ function Clientes() {
   // obtener clientes desde backend
   const obtenerClientes = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/clientes");
+      const response = await fetch("https://sistema-inventario-95aj.onrender.com/api/clientes");
       const data = await response.json();
 
       if (data.status === "success") {
@@ -36,7 +36,7 @@ function Clientes() {
   // guardar cliente
   const guardarCliente = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/clientes", {
+      const response = await fetch("https://sistema-inventario-95aj.onrender.com/api/clientes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -23,7 +23,7 @@ function Alertas() {
     const obtenerAlertas = async () => {
         try {
             const response = await fetch(
-                "http://localhost:5000/api/alertas"
+                "https://sistema-inventario-95aj.onrender.com/api/alertas"
             );
             const data = await response.json();
             setAlertas(data.alertas);
