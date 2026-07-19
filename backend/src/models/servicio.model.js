@@ -40,8 +40,39 @@ const crearServicio = async (datos) => {
 
   return resultado.rows[0];
 };
+const actualizarServicio = async (id, datos) => {
 
+  const {
+    nombre,
+    descripcion,
+    precio,
+    duracion_minutos
+  } = datos;
+
+  const resultado = await pool.query(
+    `
+    UPDATE servicios
+    SET
+      nombre=$1,
+      descripcion=$2,
+      precio=$3,
+      duracion_minutos=$4
+    WHERE id=$5
+    RETURNING *
+    `,
+    [
+      nombre,
+      descripcion,
+      precio,
+      duracion_minutos,
+      id
+    ]
+  );
+
+  return resultado.rows[0];
+};
 module.exports = {
   obtenerServicios,
   crearServicio,
+  actualizarServicio
 };

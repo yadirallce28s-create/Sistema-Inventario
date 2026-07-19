@@ -1,182 +1,544 @@
-
-.publicidad-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:25px;
-
+/* ==========================================================================
+   ESTRUCTURA DE CABECERA Y BOTONES DE SUBIDA
+   ========================================================================== */
+.publicidad-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 25px;
 }
 
-.publicidad-header h1{
-
-    color:#0f172a;
-
-    font-size:32px;
-
+.header-btn-group {
+  display: flex !important;
+  gap: 12px !important;
 }
 
-.publicidad-header p{
+.btn-nuevo {
+  background-color: #10b981;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-nuevo:hover { background-color: #059669; transform: translateY(-1px); }
 
-    color:#64748b;
+.btn-nuevo-video {
+  background-color: #3b82f6;
+}
+.btn-nuevo-video:hover { background-color: #2563eb; }
 
+/* ==========================================================================
+   GRID DE TARJETAS (SEGÚN TU BOCETO)
+   ========================================================================== */
+.campanas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
 }
 
-.btn-nuevo{
-
-    background:#14b8a6;
-
-    color:white;
-
-    border:none;
-
-    padding:12px 24px;
-
-    border-radius:10px;
-
-    cursor:pointer;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-    transition:.3s;
-
+.campana-card {
+  background: #1e1e1e;
+  border-radius: 14px;
+  border: 1px solid #2d2d2d;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.btn-nuevo:hover{
-
-    background:#0f766e;
-
+.campana-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
-.buscador{
-
-    width:100%;
-
-    padding:14px;
-
-    border:1px solid #ddd;
-
-    border-radius:10px;
-
-    margin-bottom:25px;
-
-    font-size:15px;
-
+/* Contenedor del Afiche / Video */
+.card-media-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background-color: #121212;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.panel{
-
-    background:white;
-
-    border-radius:18px;
-
-    padding:25px;
-
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-
+.card-media-wrapper video,
+.card-media-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.tabla{
-
-    width:100%;
-
-    border-collapse:collapse;
-
+.card-media-placeholder {
+  color: #555;
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
 }
 
-.tabla th{
-
-    background:#14b8a6;
-
-    color:white;
-
-    padding:14px;
-
-    text-align:left;
-
+/* Info e Info de Redes */
+.card-info {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.tabla td{
-
-    padding:14px;
-
-    border-bottom:1px solid #eee;
-
+.card-info h3 {
+  margin: 0 0 4px 0;
+  color: #ffffff;
+  font-size: 16px;
 }
 
-.tabla tr:hover{
-
-    background:#f8fafc;
-
+.card-info p {
+  margin: 0 0 12px 0;
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
-.btn-editar{
-
-    background:#0ea5e9;
-
-    color:white;
-
-    border:none;
-
-    padding:8px 15px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
+.card-meta-tags {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 14px;
 }
 
-.btn-editar:hover{
-
-    background:#0369a1;
-
-}
-.btn-eliminar{
-
-    background:#ef4444;
-
-    color:white;
-
-    border:none;
-
-    padding:8px 14px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    margin-left:10px;
-
-    transition:.3s;
-
+.card-badge-plataforma {
+  background: #2d2d2d;
+  color: #3b82f6;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.btn-eliminar:hover{
-
-    background:#dc2626;
-
+/* Fila de Botones (Aplicar, Consultar, Abrir) */
+.card-btn-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  border-top: 1px solid #2d2d2d;
+  padding-top: 12px;
 }
 
-.empty-state{
-    background:white;
-    padding:50px;
-    text-align:center;
-    border-radius:18px;
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-    margin-top:20px;
+.card-btn-group button,
+.card-btn-group a {
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s;
 }
 
-.empty-state h2{
-    color:#14b8a6;
-    margin-bottom:10px;
+/* Botón APLICAR */
+.btn-card-aplicar {
+  background-color: #10b981; /* Verde */
+  color: #fff;
+}
+.btn-card-aplicar:hover { background-color: #059669; }
+
+/* Botón CONSULTAR */
+.btn-card-consultar {
+  background-color: #4b5563; /* Gris */
+  color: #fff;
+}
+.btn-card-consultar:hover { background-color: #374151; }
+
+/* Botón ABRIR */
+.btn-card-abrir {
+  background-color: #3b82f6; /* Azul */
+  color: #fff;
+}
+.btn-card-abrir:hover { background-color: #2563eb; }
+
+/* Botón de control de administración en la tarjeta */
+.card-admin-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #151515;
+  border-top: 1px solid #2d2d2d;
 }
 
-.empty-state p{
-    color:#64748b;
-    margin-bottom:20px;
+.btn-card-edit, .btn-card-delete {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #9ca3af;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-card-edit:hover { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+.btn-card-delete:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+
+/* ==========================================================================
+   DISEÑO OSCURO PARA MODALES
+   ========================================================================== */
+.publicidad-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.publicidad-modal {
+  background: #1e1e1e !important;
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  border-radius: 16px !important;
+  border: 1px solid #2d2d2d;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header-dark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 10px 24px;
+}
+
+.modal-header-dark h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b82f6 !important;
+}
+
+.btn-cerrar-modal {
+  background: transparent;
+  border: none;
+  color: #a0a0a0;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-cerrar-modal:hover { color: #fff; background: #2a2a2a; }
+
+/* ==========================================================================
+   CUERPO DEL MODAL (clase real usada en el JSX: .publicidad-modal-body)
+   ========================================================================== */
+.publicidad-modal-body {
+  padding: 10px 24px 24px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Scrollbar oscuro y discreto */
+.publicidad-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.publicidad-modal-body::-webkit-scrollbar-thumb {
+  background: #3e3e42;
+  border-radius: 10px;
+}
+
+.publicidad-modal-body label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9ca3af !important;
+  margin-top: 16px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.publicidad-modal-body label:first-of-type { margin-top: 0; }
+
+.publicidad-modal-body input,
+.publicidad-modal-body select,
+.publicidad-modal-body textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #2a2a2a !important;
+  border: 1px solid #3e3e42 !important;
+  color: #ffffff !important;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.publicidad-modal-body input::placeholder,
+.publicidad-modal-body textarea::placeholder {
+  color: #6b7280;
+}
+
+.publicidad-modal-body input:focus,
+.publicidad-modal-body select:focus,
+.publicidad-modal-body textarea:focus {
+  outline: none;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Inputs de fecha con iconos legibles en tema oscuro */
+.publicidad-modal-body input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Input de archivo con apariencia de botón, acorde al resto */
+.publicidad-modal-body input[type="file"] {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.publicidad-modal-body input[type="file"]::file-selector-button {
+  background-color: #3a3a3c;
+  color: #e5e7eb;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: background 0.15s;
+}
+.publicidad-modal-body input[type="file"]::file-selector-button:hover {
+  background-color: #4b5563;
+}
+
+.publicidad-modal-body textarea {
+  resize: none;
+  line-height: 1.5;
+}
+
+/* Vista previa de imagen/video dentro del modal de subida */
+.modal-preview-container img,
+.modal-preview-container video {
+  border-radius: 8px;
+  border: 1px solid #3e3e42;
+}
+
+.publicidad-modal-buttons {
+  padding: 16px 24px;
+  background-color: #151515;
+  border-top: 1px solid #2d2d2d;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-publicidad-cancelar {
+  background-color: #3a3a3c !important;
+  color: #e5e7eb !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-publicidad-cancelar:hover { background-color: #4b5563 !important; }
+
+.btn-publicidad-guardar {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+.btn-publicidad-guardar:hover { background-color: #2563eb !important; }
+
+/* Contenedor del Estado Activo en Consultas */
+.consultar-estado-box {
+  background-color: #2a2a2a;
+  border: 1px solid #3e3e42;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  color: #e5e7eb;
+}
+
+.consultar-estado-box strong {
+  color: #10b981; /* Verde */
+}
+
+/* Vacío */
+.empty-state-container {
+  padding: 40px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   ESTRUCTURA DE BOTÓN DESPLEGABLE ESTILO SISTEMA (BOOTSTRAP / CRM)
+   ========================================================================== */
+.desplegable-grafico-btn {
+  width: 100% !important;
+  background-color: #f8f9fa !important; /* Gris claro de sistema tradicional */
+  border: 1px solid #dee2e6 !important; /* Borde estándar de formulario */
+  color: #212529 !important; /* Texto negro administrativo */
+  padding: 12px 16px !important;
+  border-radius: 4px !important; /* Bordes cuadrados típicos de sistemas */
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  box-shadow: none !important; /* Cero efectos flotantes */
+}
+
+/* Efecto hover tradicional */
+.desplegable-grafico-btn:hover {
+  background-color: #e2e6ea !important;
+  border-color: #dae0e5 !important;
+}
+
+/* Flecha estándar negra */
+.icono-flecha {
+  font-size: 10px !important;
+  color: #495057 !important;
+  transition: transform 0.2s ease !important;
+}
+
+.icono-flecha.rotado {
+  transform: rotate(180deg) !important;
+}
+
+
+/* ==========================================================================
+   CONTENEDOR DEL ACORDEÓN DE SISTEMA
+   ========================================================================== */
+.desplegable-grafico-contenido {
+  max-height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0;
+  transition: max-height 0.3s ease-out, opacity 0.2s ease-out !important;
+  background-color: #ffffff !important; /* Fondo blanco de reporte impreso */
+  border-radius: 0 0 4px 4px !important;
+  border: 1px solid transparent;
+}
+
+/* Cuando el acordeón se abre */
+.desplegable-grafico-contenido.abierto {
+  max-height: 500px !important;
+  opacity: 1;
+  padding: 20px !important;
+  border: 1px solid #dee2e6 !important;
+  border-top: none !important;
+  margin-bottom: 25px;
+}
+
+
+/* ==========================================================================
+   PANEL DE GRÁFICO ESTILO REPORTE ADMINISTRATIVO
+   ========================================================================== */
+.panel.grafico-wrapper {
+  background: #ffffff !important;
+  border: 1px solid #e3e6f0 !important; /* Recuadro gris de control */
+  border-radius: 4px !important;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* Títulos serios de sistema */
+.desplegable-grafico-contenido h2 {
+  color: #4e73df !important; /* Azul corporativo estándar de sistemas */
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.grafico-subtitle {
+  color: #858796 !important; /* Gris de subtítulo técnico */
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+
+/* ==========================================================================
+   EJES Y BARRAS DEL GRÁFICO TIPO TABLERO MÉTRICO
+   ========================================================================== */
+.grafico-ejes {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 30px;
+  min-height: 180px;
+  padding: 10px;
+  background: none !important; /* Quitamos brillos */
+  border-bottom: 2px solid #b7b9cc !important; /* Línea de base gris cemento */
+  border-left: 2px solid #b7b9cc !important; /* Eje Y vertical de gráfico real */
+}
+
+.grafico-columna-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
+}
+
+/* Barra sólida de reporte (como las de Excel o Bootstrap) */
+.grafico-barra {
+  width: 100%;
+  background-color: #4e73df !important; /* Azul sólido plano */
+  color: #ffffff !important; /* Texto blanco legible dentro */
+  font-weight: 600;
+  font-size: 11px;
+  text-align: center;
+  border-radius: 0 !important; /* Planas completamente cuadradas */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  box-shadow: none !important; /* Sin brillos flotantes */
+  min-height: 30px;
+  transition: background-color 0.15s ease !important;
+}
+
+/* Simplemente cambia un poco el tono al pasar el cursor */
+.grafico-barra:hover {
+  background-color: #2e59d9 !important;
+  transform: none !important; /* Sin animaciones raras */
+}
+
+/* Etiquetas inferiores */
+.grafico-etiqueta-mes {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #5a5c69 !important; /* Gris oscuro técnico */
+  font-weight: 600;
 }

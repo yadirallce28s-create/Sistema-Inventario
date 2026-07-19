@@ -13,7 +13,7 @@ import {
   atenderCita,
   editarCita,
   eliminarCita
-} from "./citasService";
+} from "../../services/citasService";
 
 export default function useCitas() {
 

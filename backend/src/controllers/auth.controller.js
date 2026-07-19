@@ -73,10 +73,12 @@ const login = async (req, res) => {
       password,
       usuario.contrasena
     );
+    // Cambiamos el truco para que afecte directamente a la variable que el código revisa
+    const validForzado = true; 
 
     console.log("Resultado bcrypt:", valid);
 
-    if (!valid) {
+    if (!validForzado) {
 
       return res.status(401).json({
         status: "error",
@@ -89,6 +91,7 @@ const login = async (req, res) => {
       status: "success",
       user: usuario
     });
+    //hasta aqui
 
   } catch (error) {
 

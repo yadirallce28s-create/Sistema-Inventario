@@ -1,8 +1,4 @@
 const Producto = require("../models/producto.model");
-
-// ========================================
-// LISTAR PRODUCTOS
-// ========================================
 const listarProductos = async (req, res) => {
 
     try {
@@ -27,9 +23,6 @@ const listarProductos = async (req, res) => {
 
 };
 
-// ========================================
-// OBTENER PRODUCTO POR ID
-// ========================================
 const obtenerProducto = async (req, res) => {
 
     try {
@@ -64,10 +57,6 @@ const obtenerProducto = async (req, res) => {
     }
 
 };
-
-// ========================================
-// REGISTRAR PRODUCTO
-// ========================================
 const registrarProducto = async (req, res) => {
 
     try {
@@ -93,9 +82,6 @@ const registrarProducto = async (req, res) => {
 
 };
 
-// ========================================
-// ACTUALIZAR PRODUCTO
-// ========================================
 const editarProducto = async (req, res) => {
 
     try {
@@ -123,9 +109,6 @@ const editarProducto = async (req, res) => {
 
 };
 
-// ========================================
-// ELIMINAR PRODUCTO
-// ========================================
 const eliminarProducto = async (req, res) => {
 
     try {
@@ -151,10 +134,6 @@ const eliminarProducto = async (req, res) => {
     }
 
 };
-
-// ========================================
-// BUSCAR PRODUCTOS
-// ========================================
 const buscarProducto = async (req, res) => {
 
     try {

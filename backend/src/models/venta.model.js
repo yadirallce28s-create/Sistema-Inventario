@@ -39,9 +39,7 @@ const crearVenta = async (datos) => {
 
         let total = 0;
 
-        // ===========================
-        // Crear Venta
-        // ===========================
+        
 
         const venta = await cliente.query(
             `
@@ -64,9 +62,6 @@ const crearVenta = async (datos) => {
 
         const idVenta = venta.rows[0].id;
 
-        // ===========================
-        // Productos
-        // ===========================
 
         if (productos && productos.length > 0) {
 
@@ -129,10 +124,7 @@ const crearVenta = async (datos) => {
 
         }
 
-        // ===========================
-        // Servicios
-        // ===========================
-
+        
         if (servicios && servicios.length > 0) {
 
             for (const servicio of servicios) {
@@ -171,9 +163,7 @@ const crearVenta = async (datos) => {
 
         }
 
-        // ===========================
-        // Actualizar Total
-        // ===========================
+ 
 
         await cliente.query(
             `
