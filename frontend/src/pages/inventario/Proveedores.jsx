@@ -15,16 +15,7 @@ function Proveedores() {
 
   useEffect(() => {
     setMostrarModal(false);
-
     obtenerProveedores();
-
-    Swal.fire({
-      icon: "success",
-      title: "Proveedor registrado",
-      text: "El proveedor se registró correctamente.",
-      timer: 1800,
-      showConfirmButton: false
-    });
   }, []);
 
   const obtenerProveedores = async () => {
@@ -89,6 +80,14 @@ function Proveedores() {
       setMostrarModal(false);
 
       obtenerProveedores();
+
+      Swal.fire({
+        icon: "success",
+        title: "Proveedor registrado",
+        text: "El proveedor se registró correctamente.",
+        timer: 1800,
+        showConfirmButton: false
+      });
 
     } catch (error) {
       console.error(error);
