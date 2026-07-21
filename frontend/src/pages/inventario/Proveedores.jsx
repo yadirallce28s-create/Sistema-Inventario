@@ -148,7 +148,7 @@ function Proveedores() {
             <tr>
 
               <th>Empresa</th>
-              <th>Contacto</th>
+              <th>Nombre</th>
               <th>Teléfono</th>
               <th>Correo</th>
               <th>Dirección</th>
@@ -209,7 +209,7 @@ function Proveedores() {
               />
 
               <input
-                placeholder="Contacto"
+                placeholder="Nombre"
                 value={contacto}
                 onChange={(e) =>
                   setContacto(e.target.value)
