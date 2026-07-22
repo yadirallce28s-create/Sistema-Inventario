@@ -1,5 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
-
+const API_URL = import.meta.env.VITE_API_URL;
 const getToken = () => localStorage.getItem("token");
 
 // Wrapper de fetch: agrega el token y maneja sesión expirada/ inválida
@@ -15,7 +14,7 @@ export const apiFetch = async (endpoint, options = {}) => {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
   });
