@@ -38,26 +38,24 @@ const crearMascota = async (datos) => {
       peso,
       id_cliente
     )
-    VALUES ($1,$2,$3,$4,$5,$6,$7)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *
     `,
     [
-      nombre,
-      especie,
-      raza,
-      fecha_nacimiento,
-      sexo,
-      peso,
-      id_cliente,
+      nombre || null,
+      especie || null,
+      raza || null,
+      fecha_nacimiento || null,
+      sexo || null,
+      peso ? parseFloat(peso) : null,
+      id_cliente ? parseInt(id_cliente) : null,
     ]
   );
 
   return resultado.rows[0];
 };
 
-// 🆕 Actualizar mascota
-// Usamos COALESCE para que, si algún campo no se envía (ej. fecha_nacimiento,
-// que tu frontend aún no maneja), se conserve el valor que ya existía en la BD.
+// 🆕 Actualizar mascota corregido
 const actualizarMascota = async (id, datos) => {
   const {
     nombre,
@@ -68,6 +66,11 @@ const actualizarMascota = async (id, datos) => {
     peso,
     id_cliente,
   } = datos;
+
+  // Nos aseguramos de parsear correctamente los IDs y valores numéricos
+  const idMascota = parseInt(id);
+  const clienteIdParsed = id_cliente ? parseInt(id_cliente) : null;
+  const pesoParsed = peso ? parseFloat(peso) : null;
 
   const resultado = await pool.query(
     `
@@ -83,17 +86,28 @@ const actualizarMascota = async (id, datos) => {
     WHERE id = $8
     RETURNING *
     `,
-    [nombre, especie, raza, fecha_nacimiento, sexo, peso, id_cliente, id]
+    [
+      nombre || null,
+      especie || null,
+      raza || null,
+      fecha_nacimiento || null,
+      sexo || null,
+      pesoParsed,
+      clienteIdParsed,
+      idMascota
+    ]
   );
 
   return resultado.rows[0];
 };
 
-// 🆕 Eliminar mascota
+// 🆕 Eliminar mascota corregido
 const eliminarMascota = async (id) => {
+  const idMascota = parseInt(id);
+
   const resultado = await pool.query(
     `DELETE FROM mascotas WHERE id = $1 RETURNING *`,
-    [id]
+    [idMascota]
   );
 
   return resultado.rows[0];

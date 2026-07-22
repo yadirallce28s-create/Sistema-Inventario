@@ -1,6 +1,6 @@
 import "../../css/inventario.css";
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruck } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import {
@@ -20,8 +20,8 @@ import {
   crearProducto,
   obtenerCategorias,
 } from "../../services/inventarioService";
-function Proveedores() {
 
+function Proveedores() {
   const [tabActiva, setTabActiva] = useState("directorio");
 
   // ---------- DIRECTORIO ----------
@@ -63,6 +63,7 @@ function Proveedores() {
       console.error(error);
     }
   };
+
   const cargarCategorias = async () => {
     try {
       const data = await obtenerCategorias();
@@ -106,7 +107,6 @@ function Proveedores() {
 
       Swal.fire({
         icon: "success",
-<<<<<<< HEAD
         title: idEditarProveedor ? "Proveedor actualizado" : "Proveedor registrado",
         text: idEditarProveedor
           ? "El proveedor se actualizó correctamente."
@@ -114,14 +114,6 @@ function Proveedores() {
         timer: 1800,
         showConfirmButton: false,
       });
-=======
-        title: "Proveedor registrado",
-        text: "El proveedor se registró correctamente.",
-        timer: 1800,
-        showConfirmButton: false
-      });
-
->>>>>>> feature/database
     } catch (error) {
       console.error(error);
     }
@@ -163,11 +155,11 @@ function Proveedores() {
     Swal.fire({
       title: proveedor.nombre,
       html: `
-            <b>Contacto:</b> ${proveedor.contacto}<br>
-            <b>Teléfono:</b> ${proveedor.telefono}<br>
-            <b>Correo:</b> ${proveedor.email}<br>
-            <b>Dirección:</b> ${proveedor.direccion}
-        `,
+        <b>Contacto:</b> ${proveedor.contacto}<br>
+        <b>Teléfono:</b> ${proveedor.telefono}<br>
+        <b>Correo:</b> ${proveedor.email}<br>
+        <b>Dirección:</b> ${proveedor.direccion}
+      `,
       icon: "info",
       confirmButtonText: "Cerrar",
     });
@@ -201,7 +193,6 @@ function Proveedores() {
   };
 
   const guardarPedido = async () => {
-
     if (!idProveedorPedido || !idProducto || !cantidad) {
       Swal.fire({
         icon: "warning",
@@ -212,7 +203,6 @@ function Proveedores() {
     }
 
     try {
-
       await crearPedidoProveedor({
         id_proveedor: idProveedorPedido,
         id_producto: idProducto,
@@ -230,15 +220,12 @@ function Proveedores() {
         timer: 1800,
         showConfirmButton: false,
       });
-
     } catch (error) {
       console.log(error);
     }
-
   };
 
   const marcarComo = async (pedido, estado) => {
-
     const textos = {
       recibido: "¿Confirmar que el pedido llegó? Esto sumará el stock automáticamente.",
       cancelado: "¿Cancelar este pedido?",
@@ -255,7 +242,6 @@ function Proveedores() {
     if (!resultado.isConfirmed) return;
 
     try {
-
       await cambiarEstadoPedido(pedido.id, estado);
       await cargarPedidos();
 
@@ -265,15 +251,12 @@ function Proveedores() {
         timer: 1800,
         showConfirmButton: false,
       });
-
     } catch (error) {
       console.log(error);
     }
-
   };
 
   const confirmarEliminarPedido = (pedido) => {
-
     Swal.fire({
       title: "¿Eliminar este pedido?",
       text: "Esta acción no se puede deshacer.",
@@ -293,34 +276,34 @@ function Proveedores() {
         });
       }
     });
-
   };
-  const crearProductoRapido = async () => {
-  if (!idProveedorPedido) {
-    Swal.fire({
-      icon: "warning",
-      title: "Selecciona un proveedor primero",
-      text: "El producto nuevo se asociará al proveedor de este pedido.",
-    });
-    return;
-  }
 
-  const opcionesCategorias = categorias
+  const crearProductoRapido = async () => {
+    if (!idProveedorPedido) {
+      Swal.fire({
+        icon: "warning",
+        title: "Selecciona un proveedor primero",
+        text: "El producto nuevo se asociará al proveedor de este pedido.",
+      });
+      return;
+    }
+
+    const opcionesCategorias = categorias
       .map((cat) => `<option value="${cat.id}">${cat.nombre}</option>`)
       .join("");
 
     const { value: formValues } = await Swal.fire({
       title: "Nuevo Producto",
       html: `
-      <input id="swal-nombre" class="swal2-input" placeholder="Nombre del producto">
-      <select id="swal-categoria" class="swal2-select">
-        <option value="">Seleccione una categoría</option>
-        ${opcionesCategorias}
-      </select>
-      <input id="swal-precio-compra" type="number" class="swal2-input" placeholder="Precio Compra">
-      <input id="swal-precio-venta" type="number" class="swal2-input" placeholder="Precio Venta">
-      <input id="swal-stock-minimo" type="number" class="swal2-input" placeholder="Alerta de Stock (opcional)">
-    `,
+        <input id="swal-nombre" class="swal2-input" placeholder="Nombre del producto">
+        <select id="swal-categoria" class="swal2-select">
+          <option value="">Seleccione una categoría</option>
+          ${opcionesCategorias}
+        </select>
+        <input id="swal-precio-compra" type="number" class="swal2-input" placeholder="Precio Compra">
+        <input id="swal-precio-venta" type="number" class="swal2-input" placeholder="Precio Venta">
+        <input id="swal-stock-minimo" type="number" class="swal2-input" placeholder="Alerta de Stock (opcional)">
+      `,
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: "Crear",
@@ -375,6 +358,7 @@ function Proveedores() {
       Swal.fire("Error", "No se pudo crear el producto", "error");
     }
   };
+
   const crearProveedorRapido = async () => {
     const { value: formValues } = await Swal.fire({
       title: "Nuevo Proveedor",
@@ -429,7 +413,6 @@ function Proveedores() {
   };
 
   const badgeEstado = (estado) => {
-
     if (estado === "recibido") {
       return <span className="estado disponible">Recibido</span>;
     }
@@ -437,15 +420,15 @@ function Proveedores() {
       return <span className="estado agotado">Cancelado</span>;
     }
     return <span className="estado bajo">Pendiente</span>;
-
   };
 
   return (
     <div>
-
       <div className="inventario-header">
         <div>
-          <h1><FontAwesomeIcon icon={faTruck} color="#429a85" /> Proveedores</h1>
+          <h1>
+            <FontAwesomeIcon icon={faTruck} color="#429a85" /> Proveedores
+          </h1>
           <p className="subtitulo">Directorio y pedidos a proveedores</p>
         </div>
 
@@ -475,7 +458,6 @@ function Proveedores() {
       </div>
 
       <div className="tabs">
-
         <button
           className={`tab ${tabActiva === "directorio" ? "active" : ""}`}
           onClick={() => setTabActiva("directorio")}
@@ -489,12 +471,10 @@ function Proveedores() {
         >
           Pedidos
         </button>
-
       </div>
 
       {/* -------- TAB DIRECTORIO -------- */}
       {tabActiva === "directorio" && (
-
         <div className="panel">
           <table className="tabla">
             <thead>
@@ -542,21 +522,10 @@ function Proveedores() {
             </tbody>
           </table>
         </div>
-
-<<<<<<< HEAD
       )}
-=======
-              <th>Empresa</th>
-              <th>Nombre</th>
-              <th>Teléfono</th>
-              <th>Correo</th>
-              <th>Dirección</th>
-              <th>Acciones</th>
->>>>>>> feature/database
 
       {/* -------- TAB PEDIDOS -------- */}
       {tabActiva === "pedidos" && (
-
         <div className="panel">
           <table className="tabla">
             <thead>
@@ -577,7 +546,11 @@ function Proveedores() {
                   <td>{pedido.nombre_producto}</td>
                   <td>{pedido.cantidad}</td>
                   <td>{pedido.fecha_pedido?.substring(0, 10)}</td>
-                  <td>{pedido.fecha_estimada ? pedido.fecha_estimada.substring(0, 10) : "-"}</td>
+                  <td>
+                    {pedido.fecha_estimada
+                      ? pedido.fecha_estimada.substring(0, 10)
+                      : "-"}
+                  </td>
                   <td>{badgeEstado(pedido.estado)}</td>
                   <td>
                     {pedido.estado === "pendiente" && (
@@ -612,7 +585,6 @@ function Proveedores() {
             </tbody>
           </table>
         </div>
-
       )}
 
       {/* -------- MODAL NUEVO/EDITAR PROVEEDOR -------- */}
@@ -733,7 +705,6 @@ function Proveedores() {
                 </div>
               </div>
 
-<<<<<<< HEAD
               <div className="form-group">
                 <label>Cantidad</label>
                 <input
@@ -742,83 +713,6 @@ function Proveedores() {
                   onChange={(e) => setCantidad(e.target.value)}
                 />
               </div>
-=======
-            ))}
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-      {
-
-        mostrarModal && (
-
-          <div className="modal-overlay">
-
-            <div className="modal">
-
-              <h2>Nuevo Proveedor</h2>
-
-              <input
-                placeholder="Empresa"
-                value={nombre}
-                onChange={(e) =>
-                  setNombre(e.target.value)
-                }
-              />
-
-              <input
-                placeholder="Nombre"
-                value={contacto}
-                onChange={(e) =>
-                  setContacto(e.target.value)
-                }
-              />
-
-              <input
-                placeholder="Teléfono"
-                value={telefono}
-                onChange={(e) =>
-                  setTelefono(e.target.value)
-                }
-              />
-
-              <input
-                placeholder="Correo"
-                value={email}
-                onChange={(e) =>
-                  setEmail(e.target.value)
-                }
-              />
-
-              <input
-                placeholder="Dirección"
-                value={direccion}
-                onChange={(e) =>
-                  setDireccion(e.target.value)
-                }
-              />
-
-              <div className="modal-buttons">
-
-                <button
-                  className="btn-cancelar"
-                  onClick={() =>
-                    setMostrarModal(false)
-                  }
-                >
-                  Cancelar
-                </button>
-
-                <button
-                  className="btn-guardar"
-                  onClick={guardarProveedor}
-                >
-                  Guardar
-                </button>
->>>>>>> feature/database
 
               <div className="form-group">
                 <label>Fecha Estimada de Entrega</label>
@@ -828,7 +722,6 @@ function Proveedores() {
                   onChange={(e) => setFechaEstimada(e.target.value)}
                 />
               </div>
-
             </div>
 
             <div className="modal-buttons">
@@ -849,7 +742,6 @@ function Proveedores() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

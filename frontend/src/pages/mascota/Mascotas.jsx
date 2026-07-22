@@ -83,7 +83,7 @@ function Mascotas() {
         }
     };
 
-    // Abre el modal ya con los datos de la mascota cargados
+    // Abre el modal con los datos cargados correctamente
     const abrirEdicion = (mascota) => {
         setIdEditando(mascota.id);
         setNombre(mascota.nombre || "");
@@ -91,7 +91,14 @@ function Mascotas() {
         setRaza(mascota.raza || "");
         setSexo(mascota.sexo || "");
         setPeso(mascota.peso || "");
-        setIdCliente(mascota.id_cliente || "");
+
+        // Evaluamos dónde viene el id del cliente en el objeto devuelto
+        const idClienteEncontrado = 
+            mascota.id_cliente || 
+            mascota.cliente_id || 
+            (mascota.cliente ? mascota.cliente.id : "");
+            
+        setIdCliente(idClienteEncontrado);
         setMostrarFormulario(true);
     };
 
