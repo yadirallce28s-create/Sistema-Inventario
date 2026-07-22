@@ -1,3 +1,5 @@
+require("dotenv").config();
+console.log(process.env.JWT_SECRET);
 const express = require("express");
 const cors = require("cors");
 const pool = require("./config/db");
@@ -15,13 +17,14 @@ const proveedoresRoutes = require("./routes/proveedores.routes");
 const alertasRoutes = require("./routes/alertas.routes");
 const ventasRoutes = require("./routes/ventas.routes");
 const publicidadRoutes = require("./routes/publicidad.routes");
-
+const movimientosRoutes = require("./routes/movimientos.routes");
+const pedidosProveedorRoutes = require("./routes/pedidosProveedor.routes");
 const app = express();
 const PORT = 5000;
 
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json());
+
 // rutas
 app.use("/api/auth", authRoutes);
 app.use("/api/clientes", clientesRoutes);
@@ -36,6 +39,8 @@ app.use("/api/proveedores", proveedoresRoutes);
 app.use("/api/alertas", alertasRoutes);
 app.use("/api/ventas", ventasRoutes);
 app.use("/api/publicidad", publicidadRoutes);
+app.use("/api/movimientos", movimientosRoutes);  
+app.use("/api/pedidos-proveedor", pedidosProveedorRoutes); 
 
 
 

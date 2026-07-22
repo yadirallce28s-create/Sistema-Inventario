@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+
 const obtenerProductos = async () => {
 
     const resultado = await pool.query(`
@@ -14,15 +15,49 @@ const obtenerProductos = async () => {
             p.fecha_vencimiento,
             c.nombre AS categoria,
             pr.nombre AS proveedor,
+            p.id_categoria,
+            p.id_proveedor,
+            p.registro_senasa,
             p.estado
         FROM productos p
         LEFT JOIN categorias_producto c
             ON p.id_categoria = c.id
         LEFT JOIN proveedores pr
             ON p.id_proveedor = pr.id
-            
+        WHERE p.estado = true
         ORDER BY p.id DESC
 
+    `);
+
+    return resultado.rows;
+};
+
+const obtenerProductosInactivos = async () => {
+
+    const resultado = await pool.query(`
+        SELECT
+            p.id,
+            p.codigo,
+            p.nombre,
+            p.descripcion,
+            p.precio_compra,
+            p.precio_venta,
+            p.stock,
+            p.stock_minimo,
+            p.fecha_vencimiento,
+            c.nombre AS categoria,
+            pr.nombre AS proveedor,
+            p.id_categoria,
+            p.id_proveedor,
+            p.registro_senasa,
+            p.estado
+        FROM productos p
+        LEFT JOIN categorias_producto c
+            ON p.id_categoria = c.id
+        LEFT JOIN proveedores pr
+            ON p.id_proveedor = pr.id
+        WHERE p.estado = false
+        ORDER BY p.nombre
     `);
 
     return resultado.rows;
@@ -41,8 +76,9 @@ const obtenerProducto = async (id) => {
 
     return resultado.rows[0];
 };
+
 const crearProducto = async (datos) => {
-     console.log(datos);
+
     const {
         nombre,
         descripcion,
@@ -55,7 +91,7 @@ const crearProducto = async (datos) => {
         id_categoria,
         id_proveedor
     } = datos;
-    console.log(registro_senasa);
+
     const ultimoCodigo = await pool.query(`
         SELECT codigo
         FROM productos
@@ -147,7 +183,7 @@ const actualizarProducto = async (id, datos) => {
         fecha_vencimiento=$9,
         id_categoria=$10,
         id_proveedor=$11,
-        estado=$12
+        estado=COALESCE($12, estado)
 
         WHERE id=$13
 
@@ -173,6 +209,38 @@ const actualizarProducto = async (id, datos) => {
     return resultado.rows[0];
 };
 
+// Baja lógica: NO borra la fila, solo marca estado = false.
+// Así se conserva el historial de ventas y movimientos que referencian este producto.
+const desactivarProducto = async (id) => {
+
+    const resultado = await pool.query(
+        `
+        UPDATE productos
+        SET estado = false
+        WHERE id = $1
+        RETURNING *
+        `,
+        [id]
+    );
+
+    return resultado.rows[0];
+};
+
+// Por si luego quieres reactivar un producto desde el frontend
+const activarProducto = async (id) => {
+
+    const resultado = await pool.query(
+        `
+        UPDATE productos
+        SET estado = true
+        WHERE id = $1
+        RETURNING *
+        `,
+        [id]
+    );
+
+    return resultado.rows[0];
+};
 
 const buscarProducto = async (texto) => {
 
@@ -194,13 +262,12 @@ const buscarProducto = async (texto) => {
 
         WHERE
 
-            LOWER(p.nombre)
-            LIKE LOWER($1)
+            p.estado = true
 
-            OR
-
-            LOWER(p.codigo)
-            LIKE LOWER($1)
+            AND (
+                LOWER(p.nombre) LIKE LOWER($1)
+                OR LOWER(p.codigo) LIKE LOWER($1)
+            )
 
         ORDER BY p.nombre
         `,
@@ -213,10 +280,12 @@ const buscarProducto = async (texto) => {
 module.exports = {
 
     obtenerProductos,
+    obtenerProductosInactivos,
     obtenerProducto,
     crearProducto,
     actualizarProducto,
-   
+    desactivarProducto,
+    activarProducto,
     buscarProducto
 
 };

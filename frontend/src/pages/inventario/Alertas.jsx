@@ -1,5 +1,6 @@
 import "../../css/inventario.css";
 import { useEffect, useState } from "react";
+import { apiFetch } from "../../services/httpClient";
 
 function Alertas() {
 
@@ -20,12 +21,11 @@ function Alertas() {
 
     }, []);
 
+  
+
     const obtenerAlertas = async () => {
         try {
-            const response = await fetch(
-                "https://sistema-inventario-95aj.onrender.com/api/alertas"
-            );
-            const data = await response.json();
+            const data = await apiFetch("/alertas");
             setAlertas(data.alertas);
             setResumen(data.resumen);
 
@@ -33,7 +33,6 @@ function Alertas() {
             console.error(error);
         }
     };
-
     return (
         <div>
             <h1>🚨 Alertas de Stock</h1>
@@ -45,14 +44,13 @@ function Alertas() {
                 )
             }
 
-            <div className="mensaje-ok">
-
-                ✅ No existen productos con bajo stock.
-
-            </div>
-
-            
-
+            {
+                resumen.total_alertas === 0 && (
+                    <div className="mensaje-ok">
+                        ✅ No existen productos con bajo stock.
+                    </div>
+                )
+            }
             <div className="inventory-stats">
 
                 <div className="stat-card">

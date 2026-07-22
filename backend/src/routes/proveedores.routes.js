@@ -1,22 +1,23 @@
 const express = require("express");
-
 const router = express.Router();
 
 const {
-
     listarProveedores,
     registrarProveedor,
     editarProveedor,
     borrarProveedor
-
 } = require("../controllers/proveedores.controller");
 
-router.get("/", listarProveedores);
+const { verificarToken, verificarRol } = require("../middlewares/auth.middleware");
 
-router.post("/", registrarProveedor);
+// Todo el módulo de proveedores es exclusivo del administrador,
+// tal como ya lo tienes reflejado en Sidebar.jsx
+router.get("/", verificarToken, verificarRol("admin"), listarProveedores);
 
-router.put("/:id", editarProveedor);
+router.post("/", verificarToken, verificarRol("admin"), registrarProveedor);
 
-router.delete("/:id", borrarProveedor);
+router.put("/:id", verificarToken, verificarRol("admin"), editarProveedor);
+
+router.delete("/:id", verificarToken, verificarRol("admin"), borrarProveedor);
 
 module.exports = router;

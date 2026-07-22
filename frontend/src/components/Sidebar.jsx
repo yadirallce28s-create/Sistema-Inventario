@@ -17,7 +17,9 @@ import {
   MdSettings,
   MdPointOfSale,
   MdEventAvailable,
-  MdCategory
+  MdCategory,
+  MdLabel,
+  MdHistory
 } from "react-icons/md";
 
 function Sidebar() {
@@ -83,12 +85,25 @@ function Sidebar() {
                   Productos
                 </NavLink>
 
+                {esAdmin && (
+                  <NavLink
+                    to="/inventario/categorias"
+                    className="sidebar-sublink"
+                  >
+                    <MdLabel className="menu-icon" />
+                    Categorías
+                  </NavLink>
+                )}
                 <NavLink
                   to="/inventario/alertas"
                   className="sidebar-sublink"
                 >
                   <MdWarningAmber className="menu-icon" />
                   Alertas
+                </NavLink>
+                <NavLink to="/inventario/movimientos" className="sidebar-sublink">
+                  <MdHistory className="menu-icon" />
+                  Movimientos
                 </NavLink>
 
                 {esAdmin && (
