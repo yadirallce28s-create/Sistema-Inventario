@@ -101,16 +101,13 @@ const actualizarMascota = async (id, datos) => {
   return resultado.rows[0];
 };
 
-// 🆕 Eliminar mascota corregido
 const eliminarMascota = async (id) => {
-  const idMascota = parseInt(id);
-
-  const resultado = await pool.query(
-    `DELETE FROM mascotas WHERE id = $1 RETURNING *`,
-    [idMascota]
-  );
-
-  return resultado.rows[0];
+  // 1. Primero borramos las citas asociadas a esta mascota
+  await pool.query('DELETE FROM citas WHERE id_mascota = $1', [id]);
+  
+  // 2. Luego eliminamos la mascota
+  const result = await pool.query('DELETE FROM mascotas WHERE id = $1 RETURNING *', [id]);
+  return result.rows[0];
 };
 
 module.exports = {
