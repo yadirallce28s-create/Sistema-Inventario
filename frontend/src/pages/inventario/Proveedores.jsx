@@ -106,6 +106,7 @@ function Proveedores() {
 
       Swal.fire({
         icon: "success",
+<<<<<<< HEAD
         title: idEditarProveedor ? "Proveedor actualizado" : "Proveedor registrado",
         text: idEditarProveedor
           ? "El proveedor se actualizó correctamente."
@@ -113,6 +114,14 @@ function Proveedores() {
         timer: 1800,
         showConfirmButton: false,
       });
+=======
+        title: "Proveedor registrado",
+        text: "El proveedor se registró correctamente.",
+        timer: 1800,
+        showConfirmButton: false
+      });
+
+>>>>>>> feature/database
     } catch (error) {
       console.error(error);
     }
@@ -534,7 +543,16 @@ function Proveedores() {
           </table>
         </div>
 
+<<<<<<< HEAD
       )}
+=======
+              <th>Empresa</th>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+              <th>Dirección</th>
+              <th>Acciones</th>
+>>>>>>> feature/database
 
       {/* -------- TAB PEDIDOS -------- */}
       {tabActiva === "pedidos" && (
@@ -715,6 +733,7 @@ function Proveedores() {
                 </div>
               </div>
 
+<<<<<<< HEAD
               <div className="form-group">
                 <label>Cantidad</label>
                 <input
@@ -723,6 +742,83 @@ function Proveedores() {
                   onChange={(e) => setCantidad(e.target.value)}
                 />
               </div>
+=======
+            ))}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      {
+
+        mostrarModal && (
+
+          <div className="modal-overlay">
+
+            <div className="modal">
+
+              <h2>Nuevo Proveedor</h2>
+
+              <input
+                placeholder="Empresa"
+                value={nombre}
+                onChange={(e) =>
+                  setNombre(e.target.value)
+                }
+              />
+
+              <input
+                placeholder="Nombre"
+                value={contacto}
+                onChange={(e) =>
+                  setContacto(e.target.value)
+                }
+              />
+
+              <input
+                placeholder="Teléfono"
+                value={telefono}
+                onChange={(e) =>
+                  setTelefono(e.target.value)
+                }
+              />
+
+              <input
+                placeholder="Correo"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+              />
+
+              <input
+                placeholder="Dirección"
+                value={direccion}
+                onChange={(e) =>
+                  setDireccion(e.target.value)
+                }
+              />
+
+              <div className="modal-buttons">
+
+                <button
+                  className="btn-cancelar"
+                  onClick={() =>
+                    setMostrarModal(false)
+                  }
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  className="btn-guardar"
+                  onClick={guardarProveedor}
+                >
+                  Guardar
+                </button>
+>>>>>>> feature/database
 
               <div className="form-group">
                 <label>Fecha Estimada de Entrega</label>

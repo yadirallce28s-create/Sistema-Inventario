@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
 import "../../css/mascotas.css";
+import {
+    obtenerMascotas,
+    crearMascota,
+    editarMascota,
+    eliminarMascota,
+    obtenerClientes,
+} from "../../services/mascotasService";
 
 function Mascotas() {
     const [mascotas, setMascotas] = useState([]);
@@ -7,71 +14,97 @@ function Mascotas() {
     const [nombre, setNombre] = useState("");
     const [especie, setEspecie] = useState("");
     const [raza, setRaza] = useState("");
+    const [sexo, setSexo] = useState("");
+    const [peso, setPeso] = useState("");
 
     const [clientes, setClientes] = useState([]);
     const [idCliente, setIdCliente] = useState("");
 
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
+    // Guarda el id de la mascota que se está editando (null = creando una nueva)
+    const [idEditando, setIdEditando] = useState(null);
+
     useEffect(() => {
-        obtenerMascotas();
-        obtenerClientes();
+        cargarMascotas();
+        cargarClientes();
     }, []);
 
-    const obtenerMascotas = async () => {
+    const cargarMascotas = async () => {
         try {
-            const response = await fetch(
-                "https://sistema-inventario-95aj.onrender.com/api/mascotas"
-            );
-
-            const data = await response.json();
-
-            setMascotas(data.mascotas || []);
+            const data = await obtenerMascotas();
+            setMascotas(data || []);
         } catch (error) {
             console.error(error);
         }
     };
 
-    const obtenerClientes = async () => {
+    const cargarClientes = async () => {
         try {
-            const response = await fetch(
-                "https://sistema-inventario-95aj.onrender.com/api/clientes"
-            );
-
-            const data = await response.json();
-
-            setClientes(data.clientes || []);
+            const data = await obtenerClientes();
+            setClientes(data || []);
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const limpiarFormulario = () => {
+        setNombre("");
+        setEspecie("");
+        setRaza("");
+        setSexo("");
+        setPeso("");
+        setIdCliente("");
+        setIdEditando(null);
     };
 
     const guardarMascota = async () => {
         try {
-            await fetch(
-                "https://sistema-inventario-95aj.onrender.com/api/mascotas",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        nombre,
-                        especie,
-                        raza,
-                        id_cliente: idCliente,
-                    }),
-                }
-            );
+            const datosMascota = {
+                nombre,
+                especie,
+                raza,
+                sexo,
+                peso,
+                id_cliente: idCliente,
+            };
 
-            await obtenerMascotas();
+            if (idEditando) {
+                await editarMascota(idEditando, datosMascota);
+            } else {
+                await crearMascota(datosMascota);
+            }
 
-            setNombre("");
-            setEspecie("");
-            setRaza("");
-            setIdCliente("");
-
+            await cargarMascotas();
+            limpiarFormulario();
             setMostrarFormulario(false);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Abre el modal ya con los datos de la mascota cargados
+    const abrirEdicion = (mascota) => {
+        setIdEditando(mascota.id);
+        setNombre(mascota.nombre || "");
+        setEspecie(mascota.especie || "");
+        setRaza(mascota.raza || "");
+        setSexo(mascota.sexo || "");
+        setPeso(mascota.peso || "");
+        setIdCliente(mascota.id_cliente || "");
+        setMostrarFormulario(true);
+    };
+
+    // Borra con confirmación
+    const handleEliminar = async (id) => {
+        const confirmar = window.confirm(
+            "¿Seguro que deseas eliminar esta mascota? Esta acción no se puede deshacer."
+        );
+        if (!confirmar) return;
+
+        try {
+            await eliminarMascota(id);
+            await cargarMascotas();
         } catch (error) {
             console.error(error);
         }
@@ -82,22 +115,21 @@ function Mascotas() {
 
             <div className="mascotas-header">
                 <h1>Mascotas</h1>
-
                 <button
                     className="btn-nueva"
-                    onClick={() => setMostrarFormulario(true)}
+                    onClick={() => {
+                        limpiarFormulario();
+                        setMostrarFormulario(true);
+                    }}
                 >
                     Nueva Mascota
                 </button>
             </div>
 
             {mostrarFormulario && (
-
                 <div className="modal-overlay">
-
                     <div className="modal-mascota">
-
-                        <h2>Nueva Mascota</h2>
+                        <h2>{idEditando ? "Editar Mascota" : "Nueva Mascota"}</h2>
 
                         <input
                             type="text"
@@ -121,13 +153,29 @@ function Mascotas() {
                         />
 
                         <select
+                            value={sexo}
+                            onChange={(e) => setSexo(e.target.value)}
+                        >
+                            <option value="">Seleccione sexo</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Hembra">Hembra</option>
+                        </select>
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            placeholder="Peso (kg)"
+                            value={peso}
+                            onChange={(e) => setPeso(e.target.value)}
+                        />
+
+                        <select
                             value={idCliente}
                             onChange={(e) => setIdCliente(e.target.value)}
                         >
                             <option value="">
                                 Seleccione cliente
                             </option>
-
                             {clientes.map((cliente) => (
                                 <option
                                     key={cliente.id}
@@ -139,33 +187,28 @@ function Mascotas() {
                         </select>
 
                         <div className="modal-buttons">
-
                             <button
                                 className="btn-guardar"
                                 onClick={guardarMascota}
                             >
-                                Guardar
+                                {idEditando ? "Actualizar" : "Guardar"}
                             </button>
-
                             <button
                                 className="btn-cancelar"
-                                onClick={() => setMostrarFormulario(false)}
+                                onClick={() => {
+                                    setMostrarFormulario(false);
+                                    limpiarFormulario();
+                                }}
                             >
                                 Cancelar
                             </button>
-
                         </div>
-
                     </div>
-
                 </div>
-
             )}
 
             <div className="mascotas-table">
-
                 <table>
-
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -174,47 +217,49 @@ function Mascotas() {
                             <th>Sexo</th>
                             <th>Peso</th>
                             <th>Cliente</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
-
                     <tbody>
-
                         {mascotas.length > 0 ? (
-
                             mascotas.map((mascota) => (
                                 <tr key={mascota.id}>
-
                                     <td>{mascota.nombre}</td>
                                     <td>{mascota.especie}</td>
                                     <td>{mascota.raza}</td>
                                     <td>{mascota.sexo}</td>
                                     <td>{mascota.peso}</td>
-
                                     <td>
-                                        {mascota.cliente_nombre}
-                                        {" "}
-                                        {mascota.cliente_apellido}
+                                        {mascota.cliente_nombre}{" "}{mascota.cliente_apellido}
                                     </td>
-
+                                    <td className="acciones-cell">
+                                        <button
+                                            className="btn-editar"
+                                            title="Editar"
+                                            onClick={() => abrirEdicion(mascota)}
+                                        >
+                                            ✏️
+                                        </button>
+                                        <button
+                                            className="btn-borrar"
+                                            title="Borrar"
+                                            onClick={() => handleEliminar(mascota.id)}
+                                        >
+                                            🗑️
+                                        </button>
+                                    </td>
                                 </tr>
                             ))
-
                         ) : (
-
                             <tr>
-                                <td colSpan="6">
+                                <td colSpan="7">
                                     No hay mascotas registradas
                                 </td>
                             </tr>
-
                         )}
-
                     </tbody>
-
                 </table>
-
             </div>
-
         </div>
     );
 }
