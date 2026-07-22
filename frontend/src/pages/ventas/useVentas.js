@@ -26,7 +26,7 @@ export function useVentas() {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/ventas"
+                "https://sistema-inventario-95aj.onrender.com/api/ventas"
             );
 
             const data = await response.json();
@@ -42,7 +42,7 @@ export function useVentas() {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/clientes"
+                "https://sistema-inventario-95aj.onrender.com/api/clientes"
             );
 
             const data = await response.json();
@@ -57,7 +57,7 @@ export function useVentas() {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/productos"
+                "https://sistema-inventario-95aj.onrender.com/api/productos"
             );
 
             const data = await response.json();
@@ -73,7 +73,7 @@ export function useVentas() {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/servicios"
+                "https://sistema-inventario-95aj.onrender.com/api/servicios"
             );
 
             const data = await response.json();

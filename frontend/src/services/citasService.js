@@ -1,4 +1,4 @@
-const URL = "http://localhost:5000/api";
+const URL = "https://sistema-inventario-95aj.onrender.com/api";
 
 export const obtenerCitas = async () => {
   const response = await fetch(`${URL}/citas`);

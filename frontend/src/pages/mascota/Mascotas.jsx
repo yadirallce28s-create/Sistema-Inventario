@@ -21,7 +21,7 @@ function Mascotas() {
     const obtenerMascotas = async () => {
         try {
             const response = await fetch(
-                "http://localhost:5000/api/mascotas"
+                "https://sistema-inventario-95aj.onrender.com/api/mascotas"
             );
 
             const data = await response.json();
@@ -35,7 +35,7 @@ function Mascotas() {
     const obtenerClientes = async () => {
         try {
             const response = await fetch(
-                "http://localhost:5000/api/clientes"
+                "https://sistema-inventario-95aj.onrender.com/api/clientes"
             );
 
             const data = await response.json();
@@ -49,7 +49,7 @@ function Mascotas() {
     const guardarMascota = async () => {
         try {
             await fetch(
-                "http://localhost:5000/api/mascotas",
+                "https://sistema-inventario-95aj.onrender.com/api/mascotas",
                 {
                     method: "POST",
                     headers: {

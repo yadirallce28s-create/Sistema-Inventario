@@ -51,7 +51,7 @@ function Servicios() {
           duracion_minutos: duracion
         });
         await fetch(
-          `http://localhost:5000/api/servicios/${idEditar}`,
+          `https://sistema-inventario-95aj.onrender.com/api/servicios/${idEditar}`,
           {
             method: "PUT",
             headers: {
@@ -69,7 +69,7 @@ function Servicios() {
       } else {
 
         await fetch(
-          "http://localhost:5000/api/servicios",
+          "https://sistema-inventario-95aj.onrender.com/api/servicios",
           {
             method: "POST",
             headers: {
@@ -118,7 +118,7 @@ function Servicios() {
   };
   const obtenerServicios = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/servicios");
+      const response = await fetch("https://sistema-inventario-95aj.onrender.com/api/servicios");
       const data = await response.json();
 
       setServicios(data.servicios);

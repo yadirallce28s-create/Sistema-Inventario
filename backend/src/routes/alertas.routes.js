@@ -5,7 +5,13 @@ const {
     listarAlertas
 } = require("../controllers/alertas.controller");
 
-// Obtener todas las alertas de stock
-router.get("/", listarAlertas);
+const { verificarToken, verificarRol } = require("../middlewares/auth.middleware");
+
+router.get(
+    "/",
+    verificarToken,
+    verificarRol("admin", "veterinario", "asistente"),
+    listarAlertas
+);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario.model");
 
 // REGISTRO
@@ -32,10 +33,13 @@ const register = async (req, res) => {
       rol || "recepcionista"
     );
 
+    // No devolver la contraseña hasheada al frontend
+    const { contrasena, ...usuarioSinPassword } = nuevoUsuario;
+
     res.status(201).json({
       status: "success",
       message: "Usuario registrado correctamente",
-      user: nuevoUsuario,
+      user: usuarioSinPassword,
     });
   } catch (error) {
     console.error(error);
@@ -51,14 +55,9 @@ const login = async (req, res) => {
 
   const { email, password } = req.body;
 
-  console.log("Email recibido:", email);
-  console.log("Password recibida:", password);
-
   try {
 
     const usuario = await Usuario.findByEmail(email);
-
-    console.log("Usuario encontrado:", usuario);
 
     if (!usuario) {
 
@@ -73,12 +72,8 @@ const login = async (req, res) => {
       password,
       usuario.contrasena
     );
-    // Cambiamos el truco para que afecte directamente a la variable que el código revisa
-    const validForzado = true; 
 
-    console.log("Resultado bcrypt:", valid);
-
-    if (!validForzado) {
+    if (!valid) {
 
       return res.status(401).json({
         status: "error",
@@ -87,15 +82,33 @@ const login = async (req, res) => {
 
     }
 
+    // Generar el JWT real que espera verificarToken en auth.middleware
+    const token = jwt.sign(
+      {
+        id: usuario.id,
+        rol: usuario.rol
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "8h" }
+    );
+
+    // No devolver el hash de la contraseña al frontend / localStorage
+    const { contrasena, ...usuarioSinPassword } = usuario;
+
     res.json({
       status: "success",
-      user: usuario
+      token,
+      user: usuarioSinPassword
     });
-    //hasta aqui
 
   } catch (error) {
 
-    console.log(error);
+    console.error(error);
+
+    res.status(500).json({
+      status: "error",
+      message: "Error interno en login"
+    });
 
   }
 

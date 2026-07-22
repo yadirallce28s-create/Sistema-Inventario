@@ -37,7 +37,7 @@ function Dashboard() {
 
   const obtenerDashboard = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/dashboard");
+      const response = await fetch("https://sistema-inventario-95aj.onrender.com/api/dashboard");
       const data = await response.json();
       setDashboard(data.dashboard);
     } catch (error) {
